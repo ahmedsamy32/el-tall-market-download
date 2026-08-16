@@ -60,10 +60,14 @@
             }
         });
 
-        // الشعار (Logo)
-        if (cfg.logoUrl && cfg.logoUrl !== 'assets/images/logo.svg') {
-            document.querySelectorAll('img[src="assets/images/logo.svg"], img[data-bind-logo]').forEach(img => {
+        // الشعار (Logo) والأيقونات والـ Favicon في جميع أنحاء الموقع
+        if (cfg.logoUrl) {
+            document.querySelectorAll('img[src*="logo.svg"], img[data-bind-logo], .site-logo-img, .logo-img').forEach(img => {
                 img.src = cfg.logoUrl;
+            });
+            // تحديث Favicon المتصفح
+            document.querySelectorAll('link[rel="icon"], link[rel="apple-touch-icon"]').forEach(link => {
+                link.href = cfg.logoUrl;
             });
         }
 

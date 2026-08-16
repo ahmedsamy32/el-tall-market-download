@@ -832,11 +832,11 @@
                 setValue('cfg-logoUrl', c.logoUrl);
                 setValue('cfg-shopUrl', c.shopUrl);
 
-                if (c.logoUrl && logoPreviewBox) {
-                    logoPreviewBox.src = c.logoUrl;
-                }
-                if (c.logoUrl && headerLogoPreview) {
-                    headerLogoPreview.src = c.logoUrl;
+                if (c.logoUrl) {
+                    if (logoPreviewBox) logoPreviewBox.src = c.logoUrl;
+                    if (headerLogoPreview) headerLogoPreview.src = c.logoUrl;
+                    const loginLogo = document.querySelector('.login-logo-img');
+                    if (loginLogo) loginLogo.src = c.logoUrl;
                 }
 
                 // Release

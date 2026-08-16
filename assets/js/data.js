@@ -2,7 +2,7 @@
  * إعدادات وبيانات موقع سوق التل المركزية
  * يمكنك تعديل الروابط والإصدارات ومعلومات التواصل والإعلانات بسهولة من هنا
  */
-const siteConfig = {
+let siteConfig = {
     appName: "سوق التل",
     appNameEn: "Souq El-Tall",
     description: "تحميل تطبيق سوق التل للأندرويد والآيفون مع أحدث الإصدارات والمزايا.",
@@ -62,6 +62,19 @@ const siteConfig = {
         tiktok: "https://tiktok.com"
     }
 };
+
+// تحميل الإعدادات المحفوظة محلياً إن وجدت لدمج التعديلات فوراً
+if (typeof localStorage !== 'undefined') {
+    try {
+        const saved = localStorage.getItem('eltal_site_config');
+        if (saved) {
+            const parsed = JSON.parse(saved);
+            siteConfig = Object.assign({}, siteConfig, parsed);
+        }
+    } catch (e) {
+        console.error("Error reading saved site config", e);
+    }
+}
 
 if (typeof window !== 'undefined') {
     window.siteConfig = siteConfig;

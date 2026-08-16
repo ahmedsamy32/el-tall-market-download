@@ -17,6 +17,7 @@ RewriteRule ^download/?$ download.html [L]
 RewriteRule ^about/?$ about.html [L]
 RewriteRule ^privacy/?$ privacy.html [L]
 RewriteRule ^terms/?$ terms.html [L]
+RewriteRule ^admin/?$ admin.html [L]
 
 RewriteCond %{REQUEST_FILENAME} -f [OR]
 RewriteCond %{REQUEST_FILENAME} -d

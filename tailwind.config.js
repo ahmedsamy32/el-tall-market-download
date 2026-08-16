@@ -1,8 +1,6 @@
 module.exports = {
   content: [
-    "./*.php",
-    "./includes/**/*.php",
-    "./admin/**/*.php",
+    "./*.html",
     "./assets/js/**/*.js"
   ],
   darkMode: "class",

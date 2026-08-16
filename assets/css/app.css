@@ -16,6 +16,30 @@ body {
 }
 
 /* =========================================================
+   0. قيود أحجام الصور والأيقونات (Universal Icons & SVG Safety)
+   ========================================================= */
+svg {
+    display: inline-block;
+    vertical-align: middle;
+    width: 1.25rem;
+    height: 1.25rem;
+    max-width: 100%;
+    max-height: 100%;
+    flex-shrink: 0;
+}
+
+img {
+    max-width: 100%;
+    height: auto;
+}
+
+.w-4, .h-4 { width: 1rem !important; height: 1rem !important; }
+.w-5, .h-5 { width: 1.25rem !important; height: 1.25rem !important; }
+.w-6, .h-6 { width: 1.5rem !important; height: 1.5rem !important; }
+.w-7, .h-7 { width: 1.75rem !important; height: 1.75rem !important; }
+.w-8, .h-8 { width: 2rem !important; height: 2rem !important; }
+
+/* =========================================================
    1. وضع الإضاءة المظلمة عالي التباين (High Contrast Dark Mode)
    ========================================================= */
 .dark, html.dark {

@@ -13,6 +13,14 @@
     <style>
         * {
             font-family: 'Cairo', sans-serif;
+            box-sizing: border-box;
+        }
+        svg {
+            display: inline-block;
+            vertical-align: middle;
+            max-width: 100%;
+            max-height: 100%;
+            flex-shrink: 0;
         }
         .tab-content {
             display: none;
@@ -41,6 +49,41 @@
             text-align: left;
             font-family: 'Consolas', 'Courier New', monospace;
         }
+        /* Strict Login Modal Box Sizes */
+        .login-card-modal {
+            max-width: 440px !important;
+            width: 92% !important;
+            margin: auto !important;
+            padding: 2.25rem 2rem !important;
+            background-color: rgba(15, 23, 42, 0.96) !important;
+            border: 2px solid rgba(51, 65, 85, 0.9) !important;
+            border-radius: 1.75rem !important;
+            box-shadow: 0 25px 60px rgba(0, 0, 0, 0.6) !important;
+        }
+        .login-logo-box {
+            width: 76px !important;
+            height: 76px !important;
+            max-width: 76px !important;
+            max-height: 76px !important;
+            margin: 0 auto 1.25rem !important;
+            display: flex !important;
+            align-items: center !important;
+            justify-content: center !important;
+        }
+        .login-logo-img {
+            width: 48px !important;
+            height: 48px !important;
+            max-width: 48px !important;
+            max-height: 48px !important;
+            object-fit: contain !important;
+        }
+        .login-btn-icon {
+            width: 22px !important;
+            height: 22px !important;
+            max-width: 22px !important;
+            max-height: 22px !important;
+            flex-shrink: 0 !important;
+        }
         /* High Contrast Form Focus & Surfaces */
         .admin-input {
             background-color: #0f172a !important;
@@ -68,36 +111,36 @@
 
     <!-- 1. شاشة تسجيل الدخول (Login Screen) -->
     <div id="login-screen" class="fixed inset-0 z-50 flex items-center justify-center p-4 bg-slate-950/95 backdrop-blur-2xl">
-        <div class="admin-card max-w-lg w-full p-8 sm:p-10 rounded-3xl relative overflow-hidden text-center fade-up shadow-2xl">
-            <div class="absolute -top-16 -right-16 w-40 h-40 bg-cyan-500/25 rounded-full blur-3xl pointer-events-none"></div>
-            <div class="absolute -bottom-16 -left-16 w-40 h-40 bg-teal-500/25 rounded-full blur-3xl pointer-events-none"></div>
+        <div class="login-card-modal text-center relative overflow-hidden fade-up shadow-2xl">
+            <div class="absolute -top-16 -right-16 w-32 h-32 bg-cyan-500/20 rounded-full blur-3xl pointer-events-none"></div>
+            <div class="absolute -bottom-16 -left-16 w-32 h-32 bg-teal-500/20 rounded-full blur-3xl pointer-events-none"></div>
 
-            <div class="w-24 h-24 mx-auto mb-6 rounded-3xl bg-cyan-500/20 border-2 border-cyan-400/50 flex items-center justify-center shadow-lg shadow-cyan-500/20">
-                <img src="assets/images/logo.svg" alt="لوجو سوق التل" class="w-14 h-14 object-contain">
+            <div class="login-logo-box rounded-2xl bg-cyan-500/20 border-2 border-cyan-400/50 shadow-lg shadow-cyan-500/20">
+                <img src="assets/images/logo.svg" alt="لوجو سوق التل" class="login-logo-img">
             </div>
 
-            <h1 class="text-3xl font-black text-white mb-2 tracking-tight">لوحة تحكم سوق التل</h1>
-            <p class="text-base text-slate-300 mb-8 font-medium">أدخل كلمة المرور للوصول إلى إدارة بيانات وروابط الموقع</p>
+            <h1 class="text-2xl sm:text-3xl font-black text-white mb-2 tracking-tight">لوحة تحكم سوق التل</h1>
+            <p class="text-sm text-slate-300 mb-6 font-medium">أدخل كلمة المرور للوصول إلى إدارة الموقع</p>
 
-            <form id="login-form" class="space-y-6 text-right">
+            <form id="login-form" class="space-y-5 text-right">
                 <div>
                     <label for="admin-password" class="block text-sm font-extrabold text-white mb-2">كلمة المرور</label>
                     <div class="relative">
                         <input type="password" id="admin-password" required placeholder="••••••••" 
-                               class="w-full px-5 py-4 rounded-2xl admin-input text-center tracking-widest text-2xl font-mono text-white placeholder-slate-500 shadow-inner">
+                               class="w-full px-4 py-3 rounded-2xl admin-input text-center tracking-widest text-xl font-mono text-white placeholder-slate-500 shadow-inner">
                     </div>
                 </div>
 
-                <div class="flex items-center justify-between text-sm text-slate-300 font-semibold">
+                <div class="flex items-center justify-between text-xs sm:text-sm text-slate-300 font-semibold">
                     <label class="flex items-center gap-2 cursor-pointer select-none">
-                        <input type="checkbox" id="remember-me" class="w-5 h-5 rounded border-2 border-slate-600 bg-slate-900 text-cyan-500 focus:ring-cyan-500">
+                        <input type="checkbox" id="remember-me" class="w-4 h-4 rounded border-2 border-slate-600 bg-slate-900 text-cyan-500 focus:ring-cyan-500">
                         <span class="text-slate-200">تذكرني على هذا الجهاز</span>
                     </label>
-                    <span class="text-cyan-400 font-bold bg-cyan-500/10 px-2.5 py-1 rounded-lg border border-cyan-500/30">الافتراضية: admin123</span>
+                    <span class="text-cyan-400 font-bold bg-cyan-500/10 px-2 py-0.5 rounded-lg border border-cyan-500/30 text-xs">الافتراضية: admin123</span>
                 </div>
 
-                <button type="submit" class="w-full py-4 px-6 rounded-2xl font-black text-base text-slate-950 bg-gradient-to-r from-cyan-400 via-teal-300 to-emerald-400 hover:from-cyan-300 hover:to-emerald-300 shadow-xl shadow-cyan-500/30 hover:scale-[1.01] active:scale-[0.99] transition-all duration-200 flex items-center justify-center gap-3">
-                    <svg class="w-6 h-6" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2.5" d="M11 16l-4-4m0 0l4-4m-4 4h14m-5 4v1a3 3 0 01-3 3H6a3 3 0 01-3-3V7a3 3 0 013-3h7a3 3 0 013 3v1"></path></svg>
+                <button type="submit" class="w-full py-3.5 px-5 rounded-2xl font-black text-base text-slate-950 bg-gradient-to-r from-cyan-400 via-teal-300 to-emerald-400 hover:from-cyan-300 hover:to-emerald-300 shadow-xl shadow-cyan-500/30 hover:scale-[1.01] active:scale-[0.99] transition-all duration-200 flex items-center justify-center gap-2.5">
+                    <svg class="login-btn-icon" style="width: 20px; height: 20px;" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2.5" d="M11 16l-4-4m0 0l4-4m-4 4h14m-5 4v1a3 3 0 01-3 3H6a3 3 0 01-3-3V7a3 3 0 013-3h7a3 3 0 013 3v1"></path></svg>
                     <span>دخول إلى لوحة التحكم</span>
                 </button>
             </form>
@@ -108,41 +151,41 @@
     <div id="dashboard-screen" class="hidden min-h-screen flex flex-col">
         
         <!-- Header -->
-        <header class="sticky top-0 z-40 admin-card border-b-2 border-slate-800 bg-slate-950/95 backdrop-blur-xl px-4 lg:px-8 py-4 flex items-center justify-between shadow-lg">
-            <div class="flex items-center gap-3.5">
-                <button id="mobile-menu-btn" class="lg:hidden p-2.5 rounded-2xl bg-slate-900 border-2 border-slate-700 text-slate-200 hover:text-white hover:border-cyan-400 transition">
-                    <svg class="w-7 h-7" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2.5" d="M4 6h16M4 12h16M4 18h16"></path></svg>
+        <header class="sticky top-0 z-40 admin-card border-b-2 border-slate-800 bg-slate-950/95 backdrop-blur-xl px-4 lg:px-8 py-3.5 flex items-center justify-between shadow-lg">
+            <div class="flex items-center gap-3">
+                <button id="mobile-menu-btn" class="lg:hidden p-2 rounded-2xl bg-slate-900 border-2 border-slate-700 text-slate-200 hover:text-white hover:border-cyan-400 transition" aria-label="القائمة">
+                    <svg style="width: 24px; height: 24px;" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2.5" d="M4 6h16M4 12h16M4 18h16"></path></svg>
                 </button>
-                <div class="flex items-center gap-3.5">
-                    <div class="w-12 h-12 rounded-2xl bg-cyan-500/20 border-2 border-cyan-400/40 flex items-center justify-center p-1.5 shadow-md">
-                        <img src="assets/images/logo.svg" alt="سوق التل" class="w-full h-full object-contain">
+                <div class="flex items-center gap-3">
+                    <div style="width: 42px; height: 42px;" class="rounded-xl bg-cyan-500/20 border-2 border-cyan-400/40 flex items-center justify-center p-1 shadow-md">
+                        <img src="assets/images/logo.svg" alt="سوق التل" style="width: 28px; height: 28px; object-fit: contain;">
                     </div>
                     <div>
-                        <h2 class="font-black text-lg lg:text-xl text-white leading-tight">لوحة تحكم سوق التل</h2>
-                        <div class="flex items-center gap-2 text-xs font-extrabold text-emerald-300 mt-0.5">
-                            <span class="w-2.5 h-2.5 rounded-full bg-emerald-400 animate-ping"></span>
-                            <span>إدارة الموقع (HTML/JS) • متصل محلياً</span>
+                        <h2 class="font-black text-base sm:text-lg text-white leading-tight">لوحة تحكم سوق التل</h2>
+                        <div class="flex items-center gap-1.5 text-xs font-extrabold text-emerald-300">
+                            <span style="width: 8px; height: 8px;" class="rounded-full bg-emerald-400 animate-ping"></span>
+                            <span>إدارة الموقع (HTML/JS)</span>
                         </div>
                     </div>
                 </div>
             </div>
 
-            <div class="flex items-center gap-2.5 lg:gap-3.5">
+            <div class="flex items-center gap-2 sm:gap-3">
                 <!-- Live Preview Site -->
-                <a href="index.html" target="_blank" class="hidden sm:inline-flex items-center gap-2 px-4 py-2.5 rounded-2xl text-sm font-extrabold bg-slate-900 hover:bg-slate-800 border-2 border-slate-700 hover:border-cyan-400 text-white transition shadow-sm">
-                    <svg class="w-5 h-5 text-cyan-400" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M15 12a3 3 0 11-6 0 3 3 0 016 0z"></path><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M2.458 12C3.732 7.943 7.523 5 12 5c4.478 0 8.268 2.943 9.542 7-1.274 4.057-5.064 7-9.542 7-4.477 0-8.268-2.943-9.542-7z"></path></svg>
+                <a href="index.html" target="_blank" class="hidden sm:inline-flex items-center gap-1.5 px-3.5 py-2 rounded-xl text-xs sm:text-sm font-extrabold bg-slate-900 hover:bg-slate-800 border-2 border-slate-700 hover:border-cyan-400 text-white transition shadow-sm">
+                    <svg style="width: 18px; height: 18px;" class="text-cyan-400" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M15 12a3 3 0 11-6 0 3 3 0 016 0z"></path><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M2.458 12C3.732 7.943 7.523 5 12 5c4.478 0 8.268 2.943 9.542 7-1.274 4.057-5.064 7-9.542 7-4.477 0-8.268-2.943-9.542-7z"></path></svg>
                     <span>معاينة الموقع</span>
                 </a>
 
                 <!-- Save Button Header -->
-                <button id="quick-save-btn" class="px-5 py-2.5 rounded-2xl text-sm font-black bg-gradient-to-r from-cyan-400 via-teal-300 to-emerald-400 hover:from-cyan-300 hover:to-emerald-300 text-slate-950 shadow-lg shadow-cyan-500/25 hover:scale-105 active:scale-95 transition-all flex items-center gap-2">
-                    <svg class="w-5 h-5" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2.5" d="M5 13l4 4L19 7"></path></svg>
+                <button id="quick-save-btn" class="px-4 py-2 rounded-xl text-xs sm:text-sm font-black bg-gradient-to-r from-cyan-400 via-teal-300 to-emerald-400 hover:from-cyan-300 hover:to-emerald-300 text-slate-950 shadow-md shadow-cyan-500/25 hover:scale-105 active:scale-95 transition-all flex items-center gap-1.5">
+                    <svg style="width: 18px; height: 18px;" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2.5" d="M5 13l4 4L19 7"></path></svg>
                     <span>حفظ التغييرات</span>
                 </button>
 
                 <!-- Logout -->
-                <button id="logout-btn" class="p-2.5 rounded-2xl bg-rose-500/20 hover:bg-rose-500/30 border-2 border-rose-500/40 text-rose-300 hover:text-white transition" title="تسجيل الخروج">
-                    <svg class="w-5 h-5" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2.5" d="M17 16l4-4m0 0l-4-4m4 4H7m6 4v1a3 3 0 01-3 3H6a3 3 0 01-3-3V7a3 3 0 013-3h4a3 3 0 013 3v1"></path></svg>
+                <button id="logout-btn" class="p-2 rounded-xl bg-rose-500/20 hover:bg-rose-500/30 border-2 border-rose-500/40 text-rose-300 hover:text-white transition" title="تسجيل الخروج">
+                    <svg style="width: 18px; height: 18px;" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2.5" d="M17 16l4-4m0 0l-4-4m4 4H7m6 4v1a3 3 0 01-3 3H6a3 3 0 01-3-3V7a3 3 0 013-3h4a3 3 0 013 3v1"></path></svg>
                 </button>
             </div>
         </header>
@@ -154,87 +197,87 @@
             <div id="menu-overlay" class="admin-menu-overlay"></div>
 
             <!-- Sidebar Navigation -->
-            <aside id="sidebar" class="w-80 admin-card border-l-2 border-slate-800 bg-slate-950 flex-shrink-0 flex flex-col justify-between p-5 overflow-y-auto shadow-2xl">
-                <div class="space-y-2">
-                    <div class="text-xs font-black text-slate-400 px-3 py-1.5 uppercase tracking-wider">الأقسام والإعدادات</div>
+            <aside id="sidebar" class="w-72 admin-card border-l-2 border-slate-800 bg-slate-950 flex-shrink-0 flex flex-col justify-between p-4 overflow-y-auto shadow-2xl">
+                <div class="space-y-1.5">
+                    <div class="text-xs font-black text-slate-400 px-3 py-1 uppercase tracking-wider">الأقسام والإعدادات</div>
                     
-                    <button data-tab="tab-app" class="nav-item active w-full flex items-center gap-3.5 px-4 py-3.5 rounded-2xl text-sm font-extrabold border-2 border-transparent text-slate-200 transition text-right">
-                        <span class="p-2 rounded-xl bg-cyan-500/20 text-cyan-300"><svg class="w-5 h-5" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M19 21V5a2 2 0 00-2-2H7a2 2 0 00-2 2v16m14 0h2m-2 0h-5m-9 0H3m2 0h5M9 7h1m-1 4h1m4-4h1m-1 4h1m-5 10v-5a1 1 0 011-1h2a1 1 0 011 1v5m-4 0h4"></path></svg></span>
+                    <button data-tab="tab-app" class="nav-item active w-full flex items-center gap-3 px-3.5 py-3 rounded-2xl text-xs sm:text-sm font-extrabold border-2 border-transparent text-slate-200 transition text-right">
+                        <span style="width: 32px; height: 32px;" class="rounded-xl bg-cyan-500/20 text-cyan-300 flex items-center justify-center flex-shrink-0"><svg style="width: 16px; height: 16px;" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M19 21V5a2 2 0 00-2-2H7a2 2 0 00-2 2v16m14 0h2m-2 0h-5m-9 0H3m2 0h5M9 7h1m-1 4h1m4-4h1m-1 4h1m-5 10v-5a1 1 0 011-1h2a1 1 0 011 1v5m-4 0h4"></path></svg></span>
                         <span>بيانات التطبيق والهوية</span>
                     </button>
 
-                    <button data-tab="tab-release" class="nav-item w-full flex items-center gap-3.5 px-4 py-3.5 rounded-2xl text-sm font-extrabold border-2 border-transparent text-slate-200 transition text-right">
-                        <span class="p-2 rounded-xl bg-emerald-500/20 text-emerald-300"><svg class="w-5 h-5" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M4 16v1a3 3 0 003 3h10a3 3 0 003-3v-1m-4-4l-4 4m0 0l-4-4m4 4V4"></path></svg></span>
+                    <button data-tab="tab-release" class="nav-item w-full flex items-center gap-3 px-3.5 py-3 rounded-2xl text-xs sm:text-sm font-extrabold border-2 border-transparent text-slate-200 transition text-right">
+                        <span style="width: 32px; height: 32px;" class="rounded-xl bg-emerald-500/20 text-emerald-300 flex items-center justify-center flex-shrink-0"><svg style="width: 16px; height: 16px;" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M4 16v1a3 3 0 003 3h10a3 3 0 003-3v-1m-4-4l-4 4m0 0l-4-4m4 4V4"></path></svg></span>
                         <span>روابط التحميل والإصدار</span>
                     </button>
 
-                    <button data-tab="tab-banners" class="nav-item w-full flex items-center gap-3.5 px-4 py-3.5 rounded-2xl text-sm font-extrabold border-2 border-transparent text-slate-200 transition text-right">
-                        <span class="p-2 rounded-xl bg-amber-500/20 text-amber-300"><svg class="w-5 h-5" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M4 16l4.586-4.586a2 2 0 012.828 0L16 16m-2-2l1.586-1.586a2 2 0 012.828 0L20 14m-6-6h.01M6 20h12a2 2 0 002-2V6a2 2 0 00-2-2H6a2 2 0 00-2 2v12a2 2 0 002 2z"></path></svg></span>
+                    <button data-tab="tab-banners" class="nav-item w-full flex items-center gap-3 px-3.5 py-3 rounded-2xl text-xs sm:text-sm font-extrabold border-2 border-transparent text-slate-200 transition text-right">
+                        <span style="width: 32px; height: 32px;" class="rounded-xl bg-amber-500/20 text-amber-300 flex items-center justify-center flex-shrink-0"><svg style="width: 16px; height: 16px;" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M4 16l4.586-4.586a2 2 0 012.828 0L16 16m-2-2l1.586-1.586a2 2 0 012.828 0L20 14m-6-6h.01M6 20h12a2 2 0 002-2V6a2 2 0 00-2-2H6a2 2 0 00-2 2v12a2 2 0 002 2z"></path></svg></span>
                         <span>البانرات والإعلانات</span>
                     </button>
 
-                    <button data-tab="tab-contact" class="nav-item w-full flex items-center gap-3.5 px-4 py-3.5 rounded-2xl text-sm font-extrabold border-2 border-transparent text-slate-200 transition text-right">
-                        <span class="p-2 rounded-xl bg-indigo-500/20 text-indigo-300"><svg class="w-5 h-5" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M3 5a2 2 0 012-2h3.28a1 1 0 01.948.684l1.498 4.493a1 1 0 01-.502 1.21l-2.257 1.13a11.042 11.042 0 005.516 5.516l1.13-2.257a1 1 0 011.21-.502l4.493 1.498a1 1 0 01.684.949V19a2 2 0 01-2 2h-1C9.716 21 3 14.284 3 6V5z"></path></svg></span>
+                    <button data-tab="tab-contact" class="nav-item w-full flex items-center gap-3 px-3.5 py-3 rounded-2xl text-xs sm:text-sm font-extrabold border-2 border-transparent text-slate-200 transition text-right">
+                        <span style="width: 32px; height: 32px;" class="rounded-xl bg-indigo-500/20 text-indigo-300 flex items-center justify-center flex-shrink-0"><svg style="width: 16px; height: 16px;" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M3 5a2 2 0 012-2h3.28a1 1 0 01.948.684l1.498 4.493a1 1 0 01-.502 1.21l-2.257 1.13a11.042 11.042 0 005.516 5.516l1.13-2.257a1 1 0 011.21-.502l4.493 1.498a1 1 0 01.684.949V19a2 2 0 01-2 2h-1C9.716 21 3 14.284 3 6V5z"></path></svg></span>
                         <span>بيانات التواصل والسوشيال</span>
                     </button>
 
-                    <button data-tab="tab-export" class="nav-item w-full flex items-center gap-3.5 px-4 py-3.5 rounded-2xl text-sm font-extrabold border-2 border-transparent text-slate-200 transition text-right">
-                        <span class="p-2 rounded-xl bg-purple-500/20 text-purple-300"><svg class="w-5 h-5" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M8 7v8a2 2 0 002 2h6M8 7V5a2 2 0 012-2h4.586a1 1 0 01.707.293l4.414 4.414a1 1 0 01.293.707V15a2 2 0 01-2 2h-2M8 7H6a2 2 0 00-2 2v10a2 2 0 002 2h8a2 2 0 002-2v-2"></path></svg></span>
+                    <button data-tab="tab-export" class="nav-item w-full flex items-center gap-3 px-3.5 py-3 rounded-2xl text-xs sm:text-sm font-extrabold border-2 border-transparent text-slate-200 transition text-right">
+                        <span style="width: 32px; height: 32px;" class="rounded-xl bg-purple-500/20 text-purple-300 flex items-center justify-center flex-shrink-0"><svg style="width: 16px; height: 16px;" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M8 7v8a2 2 0 002 2h6M8 7V5a2 2 0 012-2h4.586a1 1 0 01.707.293l4.414 4.414a1 1 0 01.293.707V15a2 2 0 01-2 2h-2M8 7H6a2 2 0 00-2 2v10a2 2 0 002 2h8a2 2 0 002-2v-2"></path></svg></span>
                         <span>تصدير وحفظ كود data.js</span>
                     </button>
 
-                    <button data-tab="tab-security" class="nav-item w-full flex items-center gap-3.5 px-4 py-3.5 rounded-2xl text-sm font-extrabold border-2 border-transparent text-slate-200 transition text-right">
-                        <span class="p-2 rounded-xl bg-rose-500/20 text-rose-300"><svg class="w-5 h-5" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M12 15v2m-6 4h12a2 2 0 002-2v-6a2 2 0 00-2-2H6a2 2 0 00-2 2v6a2 2 0 002 2zm10-10V7a4 4 0 00-8 0v4h8z"></path></svg></span>
+                    <button data-tab="tab-security" class="nav-item w-full flex items-center gap-3 px-3.5 py-3 rounded-2xl text-xs sm:text-sm font-extrabold border-2 border-transparent text-slate-200 transition text-right">
+                        <span style="width: 32px; height: 32px;" class="rounded-xl bg-rose-500/20 text-rose-300 flex items-center justify-center flex-shrink-0"><svg style="width: 16px; height: 16px;" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M12 15v2m-6 4h12a2 2 0 002-2v-6a2 2 0 00-2-2H6a2 2 0 00-2 2v6a2 2 0 002 2zm10-10V7a4 4 0 00-8 0v4h8z"></path></svg></span>
                         <span>كلمة سر لوحة التحكم</span>
                     </button>
                 </div>
 
                 <!-- Footer in Sidebar -->
-                <div class="mt-6 pt-4 border-t-2 border-slate-800 text-center text-xs text-slate-400 font-bold">
+                <div class="mt-4 pt-3 border-t-2 border-slate-800 text-center text-xs text-slate-400 font-bold">
                     <p>سوق التل • Static Admin v1.0</p>
                 </div>
             </aside>
 
             <!-- Main Content Area -->
-            <main class="flex-1 p-5 lg:p-10 overflow-y-auto max-w-5xl mx-auto w-full">
+            <main class="flex-1 p-4 lg:p-8 overflow-y-auto max-w-5xl mx-auto w-full">
                 
                 <!-- TAB 1: App & Branding -->
                 <section id="tab-app" class="tab-content active space-y-6">
-                    <div class="flex items-center justify-between border-b-2 border-slate-800 pb-5">
+                    <div class="flex items-center justify-between border-b-2 border-slate-800 pb-4">
                         <div>
-                            <h3 class="text-2xl font-black text-white flex items-center gap-2.5">
-                                <span class="p-2 rounded-xl bg-cyan-500/20 text-cyan-300 inline-block"><svg class="w-6 h-6" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M19 21V5a2 2 0 00-2-2H7a2 2 0 00-2 2v16m14 0h2m-2 0h-5m-9 0H3m2 0h5M9 7h1m-1 4h1m4-4h1m-1 4h1m-5 10v-5a1 1 0 011-1h2a1 1 0 011 1v5m-4 0h4"></path></svg></span>
+                            <h3 class="text-xl sm:text-2xl font-black text-white flex items-center gap-2">
+                                <span style="width: 32px; height: 32px;" class="rounded-xl bg-cyan-500/20 text-cyan-300 inline-flex items-center justify-center"><svg style="width: 18px; height: 18px;" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M19 21V5a2 2 0 00-2-2H7a2 2 0 00-2 2v16m14 0h2m-2 0h-5m-9 0H3m2 0h5M9 7h1m-1 4h1m4-4h1m-1 4h1m-5 10v-5a1 1 0 011-1h2a1 1 0 011 1v5m-4 0h4"></path></svg></span>
                                 <span>بيانات التطبيق والهوية</span>
                             </h3>
-                            <p class="text-sm text-slate-300 font-medium mt-1">تعديل الاسم والوصف التعريفي ومسار اللوجو ورابط المتجر</p>
+                            <p class="text-xs sm:text-sm text-slate-300 font-medium mt-1">تعديل الاسم والوصف التعريفي ومسار اللوجو ورابط المتجر</p>
                         </div>
                     </div>
 
-                    <div class="admin-card p-7 sm:p-8 rounded-3xl space-y-6">
-                        <div class="grid grid-cols-1 md:grid-cols-2 gap-6">
+                    <div class="admin-card p-6 rounded-3xl space-y-5">
+                        <div class="grid grid-cols-1 md:grid-cols-2 gap-5">
                             <div>
-                                <label class="block text-sm font-extrabold text-white mb-2.5">اسم التطبيق (بالعربية)</label>
-                                <input type="text" id="cfg-appName" class="w-full px-4 py-3 rounded-2xl admin-input">
+                                <label class="block text-xs sm:text-sm font-extrabold text-white mb-2">اسم التطبيق (بالعربية)</label>
+                                <input type="text" id="cfg-appName" class="w-full px-4 py-2.5 rounded-xl admin-input">
                             </div>
                             <div>
-                                <label class="block text-sm font-extrabold text-white mb-2.5">اسم التطبيق (بالإنجليزية)</label>
-                                <input type="text" id="cfg-appNameEn" class="w-full px-4 py-3 rounded-2xl admin-input">
+                                <label class="block text-xs sm:text-sm font-extrabold text-white mb-2">اسم التطبيق (بالإنجليزية)</label>
+                                <input type="text" id="cfg-appNameEn" class="w-full px-4 py-2.5 rounded-xl admin-input">
                             </div>
                         </div>
 
                         <div>
-                            <label class="block text-sm font-extrabold text-white mb-2.5">وصف التطبيق التعريفي</label>
-                            <textarea id="cfg-description" rows="3" class="w-full px-4 py-3 rounded-2xl admin-input leading-relaxed"></textarea>
+                            <label class="block text-xs sm:text-sm font-extrabold text-white mb-2">وصف التطبيق التعريفي</label>
+                            <textarea id="cfg-description" rows="3" class="w-full px-4 py-2.5 rounded-xl admin-input leading-relaxed"></textarea>
                         </div>
 
-                        <div class="grid grid-cols-1 md:grid-cols-2 gap-6">
+                        <div class="grid grid-cols-1 md:grid-cols-2 gap-5">
                             <div>
-                                <label class="block text-sm font-extrabold text-white mb-2.5">مسار اللوجو (SVG أو PNG)</label>
-                                <input type="text" id="cfg-logoUrl" class="w-full px-4 py-3 rounded-2xl admin-input font-mono text-left">
+                                <label class="block text-xs sm:text-sm font-extrabold text-white mb-2">مسار اللوجو (SVG أو PNG)</label>
+                                <input type="text" id="cfg-logoUrl" class="w-full px-4 py-2.5 rounded-xl admin-input font-mono text-left">
                             </div>
                             <div>
-                                <label class="block text-sm font-extrabold text-white mb-2.5">رابط متجر الويب (Flutter Web)</label>
-                                <input type="text" id="cfg-shopUrl" class="w-full px-4 py-3 rounded-2xl admin-input font-mono text-left">
+                                <label class="block text-xs sm:text-sm font-extrabold text-white mb-2">رابط متجر الويب (Flutter Web)</label>
+                                <input type="text" id="cfg-shopUrl" class="w-full px-4 py-2.5 rounded-xl admin-input font-mono text-left">
                             </div>
                         </div>
                     </div>
@@ -242,47 +285,47 @@
 
                 <!-- TAB 2: Release & Download Links -->
                 <section id="tab-release" class="tab-content space-y-6">
-                    <div class="flex items-center justify-between border-b-2 border-slate-800 pb-5">
+                    <div class="flex items-center justify-between border-b-2 border-slate-800 pb-4">
                         <div>
-                            <h3 class="text-2xl font-black text-white flex items-center gap-2.5">
-                                <span class="p-2 rounded-xl bg-emerald-500/20 text-emerald-300 inline-block"><svg class="w-6 h-6" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M4 16v1a3 3 0 003 3h10a3 3 0 003-3v-1m-4-4l-4 4m0 0l-4-4m4 4V4"></path></svg></span>
+                            <h3 class="text-xl sm:text-2xl font-black text-white flex items-center gap-2">
+                                <span style="width: 32px; height: 32px;" class="rounded-xl bg-emerald-500/20 text-emerald-300 inline-flex items-center justify-center"><svg style="width: 18px; height: 18px;" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M4 16v1a3 3 0 003 3h10a3 3 0 003-3v-1m-4-4l-4 4m0 0l-4-4m4 4V4"></path></svg></span>
                                 <span>روابط التحميل وأحدث الإصدارات</span>
                             </h3>
-                            <p class="text-sm text-slate-300 font-medium mt-1">تحديث رقم الإصدار، وحجم الملف، وروابط ملفات الـ APK ومتجر الآيفون</p>
+                            <p class="text-xs sm:text-sm text-slate-300 font-medium mt-1">تحديث رقم الإصدار، وحجم الملف، وروابط ملفات الـ APK ومتجر الآيفون</p>
                         </div>
                     </div>
 
-                    <div class="admin-card p-7 sm:p-8 rounded-3xl space-y-6">
-                        <div class="grid grid-cols-1 md:grid-cols-3 gap-6">
+                    <div class="admin-card p-6 rounded-3xl space-y-5">
+                        <div class="grid grid-cols-1 md:grid-cols-3 gap-5">
                             <div>
-                                <label class="block text-sm font-extrabold text-white mb-2.5">رقم الإصدار (Version)</label>
-                                <input type="text" id="cfg-version" placeholder="مثال: 1.0.0" class="w-full px-4 py-3 rounded-2xl admin-input font-mono text-left font-bold text-emerald-300">
+                                <label class="block text-xs sm:text-sm font-extrabold text-white mb-2">رقم الإصدار (Version)</label>
+                                <input type="text" id="cfg-version" placeholder="مثال: 1.0.0" class="w-full px-4 py-2.5 rounded-xl admin-input font-mono text-left font-bold text-emerald-300">
                             </div>
                             <div>
-                                <label class="block text-sm font-extrabold text-white mb-2.5">تاريخ الإصدار</label>
-                                <input type="date" id="cfg-releaseDate" class="w-full px-4 py-3 rounded-2xl admin-input">
+                                <label class="block text-xs sm:text-sm font-extrabold text-white mb-2">تاريخ الإصدار</label>
+                                <input type="date" id="cfg-releaseDate" class="w-full px-4 py-2.5 rounded-xl admin-input">
                             </div>
                             <div>
-                                <label class="block text-sm font-extrabold text-white mb-2.5">حجم الملف</label>
-                                <input type="text" id="cfg-fileSize" placeholder="مثال: 24.5 MB" class="w-full px-4 py-3 rounded-2xl admin-input font-bold text-cyan-300">
+                                <label class="block text-xs sm:text-sm font-extrabold text-white mb-2">حجم الملف</label>
+                                <input type="text" id="cfg-fileSize" placeholder="مثال: 24.5 MB" class="w-full px-4 py-2.5 rounded-xl admin-input font-bold text-cyan-300">
                             </div>
                         </div>
 
-                        <div class="border-t-2 border-slate-800 pt-6 space-y-5">
+                        <div class="border-t-2 border-slate-800 pt-5 space-y-4">
                             <div>
-                                <label class="block text-sm font-extrabold text-white mb-2.5">
-                                    <span class="inline-flex items-center gap-1.5 bg-emerald-500/20 text-emerald-300 px-3 py-1 rounded-xl border border-emerald-500/40 text-xs font-black">Android APK</span>
+                                <label class="block text-xs sm:text-sm font-extrabold text-white mb-2">
+                                    <span class="inline-flex items-center gap-1 bg-emerald-500/20 text-emerald-300 px-2.5 py-0.5 rounded-lg border border-emerald-500/40 text-xs font-black">Android APK</span>
                                     رابط تحميل ملف APK المباشر أو متجر Google Play
                                 </label>
-                                <input type="text" id="cfg-apkUrl" placeholder="https://..." class="w-full px-4 py-3 rounded-2xl admin-input font-mono text-left text-sm">
+                                <input type="text" id="cfg-apkUrl" placeholder="https://..." class="w-full px-4 py-2.5 rounded-xl admin-input font-mono text-left text-sm">
                             </div>
 
                             <div>
-                                <label class="block text-sm font-extrabold text-white mb-2.5">
-                                    <span class="inline-flex items-center gap-1.5 bg-cyan-500/20 text-cyan-300 px-3 py-1 rounded-xl border border-cyan-500/40 text-xs font-black">iOS App Store</span>
+                                <label class="block text-xs sm:text-sm font-extrabold text-white mb-2">
+                                    <span class="inline-flex items-center gap-1 bg-cyan-500/20 text-cyan-300 px-2.5 py-0.5 rounded-lg border border-cyan-500/40 text-xs font-black">iOS App Store</span>
                                     رابط متجر Apple App Store أو رابط التثبيت
                                 </label>
-                                <input type="text" id="cfg-ipaUrl" placeholder="https://..." class="w-full px-4 py-3 rounded-2xl admin-input font-mono text-left text-sm">
+                                <input type="text" id="cfg-ipaUrl" placeholder="https://..." class="w-full px-4 py-2.5 rounded-xl admin-input font-mono text-left text-sm">
                             </div>
                         </div>
                     </div>
@@ -290,16 +333,16 @@
 
                 <!-- TAB 3: Banners & Ads -->
                 <section id="tab-banners" class="tab-content space-y-6">
-                    <div class="flex items-center justify-between border-b-2 border-slate-800 pb-5">
+                    <div class="flex items-center justify-between border-b-2 border-slate-800 pb-4">
                         <div>
-                            <h3 class="text-2xl font-black text-white flex items-center gap-2.5">
-                                <span class="p-2 rounded-xl bg-amber-500/20 text-amber-300 inline-block"><svg class="w-6 h-6" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M4 16l4.586-4.586a2 2 0 012.828 0L16 16m-2-2l1.586-1.586a2 2 0 012.828 0L20 14m-6-6h.01M6 20h12a2 2 0 002-2V6a2 2 0 00-2-2H6a2 2 0 00-2 2v12a2 2 0 002 2z"></path></svg></span>
+                            <h3 class="text-xl sm:text-2xl font-black text-white flex items-center gap-2">
+                                <span style="width: 32px; height: 32px;" class="rounded-xl bg-amber-500/20 text-amber-300 inline-flex items-center justify-center"><svg style="width: 18px; height: 18px;" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M4 16l4.586-4.586a2 2 0 012.828 0L16 16m-2-2l1.586-1.586a2 2 0 012.828 0L20 14m-6-6h.01M6 20h12a2 2 0 002-2V6a2 2 0 00-2-2H6a2 2 0 00-2 2v12a2 2 0 002 2z"></path></svg></span>
                                 <span>سلايدر الإعلانات والبانرات</span>
                             </h3>
-                            <p class="text-sm text-slate-300 font-medium mt-1">إضافة وتعديل وحذف الصور الإعلانية في الصفحة الرئيسية وصفحة التحميل</p>
+                            <p class="text-xs sm:text-sm text-slate-300 font-medium mt-1">إضافة وتعديل وحذف الصور الإعلانية في الصفحة الرئيسية وصفحة التحميل</p>
                         </div>
-                        <button id="add-banner-btn" class="px-5 py-3 rounded-2xl text-sm font-black bg-gradient-to-r from-amber-400 to-amber-500 hover:from-amber-300 hover:to-amber-400 text-slate-950 transition flex items-center gap-2 shadow-lg shadow-amber-500/30">
-                            <svg class="w-5 h-5" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2.5" d="M12 4v16m8-8H4"></path></svg>
+                        <button id="add-banner-btn" class="px-4 py-2 rounded-xl text-xs sm:text-sm font-black bg-gradient-to-r from-amber-400 to-amber-500 hover:from-amber-300 hover:to-amber-400 text-slate-950 transition flex items-center gap-1.5 shadow-lg shadow-amber-500/30">
+                            <svg style="width: 16px; height: 16px;" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2.5" d="M12 4v16m8-8H4"></path></svg>
                             <span>إضافة بانر جديد</span>
                         </button>
                     </div>
@@ -310,19 +353,19 @@
                     </div>
 
                     <!-- Download Page Specific Banner -->
-                    <div class="admin-card p-7 sm:p-8 rounded-3xl space-y-5 mt-8 border-2 border-amber-500/30">
-                        <h4 class="text-lg font-black text-amber-300 flex items-center gap-2.5">
-                            <svg class="w-6 h-6 text-amber-400" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M4 16l4.586-4.586a2 2 0 012.828 0L16 16m-2-2l1.586-1.586a2 2 0 012.828 0L20 14m-6-6h.01M6 20h12a2 2 0 002-2V6a2 2 0 00-2-2H6a2 2 0 00-2 2v12a2 2 0 002 2z"></path></svg>
+                    <div class="admin-card p-6 rounded-3xl space-y-4 mt-6 border-2 border-amber-500/30">
+                        <h4 class="text-base font-black text-amber-300 flex items-center gap-2">
+                            <svg style="width: 20px; height: 20px;" class="text-amber-400" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M4 16l4.586-4.586a2 2 0 012.828 0L16 16m-2-2l1.586-1.586a2 2 0 012.828 0L20 14m-6-6h.01M6 20h12a2 2 0 002-2V6a2 2 0 00-2-2H6a2 2 0 00-2 2v12a2 2 0 002 2z"></path></svg>
                             <span>بانر صفحة التحميل (Download Page Banner)</span>
                         </h4>
-                        <div class="grid grid-cols-1 md:grid-cols-2 gap-6">
+                        <div class="grid grid-cols-1 md:grid-cols-2 gap-5">
                             <div>
-                                <label class="block text-sm font-extrabold text-white mb-2.5">مسار الصورة</label>
-                                <input type="text" id="cfg-downloadBanner-image" class="w-full px-4 py-3 rounded-2xl admin-input font-mono text-left text-sm">
+                                <label class="block text-xs sm:text-sm font-extrabold text-white mb-2">مسار الصورة</label>
+                                <input type="text" id="cfg-downloadBanner-image" class="w-full px-4 py-2.5 rounded-xl admin-input font-mono text-left text-sm">
                             </div>
                             <div>
-                                <label class="block text-sm font-extrabold text-white mb-2.5">رابط التوجيه عند النقر</label>
-                                <input type="text" id="cfg-downloadBanner-link" class="w-full px-4 py-3 rounded-2xl admin-input font-mono text-left text-sm">
+                                <label class="block text-xs sm:text-sm font-extrabold text-white mb-2">رابط التوجيه عند النقر</label>
+                                <input type="text" id="cfg-downloadBanner-link" class="w-full px-4 py-2.5 rounded-xl admin-input font-mono text-left text-sm">
                             </div>
                         </div>
                     </div>
@@ -330,62 +373,62 @@
 
                 <!-- TAB 4: Contact & Social -->
                 <section id="tab-contact" class="tab-content space-y-6">
-                    <div class="flex items-center justify-between border-b-2 border-slate-800 pb-5">
+                    <div class="flex items-center justify-between border-b-2 border-slate-800 pb-4">
                         <div>
-                            <h3 class="text-2xl font-black text-white flex items-center gap-2.5">
-                                <span class="p-2 rounded-xl bg-indigo-500/20 text-indigo-300 inline-block"><svg class="w-6 h-6" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M3 5a2 2 0 012-2h3.28a1 1 0 01.948.684l1.498 4.493a1 1 0 01-.502 1.21l-2.257 1.13a11.042 11.042 0 005.516 5.516l1.13-2.257a1 1 0 011.21-.502l4.493 1.498a1 1 0 01.684.949V19a2 2 0 01-2 2h-1C9.716 21 3 14.284 3 6V5z"></path></svg></span>
+                            <h3 class="text-xl sm:text-2xl font-black text-white flex items-center gap-2">
+                                <span style="width: 32px; height: 32px;" class="rounded-xl bg-indigo-500/20 text-indigo-300 inline-flex items-center justify-center"><svg style="width: 18px; height: 18px;" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M3 5a2 2 0 012-2h3.28a1 1 0 01.948.684l1.498 4.493a1 1 0 01-.502 1.21l-2.257 1.13a11.042 11.042 0 005.516 5.516l1.13-2.257a1 1 0 011.21-.502l4.493 1.498a1 1 0 01.684.949V19a2 2 0 01-2 2h-1C9.716 21 3 14.284 3 6V5z"></path></svg></span>
                                 <span>بيانات التواصل والشبكات الاجتماعية</span>
                             </h3>
-                            <p class="text-sm text-slate-300 font-medium mt-1">تحديث معلومات الدعم الفني، وأرقام الهواتف، وروابط التواصل الاجتماعي</p>
+                            <p class="text-xs sm:text-sm text-slate-300 font-medium mt-1">تحديث معلومات الدعم الفني، وأرقام الهواتف، وروابط التواصل الاجتماعي</p>
                         </div>
                     </div>
 
-                    <div class="admin-card p-7 sm:p-8 rounded-3xl space-y-6">
-                        <div class="grid grid-cols-1 md:grid-cols-2 gap-6">
+                    <div class="admin-card p-6 rounded-3xl space-y-5">
+                        <div class="grid grid-cols-1 md:grid-cols-2 gap-5">
                             <div>
-                                <label class="block text-sm font-extrabold text-white mb-2.5">البريد الإلكتروني للدعم</label>
-                                <input type="email" id="cfg-contact-email" class="w-full px-4 py-3 rounded-2xl admin-input text-left font-mono">
+                                <label class="block text-xs sm:text-sm font-extrabold text-white mb-2">البريد الإلكتروني للدعم</label>
+                                <input type="email" id="cfg-contact-email" class="w-full px-4 py-2.5 rounded-xl admin-input text-left font-mono">
                             </div>
                             <div>
-                                <label class="block text-sm font-extrabold text-white mb-2.5">رقم الهاتف / الواتساب</label>
-                                <input type="text" id="cfg-contact-phone" class="w-full px-4 py-3 rounded-2xl admin-input text-left font-mono">
+                                <label class="block text-xs sm:text-sm font-extrabold text-white mb-2">رقم الهاتف / الواتساب</label>
+                                <input type="text" id="cfg-contact-phone" class="w-full px-4 py-2.5 rounded-xl admin-input text-left font-mono">
                             </div>
                         </div>
 
-                        <div class="grid grid-cols-1 md:grid-cols-2 gap-6">
+                        <div class="grid grid-cols-1 md:grid-cols-2 gap-5">
                             <div>
-                                <label class="block text-sm font-extrabold text-white mb-2.5">العنوان / المقر</label>
-                                <input type="text" id="cfg-contact-address" class="w-full px-4 py-3 rounded-2xl admin-input">
+                                <label class="block text-xs sm:text-sm font-extrabold text-white mb-2">العنوان / المقر</label>
+                                <input type="text" id="cfg-contact-address" class="w-full px-4 py-2.5 rounded-xl admin-input">
                             </div>
                             <div>
-                                <label class="block text-sm font-extrabold text-white mb-2.5">ساعات العمل</label>
-                                <input type="text" id="cfg-contact-workHours" class="w-full px-4 py-3 rounded-2xl admin-input">
+                                <label class="block text-xs sm:text-sm font-extrabold text-white mb-2">ساعات العمل</label>
+                                <input type="text" id="cfg-contact-workHours" class="w-full px-4 py-2.5 rounded-xl admin-input">
                             </div>
                         </div>
 
                         <div>
-                            <label class="block text-sm font-extrabold text-white mb-2.5">رابط الموقع الرسمي</label>
-                            <input type="text" id="cfg-contact-website" class="w-full px-4 py-3 rounded-2xl admin-input text-left font-mono">
+                            <label class="block text-xs sm:text-sm font-extrabold text-white mb-2">رابط الموقع الرسمي</label>
+                            <input type="text" id="cfg-contact-website" class="w-full px-4 py-2.5 rounded-xl admin-input text-left font-mono">
                         </div>
 
-                        <div class="border-t-2 border-slate-800 pt-6 space-y-5">
-                            <h4 class="text-base font-black text-indigo-300 flex items-center gap-2">
+                        <div class="border-t-2 border-slate-800 pt-5 space-y-4">
+                            <h4 class="text-sm font-black text-indigo-300 flex items-center gap-1.5">
                                 <span>🌐</span>
                                 <span>روابط مواقع التواصل الاجتماعي</span>
                             </h4>
                             
-                            <div class="grid grid-cols-1 md:grid-cols-3 gap-5">
+                            <div class="grid grid-cols-1 md:grid-cols-3 gap-4">
                                 <div>
-                                    <label class="block text-xs font-bold text-slate-300 mb-2">Facebook</label>
-                                    <input type="text" id="cfg-social-facebook" class="w-full px-4 py-2.5 rounded-xl admin-input font-mono text-left text-xs">
+                                    <label class="block text-xs font-bold text-slate-300 mb-1.5">Facebook</label>
+                                    <input type="text" id="cfg-social-facebook" class="w-full px-3 py-2 rounded-xl admin-input font-mono text-left text-xs">
                                 </div>
                                 <div>
-                                    <label class="block text-xs font-bold text-slate-300 mb-2">Instagram</label>
-                                    <input type="text" id="cfg-social-instagram" class="w-full px-4 py-2.5 rounded-xl admin-input font-mono text-left text-xs">
+                                    <label class="block text-xs font-bold text-slate-300 mb-1.5">Instagram</label>
+                                    <input type="text" id="cfg-social-instagram" class="w-full px-3 py-2 rounded-xl admin-input font-mono text-left text-xs">
                                 </div>
                                 <div>
-                                    <label class="block text-xs font-bold text-slate-300 mb-2">TikTok</label>
-                                    <input type="text" id="cfg-social-tiktok" class="w-full px-4 py-2.5 rounded-xl admin-input font-mono text-left text-xs">
+                                    <label class="block text-xs font-bold text-slate-300 mb-1.5">TikTok</label>
+                                    <input type="text" id="cfg-social-tiktok" class="w-full px-3 py-2 rounded-xl admin-input font-mono text-left text-xs">
                                 </div>
                             </div>
                         </div>
@@ -394,84 +437,84 @@
 
                 <!-- TAB 5: Export / Save data.js -->
                 <section id="tab-export" class="tab-content space-y-6">
-                    <div class="flex items-center justify-between border-b-2 border-slate-800 pb-5">
+                    <div class="flex items-center justify-between border-b-2 border-slate-800 pb-4">
                         <div>
-                            <h3 class="text-2xl font-black text-white flex items-center gap-2.5">
-                                <span class="p-2 rounded-xl bg-purple-500/20 text-purple-300 inline-block"><svg class="w-6 h-6" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M8 7v8a2 2 0 002 2h6M8 7V5a2 2 0 012-2h4.586a1 1 0 01.707.293l4.414 4.414a1 1 0 01.293.707V15a2 2 0 01-2 2h-2M8 7H6a2 2 0 00-2 2v10a2 2 0 002 2h8a2 2 0 002-2v-2"></path></svg></span>
+                            <h3 class="text-xl sm:text-2xl font-black text-white flex items-center gap-2">
+                                <span style="width: 32px; height: 32px;" class="rounded-xl bg-purple-500/20 text-purple-300 inline-flex items-center justify-center"><svg style="width: 18px; height: 18px;" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M8 7v8a2 2 0 002 2h6M8 7V5a2 2 0 012-2h4.586a1 1 0 01.707.293l4.414 4.414a1 1 0 01.293.707V15a2 2 0 01-2 2h-2M8 7H6a2 2 0 00-2 2v10a2 2 0 002 2h8a2 2 0 002-2v-2"></path></svg></span>
                                 <span>تصدير وحفظ كود data.js</span>
                             </h3>
-                            <p class="text-sm text-slate-300 font-medium mt-1">تنزيل أو نسخ الكود لحفظ التغييرات بشكل دائم على الخادم ومستودع GitHub</p>
+                            <p class="text-xs sm:text-sm text-slate-300 font-medium mt-1">تنزيل أو نسخ الكود لحفظ التغييرات بشكل دائم على الخادم ومستودع GitHub</p>
                         </div>
                     </div>
 
-                    <div class="grid grid-cols-1 md:grid-cols-3 gap-5">
-                        <button id="export-download-btn" class="p-6 rounded-3xl admin-card border-2 border-cyan-500/40 hover:border-cyan-400 bg-cyan-500/10 hover:bg-cyan-500/20 text-right transition flex flex-col justify-between group shadow-xl">
+                    <div class="grid grid-cols-1 md:grid-cols-3 gap-4">
+                        <button id="export-download-btn" class="p-5 rounded-3xl admin-card border-2 border-cyan-500/40 hover:border-cyan-400 bg-cyan-500/10 hover:bg-cyan-500/20 text-right transition flex flex-col justify-between group shadow-xl">
                             <div>
-                                <span class="p-3.5 rounded-2xl bg-cyan-500/30 text-cyan-300 inline-block mb-4"><svg class="w-7 h-7" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2.5" d="M4 16v1a3 3 0 003 3h10a3 3 0 003-3v-1m-4-4l-4 4m0 0l-4-4m4 4V4"></path></svg></span>
-                                <h4 class="font-black text-white text-lg group-hover:text-cyan-300 transition">تنزيل ملف data.js</h4>
-                                <p class="text-sm text-slate-300 mt-2 font-medium">تنزيل الملف المحدث واستبداله داخل مجلد assets/js/</p>
+                                <span style="width: 44px; height: 44px;" class="rounded-2xl bg-cyan-500/30 text-cyan-300 inline-flex items-center justify-center mb-3"><svg style="width: 22px; height: 22px;" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2.5" d="M4 16v1a3 3 0 003 3h10a3 3 0 003-3v-1m-4-4l-4 4m0 0l-4-4m4 4V4"></path></svg></span>
+                                <h4 class="font-black text-white text-base group-hover:text-cyan-300 transition">تنزيل ملف data.js</h4>
+                                <p class="text-xs text-slate-300 mt-1.5 font-medium">تنزيل الملف المحدث واستبداله داخل مجلد assets/js/</p>
                             </div>
-                            <span class="text-sm font-black text-cyan-300 mt-6 inline-flex items-center gap-1.5">تنزيل الملف الآن ←</span>
+                            <span class="text-xs font-black text-cyan-300 mt-4 inline-flex items-center gap-1">تنزيل الملف الآن ←</span>
                         </button>
 
-                        <button id="export-copy-btn" class="p-6 rounded-3xl admin-card border-2 border-purple-500/40 hover:border-purple-400 bg-purple-500/10 hover:bg-purple-500/20 text-right transition flex flex-col justify-between group shadow-xl">
+                        <button id="export-copy-btn" class="p-5 rounded-3xl admin-card border-2 border-purple-500/40 hover:border-purple-400 bg-purple-500/10 hover:bg-purple-500/20 text-right transition flex flex-col justify-between group shadow-xl">
                             <div>
-                                <span class="p-3.5 rounded-2xl bg-purple-500/30 text-purple-300 inline-block mb-4"><svg class="w-7 h-7" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2.5" d="M8 5H6a2 2 0 00-2 2v12a2 2 0 002 2h10a2 2 0 002-2v-1M8 5a2 2 0 002 2h2a2 2 0 002-2M8 5a2 2 0 012-2h2a2 2 0 012 2m0 0h2a2 2 0 012 2v3m2 4H10m0 0l3-3m-3 3l3 3"></path></svg></span>
-                                <h4 class="font-black text-white text-lg group-hover:text-purple-300 transition">نسخ الكود بالكامل</h4>
-                                <p class="text-sm text-slate-300 mt-2 font-medium">نسخ كود الجافاسكريبت المولد إلى الحافظة مباشرة</p>
+                                <span style="width: 44px; height: 44px;" class="rounded-2xl bg-purple-500/30 text-purple-300 inline-flex items-center justify-center mb-3"><svg style="width: 22px; height: 22px;" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2.5" d="M8 5H6a2 2 0 00-2 2v12a2 2 0 002 2h10a2 2 0 002-2v-1M8 5a2 2 0 002 2h2a2 2 0 002-2M8 5a2 2 0 012-2h2a2 2 0 012 2m0 0h2a2 2 0 012 2v3m2 4H10m0 0l3-3m-3 3l3 3"></path></svg></span>
+                                <h4 class="font-black text-white text-base group-hover:text-purple-300 transition">نسخ الكود بالكامل</h4>
+                                <p class="text-xs text-slate-300 mt-1.5 font-medium">نسخ كود الجافاسكريبت المولد إلى الحافظة مباشرة</p>
                             </div>
-                            <span class="text-sm font-black text-purple-300 mt-6 inline-flex items-center gap-1.5">نسخ للحافظة ←</span>
+                            <span class="text-xs font-black text-purple-300 mt-4 inline-flex items-center gap-1">نسخ للحافظة ←</span>
                         </button>
 
-                        <button id="export-reset-btn" class="p-6 rounded-3xl admin-card border-2 border-rose-500/40 hover:border-rose-400 bg-rose-500/10 hover:bg-rose-500/20 text-right transition flex flex-col justify-between group shadow-xl">
+                        <button id="export-reset-btn" class="p-5 rounded-3xl admin-card border-2 border-rose-500/40 hover:border-rose-400 bg-rose-500/10 hover:bg-rose-500/20 text-right transition flex flex-col justify-between group shadow-xl">
                             <div>
-                                <span class="p-3.5 rounded-2xl bg-rose-500/30 text-rose-300 inline-block mb-4"><svg class="w-7 h-7" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2.5" d="M4 4v5h.582m15.356 2A8.001 8.001 0 004.582 9m0 0H9m11 11v-5h-.581m0 0a8.003 8.003 0 01-15.357-2m15.357 2H15"></path></svg></span>
-                                <h4 class="font-black text-white text-lg group-hover:text-rose-300 transition">استعادة الافتراضي</h4>
-                                <p class="text-sm text-slate-300 mt-2 font-medium">مسح التعديلات المحلية والعودة للإعدادات الأولية</p>
+                                <span style="width: 44px; height: 44px;" class="rounded-2xl bg-rose-500/30 text-rose-300 inline-flex items-center justify-center mb-3"><svg style="width: 22px; height: 22px;" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2.5" d="M4 4v5h.582m15.356 2A8.001 8.001 0 004.582 9m0 0H9m11 11v-5h-.581m0 0a8.003 8.003 0 01-15.357-2m15.357 2H15"></path></svg></span>
+                                <h4 class="font-black text-white text-base group-hover:text-rose-300 transition">استعادة الافتراضي</h4>
+                                <p class="text-xs text-slate-300 mt-1.5 font-medium">مسح التعديلات المحلية والعودة للإعدادات الأولية</p>
                             </div>
-                            <span class="text-sm font-black text-rose-300 mt-6 inline-flex items-center gap-1.5">إعادة الضبط ←</span>
+                            <span class="text-xs font-black text-rose-300 mt-4 inline-flex items-center gap-1">إعادة الضبط ←</span>
                         </button>
                     </div>
 
                     <!-- Code Preview Block -->
-                    <div class="admin-card p-6 rounded-3xl space-y-4 shadow-xl">
-                        <div class="flex items-center justify-between text-sm font-bold text-slate-300 border-b-2 border-slate-800 pb-3">
+                    <div class="admin-card p-5 rounded-3xl space-y-3 shadow-xl">
+                        <div class="flex items-center justify-between text-xs sm:text-sm font-bold text-slate-300 border-b-2 border-slate-800 pb-3">
                             <span class="font-mono text-cyan-300 font-bold">assets/js/data.js (معاينة حية للكود المولد)</span>
-                            <span class="text-xs bg-slate-800 px-3 py-1 rounded-xl text-white font-mono border border-slate-700">JavaScript</span>
+                            <span class="text-xs bg-slate-800 px-2.5 py-0.5 rounded-lg text-white font-mono border border-slate-700">JavaScript</span>
                         </div>
-                        <pre class="bg-slate-950 p-5 rounded-2xl overflow-x-auto text-sm text-emerald-300 border-2 border-slate-800 max-h-96 leading-relaxed"><code id="code-preview"></code></pre>
+                        <pre class="bg-slate-950 p-4 rounded-2xl overflow-x-auto text-xs text-emerald-300 border-2 border-slate-800 max-h-80 leading-relaxed"><code id="code-preview"></code></pre>
                     </div>
                 </section>
 
                 <!-- TAB 6: Security & Password -->
                 <section id="tab-security" class="tab-content space-y-6">
-                    <div class="flex items-center justify-between border-b-2 border-slate-800 pb-5">
+                    <div class="flex items-center justify-between border-b-2 border-slate-800 pb-4">
                         <div>
-                            <h3 class="text-2xl font-black text-white flex items-center gap-2.5">
-                                <span class="p-2 rounded-xl bg-rose-500/20 text-rose-300 inline-block"><svg class="w-6 h-6" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M12 15v2m-6 4h12a2 2 0 002-2v-6a2 2 0 00-2-2H6a2 2 0 00-2 2v6a2 2 0 002 2zm10-10V7a4 4 0 00-8 0v4h8z"></path></svg></span>
+                            <h3 class="text-xl sm:text-2xl font-black text-white flex items-center gap-2">
+                                <span style="width: 32px; height: 32px;" class="rounded-xl bg-rose-500/20 text-rose-300 inline-flex items-center justify-center"><svg style="width: 18px; height: 18px;" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M12 15v2m-6 4h12a2 2 0 002-2v-6a2 2 0 00-2-2H6a2 2 0 00-2 2v6a2 2 0 002 2zm10-10V7a4 4 0 00-8 0v4h8z"></path></svg></span>
                                 <span>كلمة سر لوحة التحكم</span>
                             </h3>
-                            <p class="text-sm text-slate-300 font-medium mt-1">تغيير كلمة المرور المستخدمة للدخول إلى لوحة التحكم</p>
+                            <p class="text-xs sm:text-sm text-slate-300 font-medium mt-1">تغيير كلمة المرور المستخدمة للدخول إلى لوحة التحكم</p>
                         </div>
                     </div>
 
-                    <div class="admin-card p-7 sm:p-8 rounded-3xl space-y-6 max-w-xl border-2 border-rose-500/30 shadow-2xl">
+                    <div class="admin-card p-6 rounded-3xl space-y-5 max-w-lg border-2 border-rose-500/30 shadow-2xl">
                         <div>
-                            <label class="block text-sm font-extrabold text-white mb-2.5">كلمة المرور الحالية</label>
-                            <input type="password" id="sec-current-pass" class="w-full px-4 py-3 rounded-2xl admin-input font-mono">
+                            <label class="block text-xs sm:text-sm font-extrabold text-white mb-2">كلمة المرور الحالية</label>
+                            <input type="password" id="sec-current-pass" class="w-full px-4 py-2.5 rounded-xl admin-input font-mono">
                         </div>
 
                         <div>
-                            <label class="block text-sm font-extrabold text-white mb-2.5">كلمة المرور الجديدة</label>
-                            <input type="password" id="sec-new-pass" class="w-full px-4 py-3 rounded-2xl admin-input font-mono">
+                            <label class="block text-xs sm:text-sm font-extrabold text-white mb-2">كلمة المرور الجديدة</label>
+                            <input type="password" id="sec-new-pass" class="w-full px-4 py-2.5 rounded-xl admin-input font-mono">
                         </div>
 
                         <div>
-                            <label class="block text-sm font-extrabold text-white mb-2.5">تأكيد كلمة المرور الجديدة</label>
-                            <input type="password" id="sec-confirm-pass" class="w-full px-4 py-3 rounded-2xl admin-input font-mono">
+                            <label class="block text-xs sm:text-sm font-extrabold text-white mb-2">تأكيد كلمة المرور الجديدة</label>
+                            <input type="password" id="sec-confirm-pass" class="w-full px-4 py-2.5 rounded-xl admin-input font-mono">
                         </div>
 
-                        <button id="change-pass-btn" class="w-full py-4 rounded-2xl font-black text-base bg-gradient-to-r from-rose-500 to-red-500 hover:from-rose-400 hover:to-red-400 text-white shadow-xl shadow-rose-500/30 transition hover:scale-[1.01] active:scale-[0.99]">
+                        <button id="change-pass-btn" class="w-full py-3.5 rounded-xl font-black text-sm bg-gradient-to-r from-rose-500 to-red-500 hover:from-rose-400 hover:to-red-400 text-white shadow-xl shadow-rose-500/30 transition hover:scale-[1.01] active:scale-[0.99]">
                             حفظ كلمة المرور الجديدة
                         </button>
                     </div>
@@ -518,8 +561,8 @@
                 const toast = document.createElement('div');
                 toast.className = `toast-item toast-${type}`;
                 toast.innerHTML = `
-                    <div class="toast-message text-sm font-bold">${message}</div>
-                    <button class="toast-close text-sm">&times;</button>
+                    <div class="toast-message text-xs sm:text-sm font-bold">${message}</div>
+                    <button class="toast-close text-xs">&times;</button>
                 `;
                 toastContainer.appendChild(toast);
 
@@ -699,34 +742,34 @@
                 const list = currentConfig.banners || [];
 
                 if (list.length === 0) {
-                    bannersList.innerHTML = '<div class="p-8 text-center text-sm font-bold text-slate-400 bg-slate-900/80 rounded-3xl border-2 border-slate-800">لا توجد بانرات حالياً. اضغط "إضافة بانر جديد" لإضافة بانر.</div>';
+                    bannersList.innerHTML = '<div class="p-6 text-center text-xs sm:text-sm font-bold text-slate-400 bg-slate-900/80 rounded-2xl border-2 border-slate-800">لا توجد بانرات حالياً. اضغط "إضافة بانر جديد" لإضافة بانر.</div>';
                     return;
                 }
 
                 list.forEach((b, idx) => {
                     const card = document.createElement('div');
-                    card.className = 'admin-card p-6 rounded-3xl flex flex-col md:flex-row items-start md:items-center justify-between gap-5 border-2 border-slate-800 hover:border-slate-700 transition shadow-lg';
+                    card.className = 'admin-card p-5 rounded-2xl flex flex-col md:flex-row items-start md:items-center justify-between gap-4 border-2 border-slate-800 hover:border-slate-700 transition shadow-lg';
                     card.innerHTML = `
-                        <div class="flex items-center gap-5 flex-1 w-full">
-                            <div class="w-24 h-16 rounded-2xl bg-slate-950 border-2 border-slate-700 overflow-hidden flex-shrink-0 flex items-center justify-center p-1">
-                                <img src="${b.image}" alt="${b.alt || ''}" class="w-full h-full object-contain" onerror="this.src='assets/images/download_banner_default.png'">
+                        <div class="flex items-center gap-4 flex-1 w-full">
+                            <div style="width: 80px; height: 50px;" class="rounded-xl bg-slate-950 border-2 border-slate-700 overflow-hidden flex-shrink-0 flex items-center justify-center p-1">
+                                <img src="${b.image}" alt="${b.alt || ''}" style="width: 100%; height: 100%; object-fit: contain;" onerror="this.src='assets/images/download_banner_default.png'">
                             </div>
-                            <div class="flex-1 space-y-1.5">
-                                <div class="text-sm font-black text-white flex items-center gap-2.5">
-                                    <span class="bg-amber-500/20 text-amber-300 px-2.5 py-0.5 rounded-lg border border-amber-500/30 text-xs">بانر #${idx + 1}</span>
+                            <div class="flex-1 space-y-1">
+                                <div class="text-xs sm:text-sm font-black text-white flex items-center gap-2">
+                                    <span class="bg-amber-500/20 text-amber-300 px-2 py-0.5 rounded-lg border border-amber-500/30 text-xs">بانر #${idx + 1}</span>
                                     <span>${b.alt || 'بدون نص'}</span>
                                 </div>
                                 <div class="text-xs text-slate-300 truncate font-mono"><b>المسار:</b> ${b.image}</div>
                                 <div class="text-xs text-cyan-300 truncate font-mono"><b>الرابط:</b> ${b.link || '#'}</div>
                             </div>
                         </div>
-                        <div class="flex items-center gap-3 self-end md:self-center">
-                            <button class="edit-banner-btn px-4 py-2 rounded-xl bg-slate-800 hover:bg-slate-700 text-white font-bold transition text-xs border border-slate-600 flex items-center gap-1.5" data-index="${idx}">
-                                <svg class="w-4 h-4 text-cyan-400" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M15.232 5.232l3.536 3.536m-2.036-5.036a2.5 2.5 0 113.536 3.536L6.5 21.036H3v-3.572L16.732 3.732z"></path></svg>
+                        <div class="flex items-center gap-2 self-end md:self-center">
+                            <button class="edit-banner-btn px-3 py-1.5 rounded-xl bg-slate-800 hover:bg-slate-700 text-white font-bold transition text-xs border border-slate-600 flex items-center gap-1" data-index="${idx}">
+                                <svg style="width: 14px; height: 14px;" class="text-cyan-400" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M15.232 5.232l3.536 3.536m-2.036-5.036a2.5 2.5 0 113.536 3.536L6.5 21.036H3v-3.572L16.732 3.732z"></path></svg>
                                 <span>تعديل</span>
                             </button>
-                            <button class="delete-banner-btn px-4 py-2 rounded-xl bg-rose-500/20 hover:bg-rose-500/30 text-rose-300 font-bold transition text-xs border border-rose-500/40 flex items-center gap-1.5" data-index="${idx}">
-                                <svg class="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M19 7l-.867 12.142A2 2 0 0116.138 21H7.862a2 2 0 01-1.995-1.858L5 7m5 4v6m4-6v6m1-10V4a1 1 0 00-1-1h-4a1 1 0 00-1 1v3M4 7h16"></path></svg>
+                            <button class="delete-banner-btn px-3 py-1.5 rounded-xl bg-rose-500/20 hover:bg-rose-500/30 text-rose-300 font-bold transition text-xs border border-rose-500/40 flex items-center gap-1" data-index="${idx}">
+                                <svg style="width: 14px; height: 14px;" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M19 7l-.867 12.142A2 2 0 0116.138 21H7.862a2 2 0 01-1.995-1.858L5 7m5 4v6m4-6v6m1-10V4a1 1 0 00-1-1h-4a1 1 0 00-1 1v3M4 7h16"></path></svg>
                                 <span>حذف</span>
                             </button>
                         </div>

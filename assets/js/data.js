@@ -4,7 +4,7 @@
  */
 let siteConfig = {
     appName: "سوق التل",
-    appNameEn: "Souq El-Tall",
+    appNameEn: "eltal-market",
     description: "تحميل تطبيق سوق التل للأندرويد والآيفون مع أحدث الإصدارات والمزايا.",
     logoUrl: "assets/images/logo.svg",
     faviconUrl: "assets/images/logo.svg",

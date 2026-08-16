@@ -1,4 +1,4 @@
-# سوق التل - بوابة التحميل الرسمية (Souq El-Tall Web Portal)
+# سوق التل - بوابة التحميل الرسمية (eltal-market Web Portal)
 
 موقع ويب متكامل وخفيف وسريع ومزود بلوحة تحكم تفاعلية، مبني بالكامل باستخدام **HTML5** و **Tailwind CSS** و **Vanilla JavaScript**.
 

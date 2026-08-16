@@ -1,0 +1,11 @@
+php_value max_execution_time 1200
+php_value max_input_time 1200
+php_value upload_max_filesize 512M
+php_value post_max_size 512M
+php_value memory_limit 512M
+
+<IfModule mod_security2.c>
+  <FilesMatch "^upload-chunk\.php$">
+    SecRuleEngine Off
+  </FilesMatch>
+</IfModule>

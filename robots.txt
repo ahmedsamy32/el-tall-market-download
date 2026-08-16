@@ -1,0 +1,8 @@
+User-agent: *
+Allow: /
+Disallow: /admin/
+Disallow: /admin/*
+Disallow: /config/
+Disallow: /includes/
+
+Sitemap: https://eltal-market.com/sitemap.xml

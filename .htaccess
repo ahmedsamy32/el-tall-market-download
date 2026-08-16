@@ -1,0 +1,43 @@
+Options -Indexes
+DirectoryIndex index.php index.html
+
+<IfModule mod_rewrite.c>
+RewriteEngine On
+
+RewriteCond %{HTTPS} !=on
+RewriteCond %{HTTP_HOST} ^(www\.)?eltal-market\.com$ [NC]
+RewriteRule ^ https://eltal-market.com%{REQUEST_URI} [L,R=301]
+
+# Exclude market directory from root rewrites
+RewriteRule ^market($|/) - [L]
+
+# Public routes
+RewriteRule ^$ index.php [L]
+RewriteRule ^download/?$ download.php [L]
+RewriteRule ^about/?$ AboutApp.php [L]
+RewriteRule ^privacy/?$ PrivacyPolicy.php [L]
+RewriteRule ^terms/?$ TermsCondition.php [L]
+RewriteRule ^upload/?$ upload.php [L]
+
+# Admin routes
+RewriteRule ^admin/?$ admin/index.php [L]
+RewriteRule ^admin/login/?$ admin/login.php [L]
+RewriteRule ^admin/logout/?$ admin/logout.php [L]
+RewriteRule ^admin/account/?$ admin/account.php [L]
+RewriteRule ^admin/version/?$ admin/version.php [L]
+RewriteRule ^admin/branding/?$ admin/branding.php [L]
+RewriteRule ^admin/contact/?$ admin/contact.php [L]
+RewriteRule ^admin/diagnostics/?$ admin/diagnostics.php [L]
+RewriteRule ^admin/upload-probe/?$ admin/upload-probe.php [L]
+RewriteRule ^admin/upload-chunk/?$ admin/upload-chunk.php [L]
+
+RewriteCond %{REQUEST_FILENAME} -f [OR]
+RewriteCond %{REQUEST_FILENAME} -d
+RewriteRule ^ - [L]
+</IfModule>
+
+<IfModule mod_security2.c>
+	<FilesMatch "^upload\.php$">
+		SecRuleEngine Off
+	</FilesMatch>
+</IfModule>

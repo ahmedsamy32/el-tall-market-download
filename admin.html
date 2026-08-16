@@ -320,7 +320,7 @@
                         </div>
                     </div>
 
-                    <div class="admin-card p-6 rounded-3xl space-y-5">
+                    <div class="admin-card p-6 rounded-3xl space-y-6">
                         <div class="grid grid-cols-1 md:grid-cols-3 gap-5">
                             <div>
                                 <label class="block text-xs sm:text-sm font-extrabold text-white mb-2">رقم الإصدار (Version)</label>
@@ -331,26 +331,54 @@
                                 <input type="date" id="cfg-releaseDate" class="w-full px-4 py-2.5 rounded-xl admin-input">
                             </div>
                             <div>
-                                <label class="block text-xs sm:text-sm font-extrabold text-white mb-2">حجم الملف</label>
+                                <label class="block text-xs sm:text-sm font-extrabold text-white mb-2">حجم الملف المحسوب</label>
                                 <input type="text" id="cfg-fileSize" placeholder="مثال: 24.5 MB" class="w-full px-4 py-2.5 rounded-xl admin-input font-bold text-cyan-300">
                             </div>
                         </div>
 
-                        <div class="border-t-2 border-slate-800 pt-5 space-y-4">
-                            <div>
-                                <label class="block text-xs sm:text-sm font-extrabold text-white mb-2">
-                                    <span class="inline-flex items-center gap-1 bg-emerald-500/20 text-emerald-300 px-2.5 py-0.5 rounded-lg border border-emerald-500/40 text-xs font-black">Android APK</span>
-                                    رابط تحميل ملف APK المباشر أو متجر Google Play
-                                </label>
-                                <input type="text" id="cfg-apkUrl" placeholder="https://..." class="w-full px-4 py-2.5 rounded-xl admin-input font-mono text-left text-sm">
+                        <div class="border-t-2 border-slate-800 pt-5 space-y-5">
+                            <!-- Android APK Box -->
+                            <div class="border-2 border-slate-800 rounded-2xl p-5 bg-slate-950/60 space-y-3">
+                                <div class="flex flex-col sm:flex-row sm:items-center justify-between gap-3">
+                                    <label class="block text-xs sm:text-sm font-extrabold text-white">
+                                        <span class="inline-flex items-center gap-1 bg-emerald-500/20 text-emerald-300 px-2.5 py-0.5 rounded-lg border border-emerald-500/40 text-xs font-black">Android APK</span>
+                                        <span>ملف تطبيق الأندرويد أو الرابط المباشر</span>
+                                    </label>
+                                    <div class="flex items-center gap-2">
+                                        <input type="file" id="apk-file-input" accept=".apk,application/vnd.android.package-archive" class="hidden">
+                                        <button type="button" id="upload-apk-btn" class="px-3.5 py-2 rounded-xl text-xs font-black bg-emerald-500/20 hover:bg-emerald-500/30 text-emerald-300 border-2 border-emerald-500/40 transition flex items-center gap-1.5 shadow-md">
+                                            <svg style="width: 16px; height: 16px;" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M4 16v1a3 3 0 003 3h10a3 3 0 003-3v-1m-4-4l-4 4m0 0l-4-4m4 4V4"></path></svg>
+                                            <span>📁 رفع / اختيار ملف APK من جهازك</span>
+                                        </button>
+                                    </div>
+                                </div>
+                                <input type="text" id="cfg-apkUrl" placeholder="assets/apk/app-release.apk أو رابط خارجي (Google Drive / MediaFire)" class="w-full px-4 py-2.5 rounded-xl admin-input font-mono text-left text-xs sm:text-sm">
+                                <div id="apk-file-info" class="text-xs text-emerald-300 font-mono hidden flex items-center gap-2 bg-emerald-500/10 p-2.5 rounded-xl border border-emerald-500/30">
+                                    <span class="text-sm">✔</span>
+                                    <span id="apk-file-details"></span>
+                                </div>
                             </div>
 
-                            <div>
-                                <label class="block text-xs sm:text-sm font-extrabold text-white mb-2">
-                                    <span class="inline-flex items-center gap-1 bg-cyan-500/20 text-cyan-300 px-2.5 py-0.5 rounded-lg border border-cyan-500/40 text-xs font-black">iOS App Store</span>
-                                    رابط متجر Apple App Store أو رابط التثبيت
-                                </label>
-                                <input type="text" id="cfg-ipaUrl" placeholder="https://..." class="w-full px-4 py-2.5 rounded-xl admin-input font-mono text-left text-sm">
+                            <!-- iOS IPA Box -->
+                            <div class="border-2 border-slate-800 rounded-2xl p-5 bg-slate-950/60 space-y-3">
+                                <div class="flex flex-col sm:flex-row sm:items-center justify-between gap-3">
+                                    <label class="block text-xs sm:text-sm font-extrabold text-white">
+                                        <span class="inline-flex items-center gap-1 bg-cyan-500/20 text-cyan-300 px-2.5 py-0.5 rounded-lg border border-cyan-500/40 text-xs font-black">iOS App Store / IPA</span>
+                                        <span>ملف تطبيق الآيفون أو رابط متجر App Store</span>
+                                    </label>
+                                    <div class="flex items-center gap-2">
+                                        <input type="file" id="ipa-file-input" accept=".ipa,.plist,.mobileprovision,application/octet-stream" class="hidden">
+                                        <button type="button" id="upload-ipa-btn" class="px-3.5 py-2 rounded-xl text-xs font-black bg-cyan-500/20 hover:bg-cyan-500/30 text-cyan-300 border-2 border-cyan-500/40 transition flex items-center gap-1.5 shadow-md">
+                                            <svg style="width: 16px; height: 16px;" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M4 16v1a3 3 0 003 3h10a3 3 0 003-3v-1m-4-4l-4 4m0 0l-4-4m4 4V4"></path></svg>
+                                            <span>📁 رفع / اختيار ملف IPA من جهازك</span>
+                                        </button>
+                                    </div>
+                                </div>
+                                <input type="text" id="cfg-ipaUrl" placeholder="https://apps.apple.com/... أو assets/ios/app-release.ipa" class="w-full px-4 py-2.5 rounded-xl admin-input font-mono text-left text-xs sm:text-sm">
+                                <div id="ipa-file-info" class="text-xs text-cyan-300 font-mono hidden flex items-center gap-2 bg-cyan-500/10 p-2.5 rounded-xl border border-cyan-500/30">
+                                    <span class="text-sm">✔</span>
+                                    <span id="ipa-file-details"></span>
+                                </div>
                             </div>
                         </div>
                     </div>
@@ -648,6 +676,19 @@
             const logoPreviewBox = document.getElementById('logo-preview-box');
             const cfgLogoUrl = document.getElementById('cfg-logoUrl');
             const headerLogoPreview = document.getElementById('header-logo-preview');
+
+            // APK & IPA Upload Elements
+            const apkFileInput = document.getElementById('apk-file-input');
+            const uploadApkBtn = document.getElementById('upload-apk-btn');
+            const apkFileInfo = document.getElementById('apk-file-info');
+            const apkFileDetails = document.getElementById('apk-file-details');
+            const cfgApkUrl = document.getElementById('cfg-apkUrl');
+
+            const ipaFileInput = document.getElementById('ipa-file-input');
+            const uploadIpaBtn = document.getElementById('upload-ipa-btn');
+            const ipaFileInfo = document.getElementById('ipa-file-info');
+            const ipaFileDetails = document.getElementById('ipa-file-details');
+            const cfgIpaUrl = document.getElementById('cfg-ipaUrl');
 
             // Download Banner Elements
             const downloadBannerFileInput = document.getElementById('download-banner-file-input');
@@ -964,6 +1005,61 @@
                 cfgDownloadBannerImage.addEventListener('input', () => {
                     const val = cfgDownloadBannerImage.value.trim();
                     if (val && downloadBannerPreviewBox) downloadBannerPreviewBox.src = val;
+                });
+            }
+
+            // 6.1 APK File Picker & Auto Size Detection
+            if (uploadApkBtn && apkFileInput) {
+                uploadApkBtn.addEventListener('click', () => apkFileInput.click());
+                apkFileInput.addEventListener('change', (e) => {
+                    const file = e.target.files[0];
+                    if (!file) return;
+                    
+                    const sizeMb = (file.size / (1024 * 1024)).toFixed(1) + ' MB';
+                    const fileName = file.name;
+                    const path = 'assets/apk/' + fileName;
+                    
+                    cfgApkUrl.value = path;
+                    const fileSizeInput = document.getElementById('cfg-fileSize');
+                    if (fileSizeInput) fileSizeInput.value = sizeMb;
+                    
+                    const releaseDateInput = document.getElementById('cfg-releaseDate');
+                    if (releaseDateInput && !releaseDateInput.value) {
+                        releaseDateInput.value = new Date().toISOString().split('T')[0];
+                    }
+
+                    if (apkFileInfo && apkFileDetails) {
+                        apkFileDetails.textContent = `الملف المختار: ${fileName} (${sizeMb}) — المسار: ${path}`;
+                        apkFileInfo.classList.remove('hidden');
+                    }
+                    
+                    showToast(`تم اختيار ملف APK وحساب الحجم تلقائياً (${sizeMb})! اضغط حفظ التغييرات.`, 'success');
+                });
+            }
+
+            // 6.2 iOS IPA File Picker & Auto Size Detection
+            if (uploadIpaBtn && ipaFileInput) {
+                uploadIpaBtn.addEventListener('click', () => ipaFileInput.click());
+                ipaFileInput.addEventListener('change', (e) => {
+                    const file = e.target.files[0];
+                    if (!file) return;
+                    
+                    const sizeMb = (file.size / (1024 * 1024)).toFixed(1) + ' MB';
+                    const fileName = file.name;
+                    const path = 'assets/ios/' + fileName;
+                    
+                    cfgIpaUrl.value = path;
+                    const fileSizeInput = document.getElementById('cfg-fileSize');
+                    if (fileSizeInput && !fileSizeInput.value) {
+                        fileSizeInput.value = sizeMb;
+                    }
+
+                    if (ipaFileInfo && ipaFileDetails) {
+                        ipaFileDetails.textContent = `الملف المختار: ${fileName} (${sizeMb}) — المسار: ${path}`;
+                        ipaFileInfo.classList.remove('hidden');
+                    }
+                    
+                    showToast(`تم اختيار ملف IPA وحساب الحجم تلقائياً (${sizeMb})! اضغط حفظ التغييرات.`, 'success');
                 });
             }
 

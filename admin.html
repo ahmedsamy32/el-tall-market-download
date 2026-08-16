@@ -698,8 +698,8 @@
                 setTimeout(close, 4000);
             }
 
-            // Image Compression & Processing Helper
-            function processImageFile(file, maxWidth = 1200, quality = 0.85) {
+            // Image Compression & Processing Helper (Smart Compression to prevent quota limits)
+            function processImageFile(file, maxWidth = 960, quality = 0.75) {
                 return new Promise((resolve, reject) => {
                     if (!file) return reject(new Error("No file"));
                     const reader = new FileReader();
@@ -720,8 +720,10 @@
                             const ctx = canvas.getContext('2d');
                             ctx.drawImage(img, 0, 0, width, height);
 
-                            const isPng = file.type === 'image/png' || file.type === 'image/svg+xml';
-                            const outputType = isPng ? 'image/png' : 'image/jpeg';
+                            // For SVG or transparent PNG with small dimensions keep PNG, otherwise optimize to JPEG/WebP
+                            const isSvg = file.type === 'image/svg+xml';
+                            const isTransparentPng = file.type === 'image/png' && maxWidth <= 256;
+                            const outputType = (isSvg || isTransparentPng) ? 'image/png' : 'image/jpeg';
                             const dataUrl = canvas.toDataURL(outputType, quality);
                             resolve(dataUrl);
                         };
@@ -734,11 +736,23 @@
             }
 
             // 2. Authentication Check
-            function checkAuth() {
+            async function checkAuth() {
                 const isAuth = sessionStorage.getItem(storageAuthKey) === 'true' || localStorage.getItem(storageAuthKey) === 'true';
                 if (isAuth) {
                     loginScreen.classList.add('hidden');
                     dashboardScreen.classList.remove('hidden');
+                    
+                    // Load any persisted config from IndexedDB if available
+                    if (window.SiteDB) {
+                        try {
+                            const saved = await window.SiteDB.load();
+                            if (saved) {
+                                currentConfig = Object.assign({}, currentConfig, saved);
+                                window.siteConfig = Object.assign({}, window.siteConfig, saved);
+                            }
+                        } catch (e) {}
+                    }
+                    
                     loadFormValues();
                     updateCodePreview();
                 } else {
@@ -910,7 +924,7 @@
                     const file = e.target.files[0];
                     if (!file) return;
                     try {
-                        const dataUrl = await processImageFile(file, 256, 0.9);
+                        const dataUrl = await processImageFile(file, 200, 0.85);
                         cfgLogoUrl.value = dataUrl;
                         if (logoPreviewBox) logoPreviewBox.src = dataUrl;
                         if (headerLogoPreview) headerLogoPreview.src = dataUrl;
@@ -936,7 +950,7 @@
                     const file = e.target.files[0];
                     if (!file) return;
                     try {
-                        const dataUrl = await processImageFile(file, 1200, 0.85);
+                        const dataUrl = await processImageFile(file, 960, 0.75);
                         cfgDownloadBannerImage.value = dataUrl;
                         if (downloadBannerPreviewBox) downloadBannerPreviewBox.src = dataUrl;
                         showToast('تم رفع بانر صفحة التحميل بنجاح! اضغط "حفظ التغييرات" لاعتمادها.', 'success');
@@ -1053,7 +1067,7 @@
                     const file = e.target.files[0];
                     if (!file) return;
                     try {
-                        const dataUrl = await processImageFile(file, 1200, 0.85);
+                        const dataUrl = await processImageFile(file, 960, 0.75);
                         modalBannerImageUrl.value = dataUrl;
                         modalBannerImgPreview.src = dataUrl;
                         showToast('تم تحميل صورة البانر في المعاينة بنجاح!', 'success');
@@ -1105,14 +1119,20 @@
                 });
             }
 
-            // 8. Save & Persistence
-            function saveChanges() {
+            // 8. Save & Persistence (IndexedDB + safe localStorage cache)
+            async function saveChanges() {
                 collectFormValues();
                 try {
-                    localStorage.setItem(storageConfigKey, JSON.stringify(currentConfig));
+                    if (window.SiteDB) {
+                        await window.SiteDB.save(currentConfig);
+                    } else {
+                        try {
+                            localStorage.setItem(storageConfigKey, JSON.stringify(currentConfig));
+                        } catch (e) {}
+                    }
                     window.siteConfig = Object.assign({}, window.siteConfig, currentConfig);
                     updateCodePreview();
-                    showToast('تم حفظ التعديلات بنجاح في المتصفح وتطبيقها على الموقع!', 'success');
+                    showToast('تم حفظ التعديلات والصور بنجاح وتطبيقها على الموقع!', 'success');
                 } catch (err) {
                     showToast('حدث خطأ أثناء الحفظ: ' + err.message, 'error');
                 }
@@ -1130,7 +1150,7 @@
  */
 let siteConfig = ${jsonStr};
 
-// تحميل الإعدادات المحفوظة محلياً إن وجدت لدمج التعديلات فوراً
+// مدير التخزين المتقدم
 if (typeof localStorage !== 'undefined') {
     try {
         const saved = localStorage.getItem('eltal_site_config');
@@ -1138,9 +1158,7 @@ if (typeof localStorage !== 'undefined') {
             const parsed = JSON.parse(saved);
             siteConfig = Object.assign({}, siteConfig, parsed);
         }
-    } catch (e) {
-        console.error("Error reading saved site config", e);
-    }
+    } catch (e) {}
 }
 
 if (typeof window !== 'undefined') {
@@ -1156,8 +1174,8 @@ if (typeof window !== 'undefined') {
             }
 
             // Export Actions
-            document.getElementById('export-download-btn').addEventListener('click', () => {
-                saveChanges();
+            document.getElementById('export-download-btn').addEventListener('click', async () => {
+                await saveChanges();
                 const content = generateDataJsContent();
                 const blob = new Blob([content], { type: 'application/javascript;charset=utf-8;' });
                 const url = URL.createObjectURL(blob);
@@ -1171,8 +1189,8 @@ if (typeof window !== 'undefined') {
                 showToast('تم تنزيل ملف data.js المحدث بنجاح! ضعه في assets/js/ واستبدل الملف القديم.', 'success');
             });
 
-            document.getElementById('export-copy-btn').addEventListener('click', () => {
-                saveChanges();
+            document.getElementById('export-copy-btn').addEventListener('click', async () => {
+                await saveChanges();
                 const content = generateDataJsContent();
                 navigator.clipboard.writeText(content).then(() => {
                     showToast('تم نسخ كود data.js بالكامل إلى الحافظة!', 'success');
@@ -1181,9 +1199,16 @@ if (typeof window !== 'undefined') {
                 });
             });
 
-            document.getElementById('export-reset-btn').addEventListener('click', () => {
+            document.getElementById('export-reset-btn').addEventListener('click', async () => {
                 if (confirm('هل أنت متأكد من رغبتك في حذف جميع التعديلات المحفوظة واستعادة القيم الافتراضية؟')) {
                     localStorage.removeItem(storageConfigKey);
+                    if (window.SiteDB) {
+                        try {
+                            const db = await window.SiteDB.open();
+                            const tx = db.transaction(window.SiteDB.storeName, 'readwrite');
+                            tx.objectStore(window.SiteDB.storeName).clear();
+                        } catch (e) {}
+                    }
                     location.reload();
                 }
             });

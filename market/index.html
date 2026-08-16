@@ -29,10 +29,16 @@
   <link rel="apple-touch-icon" href="icons/Icon-192.png">
 
   <!-- Favicon -->
-  <link rel="icon" type="image/png" href="favicon.png"/>
+  <link rel="icon" type="image/png" href="favicon.png?v=2"/>
 
-  <title>ell_tall_market</title>
+  <title>سوق التل - El Tal Market</title>
   <link rel="manifest" href="manifest.json">
+  <!-- Passkeys Web SDK (Required for supabase_flutter WebAuthn/Passkey support) -->
+  <script src="https://github.com/corbado/flutter-passkeys/releases/download/2.4.0/bundle.js" type="application/javascript"></script>
+  <!-- Stripe Web SDK (Required for flutter_stripe Web support) -->
+  <script src="https://js.stripe.com/v3/"></script>
+  <!-- Google Maps JS SDK (Required for google_maps_flutter Web support) -->
+  <script src="https://maps.googleapis.com/maps/api/js?key=AIzaSyA5q1yifwlqadIZPs4KttQgSH8-ow2G1js"></script>
 </head>
 <body>
   <script>

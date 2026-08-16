@@ -15,8 +15,8 @@ let siteConfig = {
         version: "1.0.0",
         releaseDate: "2026-08-16",
         fileSize: "24.5 MB",
-        apkUrl: "market/index.html", // رابط تحميل APK المباشر أو متجر التطبيقات
-        ipaUrl: "market/index.html", // رابط تحميل iPhone / iOS
+        apkUrl: "market/index.html",
+        ipaUrl: "market/index.html",
         isReady: true
     },
 
@@ -63,7 +63,81 @@ let siteConfig = {
     }
 };
 
-// تحميل الإعدادات المحفوظة محلياً إن وجدت لدمج التعديلات فوراً
+/**
+ * مدير التخزين المتقدم لتخزين الصور والبيانات الكبيرة دون قيود السعة (IndexedDB + localStorage)
+ */
+const SiteDB = {
+    dbName: 'EltalSiteStorage',
+    storeName: 'site_config_store',
+    keyName: 'current_config',
+
+    open() {
+        return new Promise((resolve, reject) => {
+            if (typeof indexedDB === 'undefined') return reject(new Error('IndexedDB not supported'));
+            const req = indexedDB.open(this.dbName, 1);
+            req.onupgradeneeded = (e) => {
+                const db = e.target.result;
+                if (!db.objectStoreNames.contains(this.storeName)) {
+                    db.createObjectStore(this.storeName);
+                }
+            };
+            req.onsuccess = (e) => resolve(e.target.result);
+            req.onerror = (e) => reject(e.target.error);
+        });
+    },
+
+    async save(configObj) {
+        // 1. حفظ في IndexedDB (يدعم ملفات وصور ضخمة بدون حد 5MB)
+        try {
+            const db = await this.open();
+            await new Promise((resolve, reject) => {
+                const tx = db.transaction(this.storeName, 'readwrite');
+                const store = tx.objectStore(this.storeName);
+                const putReq = store.put(configObj, this.keyName);
+                putReq.onsuccess = () => resolve(true);
+                putReq.onerror = (e) => reject(e.target.error);
+            });
+        } catch (err) {
+            console.warn("IndexedDB save warning:", err);
+        }
+
+        // 2. محاولة الحفظ في localStorage كنسخة سريعة
+        try {
+            localStorage.setItem('eltal_site_config', JSON.stringify(configObj));
+        } catch (quotaErr) {
+            console.warn("localStorage quota exceeded, saved in IndexedDB safely.");
+        }
+    },
+
+    async load() {
+        // 1. محاولة القراءة من IndexedDB
+        try {
+            const db = await this.open();
+            const data = await new Promise((resolve, reject) => {
+                const tx = db.transaction(this.storeName, 'readonly');
+                const store = tx.objectStore(this.storeName);
+                const getReq = store.get(this.keyName);
+                getReq.onsuccess = () => resolve(getReq.result);
+                getReq.onerror = (e) => reject(e.target.error);
+            });
+            if (data && typeof data === 'object') {
+                return data;
+            }
+        } catch (err) {
+            console.warn("IndexedDB read fallback to localStorage:", err);
+        }
+
+        // 2. القراءة البديلة من localStorage
+        try {
+            const saved = localStorage.getItem('eltal_site_config');
+            if (saved) return JSON.parse(saved);
+        } catch (e) {}
+
+        return null;
+    }
+};
+
+// تحميل فوري أولي من localStorage إن وجد
 if (typeof localStorage !== 'undefined') {
     try {
         const saved = localStorage.getItem('eltal_site_config');
@@ -71,11 +145,20 @@ if (typeof localStorage !== 'undefined') {
             const parsed = JSON.parse(saved);
             siteConfig = Object.assign({}, siteConfig, parsed);
         }
-    } catch (e) {
-        console.error("Error reading saved site config", e);
-    }
+    } catch (e) {}
 }
 
 if (typeof window !== 'undefined') {
     window.siteConfig = siteConfig;
+    window.SiteDB = SiteDB;
+
+    // تحميل غير متزامن من IndexedDB لتحديث الصور الضخمة
+    SiteDB.load().then(savedConfig => {
+        if (savedConfig) {
+            window.siteConfig = Object.assign({}, window.siteConfig, savedConfig);
+            if (typeof window.rehydrateSiteData === 'function') {
+                window.rehydrateSiteData();
+            }
+        }
+    }).catch(() => {});
 }

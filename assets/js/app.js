@@ -60,6 +60,19 @@
             }
         });
 
+        // الشعار (Logo)
+        if (cfg.logoUrl && cfg.logoUrl !== 'assets/images/logo.svg') {
+            document.querySelectorAll('img[src="assets/images/logo.svg"], img[data-bind-logo]').forEach(img => {
+                img.src = cfg.logoUrl;
+            });
+        }
+
+        // بانر صفحة التحميل
+        if (cfg.downloadBanner && cfg.downloadBanner.image) {
+            const dlBannerImg = document.querySelector('.download-banner-wrapper img');
+            if (dlBannerImg) dlBannerImg.src = cfg.downloadBanner.image;
+        }
+
         // روابط التواصل
         document.querySelectorAll('[data-bind-email]').forEach(el => {
             el.textContent = cfg.contact.email;
@@ -81,9 +94,30 @@
         document.querySelectorAll('[data-social-facebook]').forEach(el => el.setAttribute('href', cfg.social.facebook));
         document.querySelectorAll('[data-social-instagram]').forEach(el => el.setAttribute('href', cfg.social.instagram));
         document.querySelectorAll('[data-social-tiktok]').forEach(el => el.setAttribute('href', cfg.social.tiktok));
+
+        // حقن صور سلايدر البانرات ديناميكياً
+        const carousel = document.getElementById('homepage-carousel');
+        if (carousel && cfg.banners && cfg.banners.length > 0) {
+            const container = carousel.querySelector('.carousel-container');
+            if (container) {
+                container.innerHTML = cfg.banners.map((b, idx) => `
+                    <div class="carousel-slide ${idx === 0 ? 'active' : ''}" data-index="${idx}">
+                        <a href="${b.link || 'download.html'}" class="relative block w-full h-full overflow-hidden" style="display: flex; align-items: center; justify-content: center;">
+                            <div class="carousel-blur-bg" style="background-image: url('${b.image}');"></div>
+                            <img src="${b.image}" alt="${b.alt || 'إعلان تطبيق سوق التل'}" class="carousel-main-img">
+                        </a>
+                    </div>
+                `).join('');
+                initCarousel();
+            }
+        }
     };
 
+    // إتاحة الدالة للتحديث غير المتزامن عند اكتمال تحميل IndexedDB
+    window.rehydrateSiteData = hydrateData;
+
     // 4. تشغيل السلايدر التفاعلي (Carousel Logic)
+    let carouselInterval = null;
     const initCarousel = () => {
         const carousel = document.getElementById('homepage-carousel');
         if (!carousel) return;
@@ -96,7 +130,6 @@
         if (slides.length <= 1) return;
 
         let currentIndex = 0;
-        let intervalId = null;
         const duration = 5000;
 
         const showSlide = (index) => {
@@ -114,79 +147,55 @@
 
         const startAutoplay = () => {
             stopAutoplay();
-            intervalId = setInterval(nextSlide, duration);
+            carouselInterval = setInterval(nextSlide, duration);
         };
 
         const stopAutoplay = () => {
-            if (intervalId) clearInterval(intervalId);
+            if (carouselInterval) clearInterval(carouselInterval);
         };
 
         if (prevBtn) {
-            prevBtn.addEventListener('click', () => {
+            prevBtn.onclick = () => {
                 prevSlide();
                 startAutoplay();
-            });
+            };
         }
 
         if (nextBtn) {
-            nextBtn.addEventListener('click', () => {
+            nextBtn.onclick = () => {
                 nextSlide();
                 startAutoplay();
-            });
+            };
         }
 
         dots.forEach(dot => {
-            dot.addEventListener('click', () => {
+            dot.onclick = () => {
                 const index = parseInt(dot.getAttribute('data-index'), 10);
                 showSlide(index);
                 startAutoplay();
-            });
+            };
         });
 
         // دعم اللمس والسحب (Swipe on mobile)
         let touchStartX = 0;
         let touchEndX = 0;
 
-        carousel.addEventListener('touchstart', (e) => {
+        carousel.ontouchstart = (e) => {
             touchStartX = e.changedTouches[0].screenX;
             stopAutoplay();
-        }, { passive: true });
+        };
 
-        carousel.addEventListener('touchend', (e) => {
+        carousel.ontouchend = (e) => {
             touchEndX = e.changedTouches[0].screenX;
             if (touchStartX - touchEndX > 50) {
-                // سحب لليسار
                 nextSlide();
             } else if (touchEndX - touchStartX > 50) {
-                // سحب لليمين
                 prevSlide();
             }
             startAutoplay();
-        }, { passive: true });
+        };
 
         startAutoplay();
-
-        // ضبط الارتفاع التلقائي
-        const container = carousel.querySelector('.carousel-container');
-        const firstImg = carousel.querySelector('.carousel-slide img');
-        if (container && firstImg) {
-            const adjustHeight = () => {
-                const naturalW = firstImg.naturalWidth;
-                const naturalH = firstImg.naturalHeight;
-                if (!naturalW || !naturalH) return;
-                const containerW = container.offsetWidth;
-                let newH = Math.round(containerW * naturalH / naturalW);
-                newH = Math.max(160, Math.min(500, newH));
-                container.style.height = newH + 'px';
-            };
-
-            if (firstImg.complete && firstImg.naturalWidth) {
-                adjustHeight();
-            } else {
-                firstImg.addEventListener('load', adjustHeight);
-            }
-            window.addEventListener('resize', adjustHeight);
-        }
     };
 
     document.addEventListener('DOMContentLoaded', () => {

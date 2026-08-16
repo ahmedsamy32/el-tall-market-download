@@ -1,0 +1,265 @@
+<!doctype html>
+<html lang="ar" dir="rtl">
+<head>
+    <meta charset="utf-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+    <meta name="description" content="تحميل تطبيق سوق التل للأندرويد والآيفون مع أحدث الإصدارات والمزايا وعروض التسوق الحصرية.">
+    <meta name="robots" content="index, follow">
+    <meta name="theme-color" content="#0f172a">
+    <title>سوق التل - تطبيق التسوق الإلكتروني والتوصيل</title>
+    
+    <!-- Open Graph / Facebook -->
+    <meta property="og:type" content="website">
+    <meta property="og:title" content="سوق التل - تطبيق التسوق الإلكتروني والتوصيل">
+    <meta property="og:description" content="تحميل تطبيق سوق التل للأندرويد والآيفون مع أحدث الإصدارات والمزايا.">
+    <meta property="og:site_name" content="سوق التل">
+    <meta property="og:image" content="assets/images/logo.svg">
+    
+    <!-- Twitter -->
+    <meta name="twitter:card" content="summary_large_image">
+    <meta name="twitter:title" content="سوق التل - تطبيق التسوق الإلكتروني والتوصيل">
+    <meta name="twitter:description" content="تحميل تطبيق سوق التل للأندرويد والآيفون مع أحدث الإصدارات والمزايا.">
+    <meta name="twitter:image" content="assets/images/logo.svg">
+    
+    <!-- Favicon -->
+    <link rel="icon" href="assets/images/logo.svg" type="image/svg+xml">
+    <link rel="apple-touch-icon" href="assets/images/logo.svg">
+    
+    <!-- Fonts & CSS -->
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Cairo:wght@400;500;600;700;800;900&display=swap" rel="stylesheet">
+    <link rel="stylesheet" href="assets/css/tailwind.css">
+    <link rel="stylesheet" href="assets/css/app.css">
+</head>
+<body class="font-arabic bg-slate-950 text-slate-100 antialiased selection:bg-cyan-500 selection:text-slate-950">
+
+    <!-- Header Navigation -->
+    <header class="w-full border-b border-white/10 bg-slate-950/70 backdrop-blur-xl sticky top-0 z-50">
+        <div class="mx-auto flex max-w-7xl items-center justify-between px-4 py-4 sm:px-6 lg:px-8">
+            <a href="index.html" class="flex items-center gap-2 text-white sm:gap-3 group transition">
+                <img src="assets/images/logo.svg" alt="سوق التل" class="h-10 w-10 sm:h-14 sm:w-14 rounded-xl bg-white/5 p-1 transition group-hover:scale-105">
+                <div>
+                    <span class="text-base font-black sm:text-lg block">سوق التل</span>
+                    <span class="text-[10px] text-cyan-400 font-semibold tracking-wider block">SOUQ EL-TALL</span>
+                </div>
+            </a>
+            
+            <div class="flex items-center gap-3">
+                <!-- Social links on desktop -->
+                <div class="hidden sm:flex items-center gap-2">
+                    <a href="https://facebook.com" target="_blank" rel="noopener" aria-label="Facebook" data-social-facebook class="inline-flex h-10 w-10 items-center justify-center rounded-2xl border border-white/10 bg-white/5 text-white transition hover:-translate-y-0.5 hover:bg-white/10">
+                        <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round" class="h-5 w-5">
+                            <path d="M7 10v4h3v8h4v-8h3l1-4h-4V8a1 1 0 0 1 1-1h3V3h-3a5 5 0 0 0-5 5v2H7" />
+                        </svg>
+                    </a>
+                    <a href="https://instagram.com" target="_blank" rel="noopener" aria-label="Instagram" data-social-instagram class="inline-flex h-10 w-10 items-center justify-center rounded-2xl border border-white/10 bg-white/5 text-white transition hover:-translate-y-0.5 hover:bg-white/10">
+                        <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round" class="h-5 w-5">
+                            <rect x="3" y="3" width="18" height="18" rx="4" />
+                            <circle cx="12" cy="12" r="4" />
+                            <circle cx="17" cy="7" r="1" />
+                        </svg>
+                    </a>
+                    <a href="https://tiktok.com" target="_blank" rel="noopener" aria-label="TikTok" data-social-tiktok class="inline-flex h-10 w-10 items-center justify-center rounded-2xl border border-white/10 bg-white/5 text-white transition hover:-translate-y-0.5 hover:bg-white/10">
+                        <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round" class="h-5 w-5">
+                            <path d="M9 9v7a4 4 0 1 0 4-4" />
+                            <path d="M13 9V4c1.3 1.8 2.9 2.6 5 2.7" />
+                        </svg>
+                    </a>
+                </div>
+
+                <!-- Action Button -->
+                <a href="market/index.html" class="inline-flex h-10 sm:h-11 items-center justify-center rounded-2xl bg-cyan-400 px-4 sm:px-6 text-xs sm:text-sm font-black text-slate-950 transition hover:-translate-y-0.5 hover:bg-cyan-300 shadow-lg shadow-cyan-400/20">
+                    🛍️ تسوق الآن
+                </a>
+
+                <!-- Dark / Light theme toggle -->
+                <button type="button" class="theme-toggle inline-flex h-10 w-10 sm:h-11 sm:w-11 items-center justify-center rounded-2xl border border-white/10 bg-white/5 text-white transition hover:bg-white/10" data-theme-toggle aria-label="تبديل المظهر">
+                    <span class="theme-toggle-icon text-base">☾</span>
+                </button>
+            </div>
+        </div>
+    </header>
+
+    <div class="bg-noise min-h-screen">
+        <!-- Banner Carousel Section -->
+        <section class="mx-auto max-w-6xl px-4 sm:px-6 lg:px-8 py-6" id="banner-section">
+            <div class="relative overflow-hidden rounded-[2rem] border border-white/10 shadow-glow" id="homepage-carousel">
+                <div class="carousel-container relative h-[260px] sm:h-[380px] lg:h-[480px] w-full overflow-hidden">
+                    <!-- Slide 1 -->
+                    <div class="carousel-slide active" data-index="0">
+                        <a href="download.html" class="relative block w-full h-full overflow-hidden" style="display: flex; align-items: center; justify-content: center;">
+                            <div class="carousel-blur-bg" style="background-image: url('assets/images/download_banner_default.png');"></div>
+                            <img src="assets/images/download_banner_default.png" alt="إعلان تطبيق سوق التل" class="carousel-main-img">
+                        </a>
+                    </div>
+                </div>
+            </div>
+        </section>
+
+        <!-- Main Hero Section -->
+        <main class="mx-auto max-w-7xl px-4 py-8 sm:px-6 lg:px-8 lg:py-12">
+            <section class="grid gap-8 lg:grid-cols-[1.1fr_0.9fr] lg:items-center">
+                <!-- Right Side: Content -->
+                <div class="space-y-6 text-white">
+                    <div class="inline-flex items-center gap-2 rounded-full border border-cyan-400/20 bg-cyan-400/10 px-4 py-2 text-sm font-semibold text-cyan-200" data-reveal>
+                        <span class="h-2 w-2 rounded-full bg-emerald-400 animate-ping"></span>
+                        أحدث نسخة رسمية متاحة للتحميل الآن
+                    </div>
+
+                    <div data-reveal>
+                        <h1 class="space-y-3 text-3xl font-black leading-tight sm:text-4xl lg:text-6xl">
+                            <span class="block text-white">سوق التل هو تطبيقك</span>
+                            <span class="block bg-gradient-to-r from-cyan-400 to-emerald-400 bg-clip-text text-transparent">الأمثل للتسوق الإلكتروني</span>
+                        </h1>
+                        <p class="mt-5 max-w-2xl text-base leading-relaxed text-slate-300 sm:text-lg">
+                            يوفر لك تجربة تسوق سهلة وممتعة مع مجموعة واسعة من المنتجات من أفضل المتاجر والتجار المحليين. نقدم لك خدمة توصيل سريعة وآمنة حتى باب منزلك مع أفضل الأسعار.
+                        </p>
+                    </div>
+
+                    <div class="flex flex-wrap gap-4 pt-2" data-reveal>
+                        <a href="download.html" class="rounded-2xl bg-cyan-400 px-7 py-4 text-base font-black text-slate-950 transition hover:-translate-y-0.5 hover:bg-cyan-300 shadow-xl shadow-cyan-400/20 flex items-center gap-2">
+                            <span>📲</span>
+                            <span>تحميل التطبيق مجاناً</span>
+                        </a>
+                        <a href="market/index.html" class="rounded-2xl border border-white/15 bg-white/5 px-6 py-4 text-base font-bold text-white transition hover:-translate-y-0.5 hover:bg-white/10 flex items-center gap-2">
+                            <span>🛒</span>
+                            <span>تصفح المتجر</span>
+                        </a>
+                    </div>
+
+                    <div class="flex flex-wrap gap-3 pt-2" data-reveal>
+                        <div class="rounded-full border border-white/10 bg-white/5 px-4 py-2 text-xs sm:text-sm text-slate-300 flex items-center gap-2">
+                            <span class="text-emerald-400">✔</span> تحديثات دورية سريعة
+                        </div>
+                        <div class="rounded-full border border-white/10 bg-white/5 px-4 py-2 text-xs sm:text-sm text-slate-300 flex items-center gap-2">
+                            <span class="text-cyan-400">⚡</span> استجابة فورية
+                        </div>
+                        <div class="rounded-full border border-white/10 bg-white/5 px-4 py-2 text-xs sm:text-sm text-slate-300 flex items-center gap-2">
+                            <span class="text-amber-400">🛡️</span> دفع آمن 100%
+                        </div>
+                    </div>
+                </div>
+
+                <!-- Left Side: Interactive App Preview Card -->
+                <div class="glass-card rounded-[2.5rem] p-6 text-slate-900 shadow-2xl dark:text-white" data-reveal>
+                    <div class="rounded-[2rem] bg-white p-6 dark:bg-slate-950 border border-slate-200/50 dark:border-slate-800/80 shadow-inner">
+                        <div class="flex items-center justify-between gap-4">
+                            <div class="flex items-center gap-3">
+                                <img src="assets/images/logo.svg" alt="سوق التل" class="h-16 w-16 sm:h-20 sm:w-20 rounded-3xl bg-slate-100 p-2 dark:bg-slate-900 shadow-md">
+                                <div>
+                                    <p class="text-xs text-slate-500 dark:text-slate-400 font-semibold tracking-wider">SOUQ EL-TALL APP</p>
+                                    <h2 class="text-xl font-black sm:text-2xl text-slate-950 dark:text-white mt-0.5">واجهة التحميل</h2>
+                                </div>
+                            </div>
+                            <span class="rounded-full bg-emerald-500/10 border border-emerald-500/20 px-3 py-1 text-xs font-bold text-emerald-500 dark:text-emerald-400">
+                                الإصدار الرسمي
+                            </span>
+                        </div>
+
+                        <!-- Version Info Banner -->
+                        <div class="mt-6 rounded-[1.8rem] bg-slate-950 p-6 text-white dark:bg-slate-900 border border-white/5 shadow-lg">
+                            <p class="text-xs font-semibold uppercase tracking-wider text-slate-400">أحدث إصدار</p>
+                            <div class="mt-3 flex items-end justify-between gap-4">
+                                <div>
+                                    <p class="text-3xl font-black text-white" data-bind-version>1.0.0</p>
+                                    <p class="mt-1 text-xs sm:text-sm text-slate-400 flex items-center gap-2">
+                                        <span>الحجم: <strong class="text-slate-200" data-bind-filesize>24.5 MB</strong></span>
+                                        <span>•</span>
+                                        <span data-bind-releasedate>2026-08-16</span>
+                                    </p>
+                                </div>
+                                <span class="rounded-full bg-cyan-400 px-3.5 py-1.5 text-xs font-black text-slate-950 shadow-md">
+                                    جاهز للتحميل
+                                </span>
+                            </div>
+                        </div>
+
+                        <!-- Download Actions -->
+                        <div class="mt-5 grid gap-3 sm:grid-cols-2">
+                            <a href="download.html" data-apk-url class="rounded-2xl bg-gradient-to-r from-blue-600 to-cyan-600 px-4 py-3.5 text-center text-sm font-black text-white transition hover:shadow-lg hover:shadow-cyan-500/30 flex items-center justify-center gap-2">
+                                <span>🤖</span>
+                                <span>تحميل Android (APK)</span>
+                            </a>
+                            <a href="download.html" data-ipa-url class="rounded-2xl border border-slate-300 dark:border-slate-800 bg-slate-100 dark:bg-slate-900 px-4 py-3.5 text-center text-sm font-bold text-slate-800 dark:text-slate-200 transition hover:bg-slate-200 dark:hover:bg-slate-800 flex items-center justify-center gap-2">
+                                <span>🍏</span>
+                                <span>تحميل iPhone (iOS)</span>
+                            </a>
+                        </div>
+                    </div>
+                </div>
+            </section>
+
+            <!-- Features Highlights Section -->
+            <section class="mt-20">
+                <div class="text-center space-y-3 mb-12">
+                    <p class="text-xs font-bold uppercase tracking-[0.25em] text-cyan-400">مميزات التطبيق</p>
+                    <h2 class="text-3xl sm:text-4xl font-black text-white">لماذا تختار تطبيق سوق التل؟</h2>
+                </div>
+
+                <div class="grid gap-6 sm:grid-cols-2 lg:grid-cols-3">
+                    <div class="glass-card rounded-3xl p-6 text-slate-900 dark:text-white transition hover:-translate-y-1">
+                        <div class="flex h-12 w-12 items-center justify-center rounded-2xl bg-cyan-500/20 text-2xl text-cyan-400 mb-4">
+                            🛍️
+                        </div>
+                        <h3 class="text-lg font-bold text-white mb-2">تسوق متنوع وشامل</h3>
+                        <p class="text-sm leading-relaxed text-slate-300">آلاف المنتجات المتميزة من مختلف الفئات مع عروض حصرية ومستمرة.</p>
+                    </div>
+
+                    <div class="glass-card rounded-3xl p-6 text-slate-900 dark:text-white transition hover:-translate-y-1">
+                        <div class="flex h-12 w-12 items-center justify-center rounded-2xl bg-emerald-500/20 text-2xl text-emerald-400 mb-4">
+                            🚀
+                        </div>
+                        <h3 class="text-lg font-bold text-white mb-2">توصيل سريع وآمن</h3>
+                        <p class="text-sm leading-relaxed text-slate-300">كباتن توصيل محترفون يضمنون وصول طلبك في أسرع وقت وبأعلى جودة.</p>
+                    </div>
+
+                    <div class="glass-card rounded-3xl p-6 text-slate-900 dark:text-white transition hover:-translate-y-1">
+                        <div class="flex h-12 w-12 items-center justify-center rounded-2xl bg-amber-500/20 text-2xl text-amber-400 mb-4">
+                            💬
+                        </div>
+                        <h3 class="text-lg font-bold text-white mb-2">تواصل مباشر مع التجار</h3>
+                        <p class="text-sm leading-relaxed text-slate-300">استفسر عن المنتجات وتفاصيل الطلب مباشرة مع البائع بكل سهولة.</p>
+                    </div>
+                </div>
+            </section>
+        </main>
+    </div>
+
+    <!-- Footer -->
+    <footer class="border-t border-white/10 bg-slate-950/80">
+        <div class="mx-auto flex max-w-7xl flex-col items-center gap-6 px-4 py-10 text-center sm:flex-row sm:justify-between sm:text-right">
+            <div class="flex items-center gap-3">
+                <img src="assets/images/logo.svg" alt="سوق التل" class="h-12 w-12 rounded-xl bg-white/5 p-1">
+                <div>
+                    <p class="text-base font-bold text-white">سوق التل</p>
+                    <p class="text-xs text-slate-400">بوابة التحميل الرسمية</p>
+                </div>
+            </div>
+
+            <div class="flex flex-col items-center gap-4 sm:items-end">
+                <div class="flex flex-wrap items-center justify-center gap-4 text-xs sm:text-sm text-slate-300">
+                    <a href="index.html" class="text-white hover:text-cyan-400 transition font-semibold">الرئيسية</a>
+                    <span class="text-white/20">•</span>
+                    <a href="market/index.html" class="text-cyan-400 hover:text-cyan-300 transition font-bold">تسوق الآن</a>
+                    <span class="text-white/20">•</span>
+                    <a href="download.html" class="text-slate-300 hover:text-white transition">تحميل التطبيق</a>
+                    <span class="text-white/20">•</span>
+                    <a href="about.html" class="text-slate-300 hover:text-white transition">عن التطبيق</a>
+                    <span class="text-white/20">•</span>
+                    <a href="privacy.html" class="text-slate-300 hover:text-white transition">سياسة الخصوصية</a>
+                    <span class="text-white/20">•</span>
+                    <a href="terms.html" class="text-slate-300 hover:text-white transition">الشروط والأحكام</a>
+                </div>
+            </div>
+        </div>
+        <div class="border-t border-white/10 py-4 text-center text-xs text-slate-500">
+            © 2026 سوق التل - جميع الحقوق محفوظة
+        </div>
+    </footer>
+
+    <!-- Scripts -->
+    <script src="assets/js/data.js"></script>
+    <script src="assets/js/app.js"></script>
+</body>
+</html>

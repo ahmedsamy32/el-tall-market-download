@@ -228,9 +228,14 @@
                         <span>بيانات التواصل والسوشيال</span>
                     </button>
 
+                    <button data-tab="tab-github" class="nav-item w-full flex items-center gap-3 px-3.5 py-3 rounded-2xl text-xs sm:text-sm font-extrabold border-2 border-transparent text-slate-200 transition text-right">
+                        <span style="width: 32px; height: 32px;" class="rounded-xl bg-cyan-500/20 text-cyan-300 flex items-center justify-center flex-shrink-0"><svg style="width: 16px; height: 16px;" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M13 10V3L4 14h7v7l9-11h-7z"></path></svg></span>
+                        <span>النشر التلقائي لـ GitHub 🚀</span>
+                    </button>
+
                     <button data-tab="tab-security" class="nav-item w-full flex items-center gap-3 px-3.5 py-3 rounded-2xl text-xs sm:text-sm font-extrabold border-2 border-transparent text-slate-200 transition text-right">
                         <span style="width: 32px; height: 32px;" class="rounded-xl bg-rose-500/20 text-rose-300 flex items-center justify-center flex-shrink-0"><svg style="width: 16px; height: 16px;" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M12 15v2m-6 4h12a2 2 0 002-2v-6a2 2 0 00-2-2H6a2 2 0 00-2 2v6a2 2 0 002 2zm10-10V7a4 4 0 00-8 0v4h8z"></path></svg></span>
-                        <span>كلمة سر لوحة التحكم</span>
+                        <span>كلمة السر وضبط المصنع</span>
                     </button>
                 </div>
 
@@ -481,74 +486,52 @@
                             <h4 class="text-sm font-black text-indigo-300 flex items-center gap-1.5">
                                 <span>🌐</span>
                                 <span>روابط مواقع التواصل الاجتماعي</span>
-                            </h                <!-- TAB 5: Security & Settings -->
-                <section id="tab-security" class="tab-content space-y-6">
+                            </h4>
+                            <div class="grid grid-cols-1 md:grid-cols-2 gap-4">
+                                <div>
+                                    <label class="block text-xs font-bold text-slate-300 mb-1.5">رابط Facebook</label>
+                                    <input type="text" id="cfg-social-facebook" class="w-full px-3.5 py-2.5 rounded-xl admin-input text-left font-mono text-xs sm:text-sm">
+                                </div>
+                                <div>
+                                    <label class="block text-xs font-bold text-slate-300 mb-1.5">رابط X (تويتر)</label>
+                                    <input type="text" id="cfg-social-twitter" class="w-full px-3.5 py-2.5 rounded-xl admin-input text-left font-mono text-xs sm:text-sm">
+                                </div>
+                                <div>
+                                    <label class="block text-xs font-bold text-slate-300 mb-1.5">رابط Instagram</label>
+                                    <input type="text" id="cfg-social-instagram" class="w-full px-3.5 py-2.5 rounded-xl admin-input text-left font-mono text-xs sm:text-sm">
+                                </div>
+                                <div>
+                                    <label class="block text-xs font-bold text-slate-300 mb-1.5">رابط Telegram</label>
+                                    <input type="text" id="cfg-social-telegram" class="w-full px-3.5 py-2.5 rounded-xl admin-input text-left font-mono text-xs sm:text-sm">
+                                </div>
+                                <div class="md:col-span-2">
+                                    <label class="block text-xs font-bold text-slate-300 mb-1.5">رابط واتساب المباشر</label>
+                                    <input type="text" id="cfg-social-whatsapp" class="w-full px-3.5 py-2.5 rounded-xl admin-input text-left font-mono text-xs sm:text-sm">
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </section>
+
+                <!-- TAB 5: GitHub Auto-Deploy -->
+                <section id="tab-github" class="tab-content space-y-6">
                     <div class="flex items-center justify-between border-b-2 border-slate-800 pb-4">
                         <div>
                             <h3 class="text-xl sm:text-2xl font-black text-white flex items-center gap-2">
-                                <span style="width: 32px; height: 32px;" class="rounded-xl bg-rose-500/20 text-rose-300 inline-flex items-center justify-center"><svg style="width: 18px; height: 18px;" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M12 15v2m-6 4h12a2 2 0 002-2v-6a2 2 0 00-2-2H6a2 2 0 00-2 2v6a2 2 0 002 2zm10-10V7a4 4 0 00-8 0v4h8z"></path></svg></span>
-                                <span>أمان وإعدادات لوحة التحكم</span>
+                                <span style="width: 32px; height: 32px;" class="rounded-xl bg-cyan-500/20 text-cyan-300 inline-flex items-center justify-center"><svg style="width: 18px; height: 18px;" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M13 10V3L4 14h7v7l9-11h-7z"></path></svg></span>
+                                <span>النشر التلقائي لـ GitHub 🚀</span>
                             </h3>
-                            <p class="text-xs sm:text-sm text-slate-300 font-medium mt-1">إدارة كلمة المرور وضبط خيارات النظام</p>
-                        </div>
-                    </div>
-
-                    <div class="grid grid-cols-1 md:grid-cols-2 gap-6">
-                        <!-- Password Change Card -->
-                        <div class="admin-card p-6 rounded-3xl space-y-5 border-2 border-rose-500/30 shadow-2xl">
-                            <h4 class="text-base font-black text-white flex items-center gap-2 border-b-2 border-slate-800 pb-3">
-                                <span>🔒</span>
-                                <span>تغيير كلمة المرور</span>
-                            </h4>
-
-                            <div>
-                                <label class="block text-xs sm:text-sm font-extrabold text-white mb-2">كلمة المرور الحالية</label>
-                                <input type="password" id="sec-current-pass" class="w-full px-4 py-2.5 rounded-xl admin-input font-mono">
-                            </div>
-
-                            <div>
-                                <label class="block text-xs sm:text-sm font-extrabold text-white mb-2">كلمة المرور الجديدة</label>
-                                <input type="password" id="sec-new-pass" class="w-full px-4 py-2.5 rounded-xl admin-input font-mono">
-                            </div>
-
-                            <div>
-                                <label class="block text-xs sm:text-sm font-extrabold text-white mb-2">تأكيد كلمة المرور الجديدة</label>
-                                <input type="password" id="sec-confirm-pass" class="w-full px-4 py-2.5 rounded-xl admin-input font-mono">
-                            </div>
-
-                            <button id="change-pass-btn" class="w-full py-3.5 rounded-xl font-black text-sm bg-gradient-to-r from-rose-500 to-red-500 hover:from-rose-400 hover:to-red-400 text-white shadow-xl shadow-rose-500/30 transition hover:scale-[1.01] active:scale-[0.99]">
-                                حفظ كلمة المرور الجديدة
-                            </button>
-                        </div>
-
-                        <!-- Reset to Factory Defaults Card -->
-                        <div class="admin-card p-6 rounded-3xl space-y-5 border-2 border-slate-800 shadow-2xl flex flex-col justify-between">
-                            <div class="space-y-4">
-                                <h4 class="text-base font-black text-white flex items-center gap-2 border-b-2 border-slate-800 pb-3">
-                                    <span>🔄</span>
-                                    <span>استعادة ضبط المصنع</span>
-                                </h4>
-                                <p class="text-xs sm:text-sm text-slate-300 leading-relaxed">
-                                    في حال أردت التراجع عن جميع التعديلات والصور التي قمت بحفظها محلياً، يمكنك مسح الذاكرة واستعادة البيانات الأصلية للموقع.
-                                </p>
-                            </div>
-
-                            <button id="reset-config-btn" class="w-full py-3.5 rounded-xl font-bold text-sm bg-slate-900 hover:bg-rose-500/20 text-rose-300 hover:text-rose-200 border-2 border-rose-500/40 transition hover:scale-[1.01] active:scale-[0.99]">
-                                ⚠️ استعادة الإعدادات الأصلية
-                            </button>
+                            <p class="text-xs sm:text-sm text-slate-300 font-medium mt-1">تحديث ملفات المشروع على السيرفر مباشرة لتصبح دائمة وثابتة لجميع الزوار فوراً</p>
                         </div>
                     </div>
 
                     <!-- GitHub Direct Publishing Card (Auto-Deploy) -->
                     <div class="admin-card p-6 sm:p-7 rounded-3xl space-y-5 border-2 border-cyan-500/40 shadow-2xl bg-gradient-to-b from-slate-900 via-slate-900 to-slate-950">
                         <div class="flex flex-col sm:flex-row sm:items-center justify-between gap-3 border-b-2 border-slate-800 pb-4">
-                            <div>
-                                <h4 class="text-base sm:text-lg font-black text-white flex items-center gap-2">
-                                    <span class="text-xl">🚀</span>
-                                    <span>نشر التعديلات تلقائياً على GitHub (Auto-Deploy)</span>
-                                </h4>
-                                <p class="text-xs sm:text-sm text-slate-300 font-medium mt-1">تحديث ملفات المشروع على السيرفر مباشرة لتصبح دائمة وثابتة لجميع الزوار فوراً</p>
-                            </div>
+                            <h4 class="text-base sm:text-lg font-black text-white flex items-center gap-2">
+                                <span class="text-xl">⚙️</span>
+                                <span>حالة الاتصال بمستودع GitHub</span>
+                            </h4>
                             <span id="github-status-badge" class="rounded-full bg-slate-800 border border-slate-700 px-3.5 py-1.5 text-xs font-bold text-slate-300 flex items-center gap-2 self-start sm:self-auto">
                                 <span class="h-2.5 w-2.5 rounded-full bg-slate-500"></span>
                                 <span id="github-status-text">غير متصل (الحفظ محلي فقط)</span>
@@ -596,6 +579,65 @@
                             </button>
                             <button id="disconnect-github-btn" class="px-4 py-2.5 rounded-xl text-xs sm:text-sm font-bold bg-slate-800 hover:bg-slate-700 text-slate-300 transition">
                                 ❌ إلغاء الربط
+                            </button>
+                        </div>
+                    </div>
+                </section>
+
+                <!-- TAB 6: Security & Reset -->
+                <section id="tab-security" class="tab-content space-y-6">
+                    <div class="flex items-center justify-between border-b-2 border-slate-800 pb-4">
+                        <div>
+                            <h3 class="text-xl sm:text-2xl font-black text-white flex items-center gap-2">
+                                <span style="width: 32px; height: 32px;" class="rounded-xl bg-rose-500/20 text-rose-300 inline-flex items-center justify-center"><svg style="width: 18px; height: 18px;" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M12 15v2m-6 4h12a2 2 0 002-2v-6a2 2 0 00-2-2H6a2 2 0 00-2 2v6a2 2 0 002 2zm10-10V7a4 4 0 00-8 0v4h8z"></path></svg></span>
+                                <span>كلمة السر وضبط المصنع</span>
+                            </h3>
+                            <p class="text-xs sm:text-sm text-slate-300 font-medium mt-1">إدارة كلمة المرور واستعادة الإعدادات الأصلية</p>
+                        </div>
+                    </div>
+
+                    <div class="grid grid-cols-1 md:grid-cols-2 gap-6">
+                        <!-- Password Change Card -->
+                        <div class="admin-card p-6 rounded-3xl space-y-5 border-2 border-rose-500/30 shadow-2xl">
+                            <h4 class="text-base font-black text-white flex items-center gap-2 border-b-2 border-slate-800 pb-3">
+                                <span>🔒</span>
+                                <span>تغيير كلمة المرور</span>
+                            </h4>
+
+                            <div>
+                                <label class="block text-xs sm:text-sm font-extrabold text-white mb-2">كلمة المرور الحالية</label>
+                                <input type="password" id="sec-current-pass" class="w-full px-4 py-2.5 rounded-xl admin-input font-mono">
+                            </div>
+
+                            <div>
+                                <label class="block text-xs sm:text-sm font-extrabold text-white mb-2">كلمة المرور الجديدة</label>
+                                <input type="password" id="sec-new-pass" class="w-full px-4 py-2.5 rounded-xl admin-input font-mono">
+                            </div>
+
+                            <div>
+                                <label class="block text-xs sm:text-sm font-extrabold text-white mb-2">تأكيد كلمة المرور الجديدة</label>
+                                <input type="password" id="sec-confirm-pass" class="w-full px-4 py-2.5 rounded-xl admin-input font-mono">
+                            </div>
+
+                            <button id="change-pass-btn" class="w-full py-3.5 rounded-xl font-black text-sm bg-gradient-to-r from-rose-500 to-red-500 hover:from-rose-400 hover:to-red-400 text-white shadow-xl shadow-rose-500/30 transition hover:scale-[1.01] active:scale-[0.99]">
+                                حفظ كلمة المرور الجديدة
+                            </button>
+                        </div>
+
+                        <!-- Reset to Factory Defaults Card -->
+                        <div class="admin-card p-6 rounded-3xl space-y-5 border-2 border-slate-800 shadow-2xl flex flex-col justify-between">
+                            <div class="space-y-4">
+                                <h4 class="text-base font-black text-white flex items-center gap-2 border-b-2 border-slate-800 pb-3">
+                                    <span>🔄</span>
+                                    <span>استعادة ضبط المصنع</span>
+                                </h4>
+                                <p class="text-xs sm:text-sm text-slate-300 leading-relaxed">
+                                    في حال أردت التراجع عن جميع التعديلات والصور التي قمت بحفظها محلياً، يمكنك مسح الذاكرة واستعادة البيانات الأصلية للموقع.
+                                </p>
+                            </div>
+
+                            <button id="reset-config-btn" class="w-full py-3.5 rounded-xl font-bold text-sm bg-slate-900 hover:bg-rose-500/20 text-rose-300 hover:text-rose-200 border-2 border-rose-500/40 transition hover:scale-[1.01] active:scale-[0.99]">
+                                ⚠️ استعادة الإعدادات الأصلية
                             </button>
                         </div>
                     </div>

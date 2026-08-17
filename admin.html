@@ -228,11 +228,6 @@
                         <span>بيانات التواصل والسوشيال</span>
                     </button>
 
-                    <button data-tab="tab-export" class="nav-item w-full flex items-center gap-3 px-3.5 py-3 rounded-2xl text-xs sm:text-sm font-extrabold border-2 border-transparent text-slate-200 transition text-right">
-                        <span style="width: 32px; height: 32px;" class="rounded-xl bg-purple-500/20 text-purple-300 flex items-center justify-center flex-shrink-0"><svg style="width: 16px; height: 16px;" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M8 7v8a2 2 0 002 2h6M8 7V5a2 2 0 012-2h4.586a1 1 0 01.707.293l4.414 4.414a1 1 0 01.293.707V15a2 2 0 01-2 2h-2M8 7H6a2 2 0 00-2 2v10a2 2 0 002 2h8a2 2 0 002-2v-2"></path></svg></span>
-                        <span>تصدير وحفظ كود data.js</span>
-                    </button>
-
                     <button data-tab="tab-security" class="nav-item w-full flex items-center gap-3 px-3.5 py-3 rounded-2xl text-xs sm:text-sm font-extrabold border-2 border-transparent text-slate-200 transition text-right">
                         <span style="width: 32px; height: 32px;" class="rounded-xl bg-rose-500/20 text-rose-300 flex items-center justify-center flex-shrink-0"><svg style="width: 16px; height: 16px;" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M12 15v2m-6 4h12a2 2 0 002-2v-6a2 2 0 00-2-2H6a2 2 0 00-2 2v6a2 2 0 002 2zm10-10V7a4 4 0 00-8 0v4h8z"></path></svg></span>
                         <span>كلمة سر لوحة التحكم</span>
@@ -486,108 +481,62 @@
                             <h4 class="text-sm font-black text-indigo-300 flex items-center gap-1.5">
                                 <span>🌐</span>
                                 <span>روابط مواقع التواصل الاجتماعي</span>
-                            </h4>
-                            
-                            <div class="grid grid-cols-1 md:grid-cols-3 gap-4">
-                                <div>
-                                    <label class="block text-xs font-bold text-slate-300 mb-1.5">Facebook</label>
-                                    <input type="text" id="cfg-social-facebook" class="w-full px-3 py-2 rounded-xl admin-input font-mono text-left text-xs">
-                                </div>
-                                <div>
-                                    <label class="block text-xs font-bold text-slate-300 mb-1.5">Instagram</label>
-                                    <input type="text" id="cfg-social-instagram" class="w-full px-3 py-2 rounded-xl admin-input font-mono text-left text-xs">
-                                </div>
-                                <div>
-                                    <label class="block text-xs font-bold text-slate-300 mb-1.5">TikTok</label>
-                                    <input type="text" id="cfg-social-tiktok" class="w-full px-3 py-2 rounded-xl admin-input font-mono text-left text-xs">
-                                </div>
-                            </div>
-                        </div>
-                    </div>
-                </section>
-
-                <!-- TAB 5: Export / Save data.js -->
-                <section id="tab-export" class="tab-content space-y-6">
-                    <div class="flex items-center justify-between border-b-2 border-slate-800 pb-4">
-                        <div>
-                            <h3 class="text-xl sm:text-2xl font-black text-white flex items-center gap-2">
-                                <span style="width: 32px; height: 32px;" class="rounded-xl bg-purple-500/20 text-purple-300 inline-flex items-center justify-center"><svg style="width: 18px; height: 18px;" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M8 7v8a2 2 0 002 2h6M8 7V5a2 2 0 012-2h4.586a1 1 0 01.707.293l4.414 4.414a1 1 0 01.293.707V15a2 2 0 01-2 2h-2M8 7H6a2 2 0 00-2 2v10a2 2 0 002 2h8a2 2 0 002-2v-2"></path></svg></span>
-                                <span>تصدير وحفظ كود data.js</span>
-                            </h3>
-                            <p class="text-xs sm:text-sm text-slate-300 font-medium mt-1">تنزيل أو نسخ الكود لحفظ التغييرات بشكل دائم على الخادم ومستودع GitHub</p>
-                        </div>
-                    </div>
-
-                    <div class="grid grid-cols-1 md:grid-cols-3 gap-4">
-                        <button id="export-download-btn" class="p-5 rounded-3xl admin-card border-2 border-cyan-500/40 hover:border-cyan-400 bg-cyan-500/10 hover:bg-cyan-500/20 text-right transition flex flex-col justify-between group shadow-xl">
-                            <div>
-                                <span style="width: 44px; height: 44px;" class="rounded-2xl bg-cyan-500/30 text-cyan-300 inline-flex items-center justify-center mb-3"><svg style="width: 22px; height: 22px;" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2.5" d="M4 16v1a3 3 0 003 3h10a3 3 0 003-3v-1m-4-4l-4 4m0 0l-4-4m4 4V4"></path></svg></span>
-                                <h4 class="font-black text-white text-base group-hover:text-cyan-300 transition">تنزيل ملف data.js</h4>
-                                <p class="text-xs text-slate-300 mt-1.5 font-medium">تنزيل الملف المحدث واستبداله داخل مجلد assets/js/</p>
-                            </div>
-                            <span class="text-xs font-black text-cyan-300 mt-4 inline-flex items-center gap-1">تنزيل الملف الآن ←</span>
-                        </button>
-
-                        <button id="export-copy-btn" class="p-5 rounded-3xl admin-card border-2 border-purple-500/40 hover:border-purple-400 bg-purple-500/10 hover:bg-purple-500/20 text-right transition flex flex-col justify-between group shadow-xl">
-                            <div>
-                                <span style="width: 44px; height: 44px;" class="rounded-2xl bg-purple-500/30 text-purple-300 inline-flex items-center justify-center mb-3"><svg style="width: 22px; height: 22px;" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2.5" d="M8 5H6a2 2 0 00-2 2v12a2 2 0 002 2h10a2 2 0 002-2v-1M8 5a2 2 0 002 2h2a2 2 0 002-2M8 5a2 2 0 012-2h2a2 2 0 012 2m0 0h2a2 2 0 012 2v3m2 4H10m0 0l3-3m-3 3l3 3"></path></svg></span>
-                                <h4 class="font-black text-white text-base group-hover:text-purple-300 transition">نسخ الكود بالكامل</h4>
-                                <p class="text-xs text-slate-300 mt-1.5 font-medium">نسخ كود الجافاسكريبت المولد إلى الحافظة مباشرة</p>
-                            </div>
-                            <span class="text-xs font-black text-purple-300 mt-4 inline-flex items-center gap-1">نسخ للحافظة ←</span>
-                        </button>
-
-                        <button id="export-reset-btn" class="p-5 rounded-3xl admin-card border-2 border-rose-500/40 hover:border-rose-400 bg-rose-500/10 hover:bg-rose-500/20 text-right transition flex flex-col justify-between group shadow-xl">
-                            <div>
-                                <span style="width: 44px; height: 44px;" class="rounded-2xl bg-rose-500/30 text-rose-300 inline-flex items-center justify-center mb-3"><svg style="width: 22px; height: 22px;" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2.5" d="M4 4v5h.582m15.356 2A8.001 8.001 0 004.582 9m0 0H9m11 11v-5h-.581m0 0a8.003 8.003 0 01-15.357-2m15.357 2H15"></path></svg></span>
-                                <h4 class="font-black text-white text-base group-hover:text-rose-300 transition">استعادة الافتراضي</h4>
-                                <p class="text-xs text-slate-300 mt-1.5 font-medium">مسح التعديلات المحلية والعودة للإعدادات الأولية</p>
-                            </div>
-                            <span class="text-xs font-black text-rose-300 mt-4 inline-flex items-center gap-1">إعادة الضبط ←</span>
-                        </button>
-                    </div>
-
-                    <!-- Code Preview Block -->
-                    <div class="admin-card p-5 rounded-3xl space-y-3 shadow-xl">
-                        <div class="flex items-center justify-between text-xs sm:text-sm font-bold text-slate-300 border-b-2 border-slate-800 pb-3">
-                            <span class="font-mono text-cyan-300 font-bold">assets/js/data.js (معاينة حية للكود المولد)</span>
-                            <span class="text-xs bg-slate-800 px-2.5 py-0.5 rounded-lg text-white font-mono border border-slate-700">JavaScript</span>
-                        </div>
-                        <pre class="bg-slate-950 p-4 rounded-2xl overflow-x-auto text-xs text-emerald-300 border-2 border-slate-800 max-h-80 leading-relaxed"><code id="code-preview"></code></pre>
-                    </div>
-                </section>
-
-                <!-- TAB 6: Security & Password -->
+                            </h                <!-- TAB 5: Security & Settings -->
                 <section id="tab-security" class="tab-content space-y-6">
                     <div class="flex items-center justify-between border-b-2 border-slate-800 pb-4">
                         <div>
                             <h3 class="text-xl sm:text-2xl font-black text-white flex items-center gap-2">
                                 <span style="width: 32px; height: 32px;" class="rounded-xl bg-rose-500/20 text-rose-300 inline-flex items-center justify-center"><svg style="width: 18px; height: 18px;" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M12 15v2m-6 4h12a2 2 0 002-2v-6a2 2 0 00-2-2H6a2 2 0 00-2 2v6a2 2 0 002 2zm10-10V7a4 4 0 00-8 0v4h8z"></path></svg></span>
-                                <span>كلمة سر لوحة التحكم</span>
+                                <span>أمان وإعدادات لوحة التحكم</span>
                             </h3>
-                            <p class="text-xs sm:text-sm text-slate-300 font-medium mt-1">تغيير كلمة المرور المستخدمة للدخول إلى لوحة التحكم</p>
+                            <p class="text-xs sm:text-sm text-slate-300 font-medium mt-1">إدارة كلمة المرور وضبط خيارات النظام</p>
                         </div>
                     </div>
 
-                    <div class="admin-card p-6 rounded-3xl space-y-5 max-w-lg border-2 border-rose-500/30 shadow-2xl">
-                        <div>
-                            <label class="block text-xs sm:text-sm font-extrabold text-white mb-2">كلمة المرور الحالية</label>
-                            <input type="password" id="sec-current-pass" class="w-full px-4 py-2.5 rounded-xl admin-input font-mono">
+                    <div class="grid grid-cols-1 md:grid-cols-2 gap-6">
+                        <!-- Password Change Card -->
+                        <div class="admin-card p-6 rounded-3xl space-y-5 border-2 border-rose-500/30 shadow-2xl">
+                            <h4 class="text-base font-black text-white flex items-center gap-2 border-b-2 border-slate-800 pb-3">
+                                <span>🔒</span>
+                                <span>تغيير كلمة المرور</span>
+                            </h4>
+
+                            <div>
+                                <label class="block text-xs sm:text-sm font-extrabold text-white mb-2">كلمة المرور الحالية</label>
+                                <input type="password" id="sec-current-pass" class="w-full px-4 py-2.5 rounded-xl admin-input font-mono">
+                            </div>
+
+                            <div>
+                                <label class="block text-xs sm:text-sm font-extrabold text-white mb-2">كلمة المرور الجديدة</label>
+                                <input type="password" id="sec-new-pass" class="w-full px-4 py-2.5 rounded-xl admin-input font-mono">
+                            </div>
+
+                            <div>
+                                <label class="block text-xs sm:text-sm font-extrabold text-white mb-2">تأكيد كلمة المرور الجديدة</label>
+                                <input type="password" id="sec-confirm-pass" class="w-full px-4 py-2.5 rounded-xl admin-input font-mono">
+                            </div>
+
+                            <button id="change-pass-btn" class="w-full py-3.5 rounded-xl font-black text-sm bg-gradient-to-r from-rose-500 to-red-500 hover:from-rose-400 hover:to-red-400 text-white shadow-xl shadow-rose-500/30 transition hover:scale-[1.01] active:scale-[0.99]">
+                                حفظ كلمة المرور الجديدة
+                            </button>
                         </div>
 
-                        <div>
-                            <label class="block text-xs sm:text-sm font-extrabold text-white mb-2">كلمة المرور الجديدة</label>
-                            <input type="password" id="sec-new-pass" class="w-full px-4 py-2.5 rounded-xl admin-input font-mono">
-                        </div>
+                        <!-- Reset to Factory Defaults Card -->
+                        <div class="admin-card p-6 rounded-3xl space-y-5 border-2 border-slate-800 shadow-2xl flex flex-col justify-between">
+                            <div class="space-y-4">
+                                <h4 class="text-base font-black text-white flex items-center gap-2 border-b-2 border-slate-800 pb-3">
+                                    <span>🔄</span>
+                                    <span>استعادة ضبط المصنع</span>
+                                </h4>
+                                <p class="text-xs sm:text-sm text-slate-300 leading-relaxed">
+                                    في حال أردت التراجع عن جميع التعديلات والصور التي قمت بحفظها محلياً، يمكنك مسح الذاكرة واستعادة البيانات الأصلية للموقع.
+                                </p>
+                            </div>
 
-                        <div>
-                            <label class="block text-xs sm:text-sm font-extrabold text-white mb-2">تأكيد كلمة المرور الجديدة</label>
-                            <input type="password" id="sec-confirm-pass" class="w-full px-4 py-2.5 rounded-xl admin-input font-mono">
+                            <button id="reset-config-btn" class="w-full py-3.5 rounded-xl font-bold text-sm bg-slate-900 hover:bg-rose-500/20 text-rose-300 hover:text-rose-200 border-2 border-rose-500/40 transition hover:scale-[1.01] active:scale-[0.99]">
+                                ⚠️ استعادة الإعدادات الأصلية
+                            </button>
                         </div>
-
-                        <button id="change-pass-btn" class="w-full py-3.5 rounded-xl font-black text-sm bg-gradient-to-r from-rose-500 to-red-500 hover:from-rose-400 hover:to-red-400 text-white shadow-xl shadow-rose-500/30 transition hover:scale-[1.01] active:scale-[0.99]">
-                            حفظ كلمة المرور الجديدة
-                        </button>
                     </div>
                 </section>
 
@@ -864,7 +813,6 @@
                     }
                     
                     loadFormValues();
-                    updateCodePreview();
                 } else {
                     loginScreen.classList.remove('hidden');
                     dashboardScreen.classList.add('hidden');
@@ -951,11 +899,6 @@
 
                     // Close mobile menu if open
                     document.body.classList.remove('admin-menu-open');
-
-                    if (tabId === 'tab-export') {
-                        collectFormValues();
-                        updateCodePreview();
-                    }
                 });
             });
 
@@ -1338,7 +1281,6 @@
                         } catch (e) {}
                     }
                     window.siteConfig = Object.assign({}, window.siteConfig, currentConfig);
-                    updateCodePreview();
                     showToast('تم حفظ التعديلات والصور بنجاح وتطبيقها على الموقع!', 'success');
                 } catch (err) {
                     showToast('حدث خطأ أثناء الحفظ: ' + err.message, 'error');
@@ -1347,78 +1289,24 @@
 
             quickSaveBtn.addEventListener('click', saveChanges);
 
-            // 9. Generate data.js code
-            function generateDataJsContent() {
-                collectFormValues();
-                const jsonStr = JSON.stringify(currentConfig, null, 4);
-                return `/**
- * إعدادات وبيانات موقع سوق التل المركزية
- * يمكنك تعديل الروابط والإصدارات ومعلومات التواصل والإعلانات بسهولة من هنا
- */
-let siteConfig = ${jsonStr};
-
-// مدير التخزين المتقدم
-if (typeof localStorage !== 'undefined') {
-    try {
-        const saved = localStorage.getItem('eltal_site_config');
-        if (saved) {
-            const parsed = JSON.parse(saved);
-            siteConfig = Object.assign({}, siteConfig, parsed);
-        }
-    } catch (e) {}
-}
-
-if (typeof window !== 'undefined') {
-    window.siteConfig = siteConfig;
-}
-`;
-            }
-
-            function updateCodePreview() {
-                if (codePreview) {
-                    codePreview.textContent = generateDataJsContent();
-                }
-            }
-
-            // Export Actions
-            document.getElementById('export-download-btn').addEventListener('click', async () => {
-                await saveChanges();
-                const content = generateDataJsContent();
-                const blob = new Blob([content], { type: 'application/javascript;charset=utf-8;' });
-                const url = URL.createObjectURL(blob);
-                const a = document.createElement('a');
-                a.href = url;
-                a.download = 'data.js';
-                document.body.appendChild(a);
-                a.click();
-                document.body.removeChild(a);
-                URL.revokeObjectURL(url);
-                showToast('تم تنزيل ملف data.js المحدث بنجاح! ضعه في assets/js/ واستبدل الملف القديم.', 'success');
-            });
-
-            document.getElementById('export-copy-btn').addEventListener('click', async () => {
-                await saveChanges();
-                const content = generateDataJsContent();
-                navigator.clipboard.writeText(content).then(() => {
-                    showToast('تم نسخ كود data.js بالكامل إلى الحافظة!', 'success');
-                }).catch(() => {
-                    showToast('تعذر النسخ التلقائي، يمكنك نسخه يدوياً من المربع أدناه.', 'info');
-                });
-            });
-
-            document.getElementById('export-reset-btn').addEventListener('click', async () => {
-                if (confirm('هل أنت متأكد من رغبتك في حذف جميع التعديلات المحفوظة واستعادة القيم الافتراضية؟')) {
-                    localStorage.removeItem(storageConfigKey);
-                    if (window.SiteDB) {
-                        try {
-                            const db = await window.SiteDB.open();
-                            const tx = db.transaction(window.SiteDB.storeName, 'readwrite');
-                            tx.objectStore(window.SiteDB.storeName).clear();
-                        } catch (e) {}
+            // 9. Reset to Factory Defaults Action
+            const resetConfigBtn = document.getElementById('reset-config-btn');
+            if (resetConfigBtn) {
+                resetConfigBtn.addEventListener('click', async () => {
+                    if (confirm('هل أنت متأكد من رغبتك في حذف جميع التعديلات والصور المحفوظة والعودة للبيانات الأصلية؟')) {
+                        localStorage.removeItem(storageConfigKey);
+                        if (window.SiteDB) {
+                            try {
+                                const db = await window.SiteDB.open();
+                                const tx = db.transaction(window.SiteDB.storeName, 'readwrite');
+                                tx.objectStore(window.SiteDB.storeName).clear();
+                            } catch (e) {}
+                        }
+                        showToast('تم استعادة الإعدادات الأصلية بنجاح!', 'success');
+                        setTimeout(() => location.reload(), 1000);
                     }
-                    location.reload();
-                }
-            });
+                });
+            }
 
             // 10. Secure Password Change (OWASP Cryptographic Storage with SHA-256)
             document.getElementById('change-pass-btn').addEventListener('click', async () => {

@@ -1,29 +1,92 @@
-Options -Indexes
+# ==============================================================================
+# سوق التل - إعدادات الحماية والأمان المتقدمة وفق معايير OWASP القياسية
+# ==============================================================================
+
+# 1. منع استعراض محتويات المجلدات (Prevent Directory Browsing - OWASP A01/A05)
+Options -Indexes -MultiViews
 DirectoryIndex index.html
 
+# 2. إخفاء معلومات وإصدارات السيرفر (Prevent Server Information Leakage)
+ServerSignature Off
+
+<IfModule mod_headers.c>
+    # إزالة ترويسات السيرفر التقنية
+    Header unset X-Powered-By
+    Header unset Server
+
+    # حماية ضد تضمين الموقع في إطارات وهمية (Anti-Clickjacking - OWASP A05)
+    Header always set X-Frame-Options "SAMEORIGIN"
+
+    # منع التخمين التلقائي لنوع الملفات (Anti-MIME Sniffing)
+    Header always set X-Content-Type-Options "nosniff"
+
+    # حماية المتصفح ضد حقن الشيفرات (Anti-XSS Filter)
+    Header always set X-XSS-Protection "1; mode=block"
+
+    # إجبار التشفير الصارم ببروتوكول HTTPS لمدة عام كامل (HSTS)
+    Header always set Strict-Transport-Security "max-age=31536000; includeSubDomains; preload" env=HTTPS
+
+    # التحكم في بيانات المرجعية لحماية الخصوصية (Referrer Policy)
+    Header always set Referrer-Policy "strict-origin-when-cross-origin"
+
+    # حظر الصلاحيات الحساسة غير المستخدمة من المتصفح (Permissions Policy)
+    Header always set Permissions-Policy "geolocation=(), camera=(), microphone=(), payment=(), usb=()"
+
+    # سياسة أمان المحتوى لترقية كافة الطلبات إلى HTTPS تلقائياً (CSP)
+    Header always set Content-Security-Policy "upgrade-insecure-requests;"
+</IfModule>
+
 <IfModule mod_rewrite.c>
-RewriteEngine On
+    RewriteEngine On
 
-# Force HTTPS on all domains
-RewriteCond %{HTTPS} !=on
-RewriteRule ^ https://%{HTTP_HOST}%{REQUEST_URI} [L,R=301]
+    # 3. إجبار بروتوكول HTTPS المشفر على كل الروابط (Force HTTPS - OWASP A02)
+    RewriteCond %{HTTPS} !=on
+    RewriteRule ^ https://%{HTTP_HOST}%{REQUEST_URI} [L,R=301]
 
-# Remove .html extension from URL (Redirect .html to clean URLs)
-RewriteCond %{THE_REQUEST} ^[A-Z]{3,}\s([^.]+)\.html [NC]
-RewriteRule ^ %1 [R=301,L]
+    # 4. حظر محاولات الاختراق وحقن الأوامر وDirectory Traversal (OWASP A03)
+    RewriteCond %{QUERY_STRING} (eval\(|base64_|<script|javascript:|GLOBALS|REQUEST|_SERVER|\.\./) [NC,OR]
+    RewriteCond %{QUERY_STRING} (union.*select|insert.*into|drop.*table|benchmark\(|sleep\() [NC]
+    RewriteRule .* - [F,L]
 
-# Exclude market directory from root rewrites
-RewriteRule ^market($|/) - [L]
+    # 5. تنظيف الروابط وحذف امتداد .html (Clean Friendly URLs)
+    RewriteCond %{THE_REQUEST} ^[A-Z]{3,}\s([^.]+)\.html [NC]
+    RewriteRule ^ %1 [R=301,L]
 
-# Clean HTML Routes
-RewriteRule ^$ index.html [L]
-RewriteRule ^download/?$ download.html [L]
-RewriteRule ^about/?$ about.html [L]
-RewriteRule ^privacy/?$ privacy.html [L]
-RewriteRule ^terms/?$ terms.html [L]
-RewriteRule ^admin/?$ admin.html [L]
+    # استثناء مجلد تطبيق فلاتر (Flutter Web) من التوجيهات العامة
+    RewriteRule ^market($|/) - [L]
 
-RewriteCond %{REQUEST_FILENAME} -f [OR]
-RewriteCond %{REQUEST_FILENAME} -d
-RewriteRule ^ - [L]
+    # توجيه المسارات النظيفة إلى ملفاتها الأصلية
+    RewriteRule ^$ index.html [L]
+    RewriteRule ^download/?$ download.html [L]
+    RewriteRule ^about/?$ about.html [L]
+    RewriteRule ^privacy/?$ privacy.html [L]
+    RewriteRule ^terms/?$ terms.html [L]
+    RewriteRule ^admin/?$ admin.html [L]
+
+    # توجيه الطلبات للملفات والمجلدات الموجودة فعلياً
+    RewriteCond %{REQUEST_FILENAME} -f [OR]
+    RewriteCond %{REQUEST_FILENAME} -d
+    RewriteRule ^ - [L]
+</IfModule>
+
+# 6. حظر الوصول التام إلى الملفات والمجلدات الحساسة والمخفية (Block Sensitive Files - OWASP A05)
+<FilesMatch "^\.|\.(bak|config|sql|fla|psd|ini|log|sh|inc|swp|dist|env|git|yml|yaml)$">
+    <IfModule mod_authz_core.c>
+        Require all denied
+    </IfModule>
+    <IfModule !mod_authz_core.c>
+        Order allow,deny
+        Deny from all
+    </IfModule>
+</FilesMatch>
+
+# 7. ضبط الـ MIME Types الآمنة
+<IfModule mod_mime.c>
+    AddType text/html .html
+    AddType text/css .css
+    AddType application/javascript .js
+    AddType application/json .json
+    AddType image/svg+xml .svg
+    AddType image/webp .webp
+    AddType application/vnd.android.package-archive .apk
 </IfModule>

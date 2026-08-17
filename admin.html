@@ -656,10 +656,74 @@
     <script src="assets/js/data.js"></script>
     <script>
         document.addEventListener('DOMContentLoaded', () => {
-            const defaultPin = "admin123";
+            // OWASP A07: Cryptographic SHA-256 Hashing for authentication
+            const DEFAULT_PIN_HASH = "240be518fabd2724ddb6f04eeb1da5967448d7e831c08c8fa822809f74c720a9"; // sha256("admin123")
             const storageAuthKey = 'eltal_admin_auth';
-            const storagePinKey = 'eltal_admin_pin';
+            const storagePinHashKey = 'eltal_admin_pin_hash';
+            const storageAttemptsKey = 'eltal_login_attempts';
+            const storageLockoutKey = 'eltal_login_lockout';
             const storageConfigKey = 'eltal_site_config';
+
+            const MAX_FAILED_ATTEMPTS = 5;
+            const LOCKOUT_DURATION_MS = 5 * 60 * 1000; // 5 minutes
+            const INACTIVITY_TIMEOUT_MS = 30 * 60 * 1000; // 30 minutes
+
+            // SHA-256 Native Web Crypto Helper
+            async function sha256(message) {
+                const msgBuffer = new TextEncoder().encode(message);
+                const hashBuffer = await crypto.subtle.digest('SHA-256', msgBuffer);
+                const hashArray = Array.from(new Uint8Array(hashBuffer));
+                return hashArray.map(b => b.toString(16).padStart(2, '0')).join('');
+            }
+
+            // OWASP A03: HTML Escaping & URL Sanitization
+            function escapeHtml(str) {
+                if (!str) return '';
+                return String(str)
+                    .replace(/&/g, '&amp;')
+                    .replace(/</g, '&lt;')
+                    .replace(/>/g, '&gt;')
+                    .replace(/"/g, '&quot;')
+                    .replace(/'/g, '&#039;');
+            }
+
+            function sanitizeUrl(url) {
+                if (!url) return '#';
+                const trimmed = String(url).trim();
+                if (/^(javascript:|data:(?!image\/)|vbscript:)/i.test(trimmed)) {
+                    return '#';
+                }
+                return trimmed;
+            }
+
+            // OWASP Rate Limiting & Lockout Check
+            function getLockoutRemainingSeconds() {
+                const lockoutUntil = parseInt(localStorage.getItem(storageLockoutKey) || '0', 10);
+                const now = Date.now();
+                if (lockoutUntil > now) {
+                    return Math.ceil((lockoutUntil - now) / 1000);
+                }
+                return 0;
+            }
+
+            // OWASP Session Inactivity Management
+            let inactivityTimer = null;
+            function resetInactivityTimer() {
+                if (inactivityTimer) clearTimeout(inactivityTimer);
+                const isAuth = sessionStorage.getItem(storageAuthKey) === 'true' || localStorage.getItem(storageAuthKey) === 'true';
+                if (isAuth) {
+                    inactivityTimer = setTimeout(() => {
+                        sessionStorage.removeItem(storageAuthKey);
+                        localStorage.removeItem(storageAuthKey);
+                        showToast('انتهت مدة الجلسة لعدم وجود نشاط (OWASP Session Timeout). تم تسجيل الخروج تلقائياً.', 'info');
+                        checkAuth();
+                    }, INACTIVITY_TIMEOUT_MS);
+                }
+            }
+
+            ['mousemove', 'keydown', 'click', 'scroll', 'touchstart'].forEach(evt => {
+                window.addEventListener(evt, resetInactivityTimer, { passive: true });
+            });
 
             // Elements
             const loginScreen = document.getElementById('login-screen');
@@ -729,7 +793,7 @@
                 const toast = document.createElement('div');
                 toast.className = `toast-item toast-${type}`;
                 toast.innerHTML = `
-                    <div class="toast-message text-xs sm:text-sm font-bold">${message}</div>
+                    <div class="toast-message text-xs sm:text-sm font-bold">${escapeHtml(message)}</div>
                     <button class="toast-close text-xs">&times;</button>
                 `;
                 toastContainer.appendChild(toast);
@@ -780,12 +844,13 @@
                 });
             }
 
-            // 2. Authentication Check
+            // 2. Authentication Check with Lockout Prevention
             async function checkAuth() {
                 const isAuth = sessionStorage.getItem(storageAuthKey) === 'true' || localStorage.getItem(storageAuthKey) === 'true';
                 if (isAuth) {
                     loginScreen.classList.add('hidden');
                     dashboardScreen.classList.remove('hidden');
+                    resetInactivityTimer();
                     
                     // Load any persisted config from IndexedDB if available
                     if (window.SiteDB) {
@@ -806,21 +871,60 @@
                 }
             }
 
-            loginForm.addEventListener('submit', (e) => {
+            loginForm.addEventListener('submit', async (e) => {
                 e.preventDefault();
-                const enteredPin = passwordInput.value.trim();
-                const storedPin = localStorage.getItem(storagePinKey) || defaultPin;
 
-                if (enteredPin === storedPin) {
+                // Check Brute-force lockout
+                const remSecs = getLockoutRemainingSeconds();
+                if (remSecs > 0) {
+                    showToast(`⚠️ تم إيقاف المحاولات مؤقتاً لحماية الحساب (OWASP Brute-Force Defense). يرجى الانتظار ${remSecs} ثانية.`, 'error');
+                    return;
+                }
+
+                const enteredPin = passwordInput.value.trim();
+                if (!enteredPin) return;
+
+                const enteredHash = await sha256(enteredPin);
+                let storedHash = localStorage.getItem(storagePinHashKey);
+
+                // Seamless migration for legacy plain-text pin if existed
+                if (!storedHash) {
+                    const legacyPin = localStorage.getItem('eltal_admin_pin');
+                    if (legacyPin) {
+                        storedHash = await sha256(legacyPin);
+                        localStorage.setItem(storagePinHashKey, storedHash);
+                        localStorage.removeItem('eltal_admin_pin');
+                    } else {
+                        storedHash = DEFAULT_PIN_HASH;
+                    }
+                }
+
+                if (enteredHash === storedHash) {
+                    // Reset failed attempts on success
+                    localStorage.removeItem(storageAttemptsKey);
+                    localStorage.removeItem(storageLockoutKey);
+
                     if (rememberMe.checked) {
                         localStorage.setItem(storageAuthKey, 'true');
                     } else {
                         sessionStorage.setItem(storageAuthKey, 'true');
                     }
-                    showToast('تم تسجيل الدخول بنجاح! مرحباً بك.', 'success');
+                    showToast('تم تسجيل الدخول الآمن بنجاح! مرحباً بك.', 'success');
+                    passwordInput.value = '';
                     checkAuth();
                 } else {
-                    showToast('كلمة المرور غير صحيحة! يرجى المحاولة مجدداً.', 'error');
+                    // Increment failed attempts
+                    let attempts = parseInt(localStorage.getItem(storageAttemptsKey) || '0', 10) + 1;
+                    localStorage.setItem(storageAttemptsKey, attempts.toString());
+
+                    if (attempts >= MAX_FAILED_ATTEMPTS) {
+                        localStorage.setItem(storageLockoutKey, (Date.now() + LOCKOUT_DURATION_MS).toString());
+                        showToast(`⛔ تم حظر تسجيل الدخول لمدة 5 دقائق بعد ${MAX_FAILED_ATTEMPTS} محاولات خاطئة (OWASP Protection).`, 'error');
+                    } else {
+                        const remaining = MAX_FAILED_ATTEMPTS - attempts;
+                        showToast(`كلمة المرور غير صحيحة! المتبقي: ${remaining} محاولات قبل الإيقاف المؤقت.`, 'error');
+                    }
+
                     passwordInput.value = '';
                     passwordInput.focus();
                 }
@@ -830,7 +934,7 @@
                 sessionStorage.removeItem(storageAuthKey);
                 localStorage.removeItem(storageAuthKey);
                 passwordInput.value = '';
-                showToast('تم تسجيل الخروج بنجاح.', 'info');
+                showToast('تم تسجيل الخروج وتأمين الجلسة بنجاح.', 'info');
                 checkAuth();
             });
 
@@ -1083,20 +1187,23 @@
                     card.className = 'admin-card p-5 rounded-2xl flex flex-col md:flex-row items-start md:items-center justify-between gap-4 border-2 border-slate-800 hover:border-slate-700 transition shadow-lg';
                     
                     const isBase64 = b.image && b.image.startsWith('data:');
-                    const displayPath = isBase64 ? '(صورة مرفوعة مباشرة)' : b.image;
+                    const displayPath = isBase64 ? '(صورة مرفوعة مباشرة)' : escapeHtml(b.image);
+                    const safeAlt = escapeHtml(b.alt || 'بدون نص');
+                    const safeLink = escapeHtml(sanitizeUrl(b.link || '#'));
+                    const safeImg = sanitizeUrl(b.image || 'assets/images/download_banner_default.png');
 
                     card.innerHTML = `
                         <div class="flex items-center gap-4 flex-1 w-full">
                             <div style="width: 100px; height: 60px;" class="rounded-xl bg-slate-950 border-2 border-slate-700 overflow-hidden flex-shrink-0 flex items-center justify-center p-1">
-                                <img src="${b.image}" alt="${b.alt || ''}" style="width: 100%; height: 100%; object-fit: contain;" onerror="this.src='assets/images/download_banner_default.png'">
+                                <img src="${safeImg}" alt="${safeAlt}" style="width: 100%; height: 100%; object-fit: contain;" onerror="this.src='assets/images/download_banner_default.png'">
                             </div>
                             <div class="flex-1 space-y-1 overflow-hidden">
                                 <div class="text-xs sm:text-sm font-black text-white flex items-center gap-2">
                                     <span class="bg-amber-500/20 text-amber-300 px-2 py-0.5 rounded-lg border border-amber-500/30 text-xs">بانر #${idx + 1}</span>
-                                    <span>${b.alt || 'بدون نص'}</span>
+                                    <span>${safeAlt}</span>
                                 </div>
                                 <div class="text-xs text-slate-300 truncate font-mono"><b>المصدر:</b> ${displayPath}</div>
-                                <div class="text-xs text-cyan-300 truncate font-mono"><b>الرابط:</b> ${b.link || '#'}</div>
+                                <div class="text-xs text-cyan-300 truncate font-mono"><b>الرابط:</b> ${safeLink}</div>
                             </div>
                         </div>
                         <div class="flex items-center gap-2 self-end md:self-center">
@@ -1313,20 +1420,30 @@ if (typeof window !== 'undefined') {
                 }
             });
 
-            // 10. Password Change
-            document.getElementById('change-pass-btn').addEventListener('click', () => {
+            // 10. Secure Password Change (OWASP Cryptographic Storage with SHA-256)
+            document.getElementById('change-pass-btn').addEventListener('click', async () => {
                 const cur = document.getElementById('sec-current-pass').value.trim();
                 const n1 = document.getElementById('sec-new-pass').value.trim();
                 const n2 = document.getElementById('sec-confirm-pass').value.trim();
 
-                const storedPin = localStorage.getItem(storagePinKey) || defaultPin;
+                if (!cur || !n1 || !n2) {
+                    showToast('يرجى تعبئة جميع حقول كلمة المرور!', 'error');
+                    return;
+                }
 
-                if (cur !== storedPin) {
+                const curHash = await sha256(cur);
+                let storedHash = localStorage.getItem(storagePinHashKey);
+                if (!storedHash) {
+                    const legacyPin = localStorage.getItem('eltal_admin_pin');
+                    storedHash = legacyPin ? await sha256(legacyPin) : DEFAULT_PIN_HASH;
+                }
+
+                if (curHash !== storedHash) {
                     showToast('كلمة المرور الحالية غير صحيحة!', 'error');
                     return;
                 }
-                if (n1.length < 4) {
-                    showToast('كلمة المرور الجديدة يجب أن تكون 4 أحرف أو أرقام على الأقل.', 'error');
+                if (n1.length < 6) {
+                    showToast('كلمة المرور الجديدة يجب أن تكون 6 أحرف أو أرقام على الأقل لضمان الأمان.', 'error');
                     return;
                 }
                 if (n1 !== n2) {
@@ -1334,11 +1451,14 @@ if (typeof window !== 'undefined') {
                     return;
                 }
 
-                localStorage.setItem(storagePinKey, n1);
+                const newHash = await sha256(n1);
+                localStorage.setItem(storagePinHashKey, newHash);
+                localStorage.removeItem('eltal_admin_pin'); // clean up legacy plaintext
+
                 document.getElementById('sec-current-pass').value = '';
                 document.getElementById('sec-new-pass').value = '';
                 document.getElementById('sec-confirm-pass').value = '';
-                showToast('تم تغيير كلمة المرور بنجاح!', 'success');
+                showToast('تم تغيير وتشفير كلمة المرور الجديدة بنجاح (SHA-256)!', 'success');
             });
 
             // Initialize

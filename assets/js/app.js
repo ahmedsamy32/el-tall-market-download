@@ -1,9 +1,20 @@
 /**
- * تطبيق سوق التل - JavaScript الرئيسي
+ * تطبيق سوق التل - JavaScript الرئيسي (معايير الحماية OWASP A03)
  */
 (() => {
     const storageKey = 'souk_altal_theme';
     const root = document.documentElement;
+
+    // دالة تنظيف الروابط ضد هجمات حقن الشيفرات (Anti-XSS Link Sanitization)
+    const sanitizeSafeUrl = (url) => {
+        if (!url) return '#';
+        const trimmed = String(url).trim();
+        if (/^(javascript:|data:(?!image\/)|vbscript:)/i.test(trimmed)) {
+            console.warn("Blocked potentially insecure URL protocol:", trimmed);
+            return '#';
+        }
+        return trimmed;
+    };
 
     // 1. إدارة الوضع الليلي والنهاري (Theme Management)
     const applyTheme = (theme) => {
@@ -12,7 +23,9 @@
         } else {
             root.classList.remove('dark');
         }
-        localStorage.setItem(storageKey, theme);
+        try {
+            localStorage.setItem(storageKey, theme);
+        } catch (e) {}
         updateThemeIcons(theme);
     };
 
@@ -22,7 +35,11 @@
         });
     };
 
-    const storedTheme = localStorage.getItem(storageKey);
+    let storedTheme = null;
+    try {
+        storedTheme = localStorage.getItem(storageKey);
+    } catch (e) {}
+
     const preferredTheme = storedTheme || (window.matchMedia('(prefers-color-scheme: dark)').matches ? 'dark' : 'light');
     applyTheme(preferredTheme);
 
@@ -39,79 +56,86 @@
         element.classList.add('fade-up');
     });
 
-    // 3. حقن البيانات المركزية في عناصر الصفحة (Dynamic Data Hydration)
+    // 3. حقن البيانات المركزية في عناصر الصفحة (Dynamic Data Hydration with OWASP Sanitization)
     const hydrateData = () => {
         if (typeof window.siteConfig === 'undefined') return;
         const cfg = window.siteConfig;
 
         // روابط التحميل والإصدارات
-        document.querySelectorAll('[data-bind-version]').forEach(el => el.textContent = cfg.release.version);
-        document.querySelectorAll('[data-bind-filesize]').forEach(el => el.textContent = cfg.release.fileSize);
-        document.querySelectorAll('[data-bind-releasedate]').forEach(el => el.textContent = cfg.release.releaseDate);
+        document.querySelectorAll('[data-bind-version]').forEach(el => el.textContent = cfg.release.version || '1.0.0');
+        document.querySelectorAll('[data-bind-filesize]').forEach(el => el.textContent = cfg.release.fileSize || '');
+        document.querySelectorAll('[data-bind-releasedate]').forEach(el => el.textContent = cfg.release.releaseDate || '');
         
         document.querySelectorAll('[data-apk-url]').forEach(el => {
-            if (cfg.release.apkUrl && cfg.release.apkUrl !== '#') {
-                el.setAttribute('href', cfg.release.apkUrl);
+            if (cfg.release && cfg.release.apkUrl && cfg.release.apkUrl !== '#') {
+                el.setAttribute('href', sanitizeSafeUrl(cfg.release.apkUrl));
             }
         });
         document.querySelectorAll('[data-ipa-url]').forEach(el => {
-            if (cfg.release.ipaUrl && cfg.release.ipaUrl !== '#') {
-                el.setAttribute('href', cfg.release.ipaUrl);
+            if (cfg.release && cfg.release.ipaUrl && cfg.release.ipaUrl !== '#') {
+                el.setAttribute('href', sanitizeSafeUrl(cfg.release.ipaUrl));
             }
         });
 
         // الشعار (Logo) والأيقونات والـ Favicon في جميع أنحاء الموقع
         if (cfg.logoUrl) {
+            const safeLogo = sanitizeSafeUrl(cfg.logoUrl);
             document.querySelectorAll('img[src*="logo.svg"], img[data-bind-logo], .site-logo-img, .logo-img').forEach(img => {
-                img.src = cfg.logoUrl;
+                img.src = safeLogo;
             });
             // تحديث Favicon المتصفح
             document.querySelectorAll('link[rel="icon"], link[rel="apple-touch-icon"]').forEach(link => {
-                link.href = cfg.logoUrl;
+                link.href = safeLogo;
             });
         }
 
         // بانر صفحة التحميل
         if (cfg.downloadBanner && cfg.downloadBanner.image) {
             const dlBannerImg = document.querySelector('.download-banner-wrapper img');
-            if (dlBannerImg) dlBannerImg.src = cfg.downloadBanner.image;
+            if (dlBannerImg) dlBannerImg.src = sanitizeSafeUrl(cfg.downloadBanner.image);
         }
 
         // روابط التواصل
         document.querySelectorAll('[data-bind-email]').forEach(el => {
-            el.textContent = cfg.contact.email;
-            if (el.tagName === 'A') el.setAttribute('href', 'mailto:' + cfg.contact.email);
+            el.textContent = cfg.contact.email || '';
+            if (el.tagName === 'A' && cfg.contact.email) el.setAttribute('href', 'mailto:' + cfg.contact.email);
         });
         document.querySelectorAll('[data-bind-phone]').forEach(el => {
-            el.textContent = cfg.contact.phone;
-            if (el.tagName === 'A') el.setAttribute('href', 'tel:' + cfg.contact.phone.replace(/[^0-9+]/g, ''));
+            el.textContent = cfg.contact.phone || '';
+            if (el.tagName === 'A' && cfg.contact.phone) el.setAttribute('href', 'tel:' + cfg.contact.phone.replace(/[^0-9+]/g, ''));
         });
         document.querySelectorAll('[data-bind-website]').forEach(el => {
-            el.textContent = cfg.contact.website;
-            if (el.tagName === 'A') el.setAttribute('href', cfg.contact.website);
+            el.textContent = cfg.contact.website || '';
+            if (el.tagName === 'A' && cfg.contact.website) el.setAttribute('href', sanitizeSafeUrl(cfg.contact.website));
         });
         document.querySelectorAll('[data-bind-address]').forEach(el => {
-            el.textContent = cfg.contact.address;
+            el.textContent = cfg.contact.address || '';
         });
 
         // روابط السوشيال ميديا
-        document.querySelectorAll('[data-social-facebook]').forEach(el => el.setAttribute('href', cfg.social.facebook));
-        document.querySelectorAll('[data-social-instagram]').forEach(el => el.setAttribute('href', cfg.social.instagram));
-        document.querySelectorAll('[data-social-tiktok]').forEach(el => el.setAttribute('href', cfg.social.tiktok));
+        if (cfg.social) {
+            document.querySelectorAll('[data-social-facebook]').forEach(el => el.setAttribute('href', sanitizeSafeUrl(cfg.social.facebook)));
+            document.querySelectorAll('[data-social-instagram]').forEach(el => el.setAttribute('href', sanitizeSafeUrl(cfg.social.instagram)));
+            document.querySelectorAll('[data-social-tiktok]').forEach(el => el.setAttribute('href', sanitizeSafeUrl(cfg.social.tiktok)));
+        }
 
-        // حقن صور سلايدر البانرات ديناميكياً
+        // حقن صور سلايدر البانرات ديناميكياً بأمان
         const carousel = document.getElementById('homepage-carousel');
         if (carousel && cfg.banners && cfg.banners.length > 0) {
             const container = carousel.querySelector('.carousel-container');
             if (container) {
-                container.innerHTML = cfg.banners.map((b, idx) => `
+                container.innerHTML = cfg.banners.map((b, idx) => {
+                    const safeLink = sanitizeSafeUrl(b.link || 'download.html');
+                    const safeImg = sanitizeSafeUrl(b.image);
+                    const safeAlt = String(b.alt || 'إعلان تطبيق سوق التل').replace(/[&<>"']/g, '');
+                    return `
                     <div class="carousel-slide ${idx === 0 ? 'active' : ''}" data-index="${idx}">
-                        <a href="${b.link || 'download.html'}" class="relative block w-full h-full overflow-hidden" style="display: flex; align-items: center; justify-content: center;">
-                            <div class="carousel-blur-bg" style="background-image: url('${b.image}');"></div>
-                            <img src="${b.image}" alt="${b.alt || 'إعلان تطبيق سوق التل'}" class="carousel-main-img">
+                        <a href="${safeLink}" class="relative block w-full h-full overflow-hidden" style="display: flex; align-items: center; justify-content: center;">
+                            <div class="carousel-blur-bg" style="background-image: url('${safeImg}');"></div>
+                            <img src="${safeImg}" alt="${safeAlt}" class="carousel-main-img">
                         </a>
                     </div>
-                `).join('');
+                `}).join('');
                 initCarousel();
             }
         }

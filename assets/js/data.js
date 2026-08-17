@@ -8,7 +8,7 @@ let siteConfig = {
     description: "تحميل تطبيق سوق التل للأندرويد والآيفون مع أحدث الإصدارات والمزايا.",
     logoUrl: "assets/images/logo.svg",
     faviconUrl: "assets/images/logo.svg",
-    shopUrl: "market/index.html",
+    shopUrl: "market/",
     
     // أحدث الإصدارات وروابط التحميل
     release: {

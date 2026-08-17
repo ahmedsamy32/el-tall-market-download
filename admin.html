@@ -538,6 +538,67 @@
                             </button>
                         </div>
                     </div>
+
+                    <!-- GitHub Direct Publishing Card (Auto-Deploy) -->
+                    <div class="admin-card p-6 sm:p-7 rounded-3xl space-y-5 border-2 border-cyan-500/40 shadow-2xl bg-gradient-to-b from-slate-900 via-slate-900 to-slate-950">
+                        <div class="flex flex-col sm:flex-row sm:items-center justify-between gap-3 border-b-2 border-slate-800 pb-4">
+                            <div>
+                                <h4 class="text-base sm:text-lg font-black text-white flex items-center gap-2">
+                                    <span class="text-xl">🚀</span>
+                                    <span>نشر التعديلات تلقائياً على GitHub (Auto-Deploy)</span>
+                                </h4>
+                                <p class="text-xs sm:text-sm text-slate-300 font-medium mt-1">تحديث ملفات المشروع على السيرفر مباشرة لتصبح دائمة وثابتة لجميع الزوار فوراً</p>
+                            </div>
+                            <span id="github-status-badge" class="rounded-full bg-slate-800 border border-slate-700 px-3.5 py-1.5 text-xs font-bold text-slate-300 flex items-center gap-2 self-start sm:self-auto">
+                                <span class="h-2.5 w-2.5 rounded-full bg-slate-500"></span>
+                                <span id="github-status-text">غير متصل (الحفظ محلي فقط)</span>
+                            </span>
+                        </div>
+
+                        <div class="bg-cyan-500/10 border border-cyan-500/30 rounded-2xl p-4 text-xs sm:text-sm text-cyan-200 leading-relaxed flex items-start gap-3">
+                            <span class="text-lg flex-shrink-0">💡</span>
+                            <div>
+                                <b>كيف تعمل هذه الميزة؟</b> بمجرد إدخال رمز الوصول (GitHub Token)، سيؤدي الضغط على <b>"حفظ التغييرات"</b> في الأعلى إلى رفع كل التعديلات (اللوجو، أرقام الإصدار، الروابط) إلى مستودع GitHub تلقائياً دون كتابة أي أوامر، وتظهر للزوار على الفور.
+                            </div>
+                        </div>
+
+                        <div class="space-y-4">
+                            <div>
+                                <div class="flex items-center justify-between mb-2">
+                                    <label class="text-xs sm:text-sm font-extrabold text-white">رمز وصول GitHub الشخصي (Personal Access Token):</label>
+                                    <a href="https://github.com/settings/tokens/new?scopes=repo&description=EltalMarketAdmin" target="_blank" class="text-xs text-cyan-400 hover:text-cyan-300 underline font-bold flex items-center gap-1">
+                                        <span>🔗 إنشاء توكن جديد في ثوانٍ</span>
+                                    </a>
+                                </div>
+                                <div class="relative flex items-center">
+                                    <input type="password" id="gh-token-input" placeholder="ghp_xxxxxxxxxxxxxxxxxxxxxxxxxxxx" class="w-full px-4 py-3 rounded-xl admin-input font-mono text-left text-xs sm:text-sm pl-12 text-cyan-300 border-2 border-slate-700 focus:border-cyan-400">
+                                    <button type="button" id="toggle-token-visibility" class="absolute left-3 text-slate-400 hover:text-white text-xs px-2 py-1 bg-slate-800 rounded-lg">👁️ إظهار</button>
+                                </div>
+                                <p class="text-xs text-slate-400 mt-1.5">🔒 التوكن يتم حفظه في متصفحك بشكل آمن ولا يشارك مع أي سيرفر خارجي.</p>
+                            </div>
+
+                            <div class="grid grid-cols-1 sm:grid-cols-2 gap-4">
+                                <div>
+                                    <label class="block text-xs font-bold text-slate-300 mb-1.5">اسم المستودع (Repository)</label>
+                                    <input type="text" id="gh-repo-input" value="ahmedsamy32/el-tall-market-download" class="w-full px-3.5 py-2.5 rounded-xl admin-input font-mono text-left text-xs sm:text-sm text-slate-300">
+                                </div>
+                                <div>
+                                    <label class="block text-xs font-bold text-slate-300 mb-1.5">الفرع الأساسي (Branch)</label>
+                                    <input type="text" id="gh-branch-input" value="main" class="w-full px-3.5 py-2.5 rounded-xl admin-input font-mono text-left text-xs sm:text-sm text-slate-300">
+                                </div>
+                            </div>
+                        </div>
+
+                        <div class="flex flex-wrap items-center gap-3 pt-2">
+                            <button id="save-github-token-btn" class="px-5 py-2.5 rounded-xl text-xs sm:text-sm font-black bg-cyan-400 hover:bg-cyan-300 text-slate-950 transition shadow-lg shadow-cyan-400/20 flex items-center gap-2">
+                                <span>⚡</span>
+                                <span>حفظ وتفعيل النشر التلقائي</span>
+                            </button>
+                            <button id="disconnect-github-btn" class="px-4 py-2.5 rounded-xl text-xs sm:text-sm font-bold bg-slate-800 hover:bg-slate-700 text-slate-300 transition">
+                                ❌ إلغاء الربط
+                            </button>
+                        </div>
+                    </div>
                 </section>
 
             </main>
@@ -1270,9 +1331,131 @@
             }
 
             // 8. Save & Persistence (IndexedDB + safe localStorage cache)
+            // 8. Generate data.js code for permanent storage
+            function generateDataJsContent(cfg) {
+                const jsonStr = JSON.stringify(cfg, null, 4);
+                return `/**
+ * إعدادات وبيانات موقع سوق التل المركزية
+ * تم التحديث تلقائياً وبأمان من لوحة التحكم
+ */
+let siteConfig = ${jsonStr};
+
+// مدير التخزين المتقدم
+if (typeof localStorage !== 'undefined') {
+    try {
+        const saved = localStorage.getItem('eltal_site_config');
+        if (saved) {
+            const parsed = JSON.parse(saved);
+            siteConfig = Object.assign({}, siteConfig, parsed);
+        }
+    } catch (e) {}
+}
+
+if (typeof window !== 'undefined') {
+    window.siteConfig = siteConfig;
+}
+`;
+            }
+
+            // 9. GitHub Auto-Deploy Engine (Direct REST API Commit)
+            const GH_TOKEN_KEY = 'eltal_gh_token';
+            const GH_REPO_KEY = 'eltal_gh_repo';
+            const GH_BRANCH_KEY = 'eltal_gh_branch';
+
+            function getGitHubConfig() {
+                return {
+                    token: localStorage.getItem(GH_TOKEN_KEY) || '',
+                    repo: localStorage.getItem(GH_REPO_KEY) || 'ahmedsamy32/el-tall-market-download',
+                    branch: localStorage.getItem(GH_BRANCH_KEY) || 'main'
+                };
+            }
+
+            function updateGitHubStatusUI() {
+                const cfg = getGitHubConfig();
+                const tokenInput = document.getElementById('gh-token-input');
+                const repoInput = document.getElementById('gh-repo-input');
+                const branchInput = document.getElementById('gh-branch-input');
+                const statusBadge = document.getElementById('github-status-badge');
+                const statusText = document.getElementById('github-status-text');
+
+                if (tokenInput) tokenInput.value = cfg.token;
+                if (repoInput) repoInput.value = cfg.repo;
+                if (branchInput) branchInput.value = cfg.branch;
+
+                if (statusBadge && statusText) {
+                    if (cfg.token && cfg.token.length > 10) {
+                        statusBadge.className = 'rounded-full bg-emerald-500/20 border border-emerald-400/40 px-3.5 py-1.5 text-xs font-bold text-emerald-300 flex items-center gap-2 self-start sm:self-auto shadow-sm';
+                        statusBadge.innerHTML = '<span class="h-2.5 w-2.5 rounded-full bg-emerald-400 animate-pulse"></span><span>🟢 متصل بالنشر التلقائي لـ GitHub</span>';
+                    } else {
+                        statusBadge.className = 'rounded-full bg-slate-800 border border-slate-700 px-3.5 py-1.5 text-xs font-bold text-slate-400 flex items-center gap-2 self-start sm:self-auto';
+                        statusBadge.innerHTML = '<span class="h-2.5 w-2.5 rounded-full bg-slate-500"></span><span>⚪ غير متصل (الحفظ محلي فقط)</span>';
+                    }
+                }
+            }
+
+            async function publishToGitHub(configObj) {
+                const gh = getGitHubConfig();
+                if (!gh.token) return { success: false, reason: 'no_token' };
+
+                const filePath = 'assets/js/data.js';
+                const apiUrl = `https://api.github.com/repos/${gh.repo}/contents/${filePath}?ref=${gh.branch}`;
+
+                // 1. Get current SHA of data.js
+                let currentSha = null;
+                try {
+                    const getRes = await fetch(apiUrl, {
+                        headers: {
+                            'Authorization': `Bearer ${gh.token}`,
+                            'Accept': 'application/vnd.github.v3+json'
+                        }
+                    });
+                    if (getRes.ok) {
+                        const getJson = await getRes.json();
+                        currentSha = getJson.sha;
+                    }
+                } catch (e) {
+                    console.warn("Could not fetch file SHA:", e);
+                }
+
+                // 2. Encode UTF-8 to Base64 (safely handling Arabic strings)
+                const newCode = generateDataJsContent(configObj);
+                const utf8Bytes = new TextEncoder().encode(newCode);
+                let binaryStr = '';
+                utf8Bytes.forEach(b => binaryStr += String.fromCharCode(b));
+                const base64Content = btoa(binaryStr);
+
+                // 3. Commit & Push to GitHub
+                const putUrl = `https://api.github.com/repos/${gh.repo}/contents/${filePath}`;
+                const putRes = await fetch(putUrl, {
+                    method: 'PUT',
+                    headers: {
+                        'Authorization': `Bearer ${gh.token}`,
+                        'Accept': 'application/vnd.github.v3+json',
+                        'Content-Type': 'application/json'
+                    },
+                    body: JSON.stringify({
+                        message: 'chore(config): auto-update site configuration via admin panel',
+                        content: base64Content,
+                        sha: currentSha || undefined,
+                        branch: gh.branch
+                    })
+                });
+
+                if (putRes.ok) {
+                    return { success: true };
+                } else {
+                    const errJson = await putRes.json().catch(() => ({}));
+                    return { success: false, message: errJson.message || putRes.statusText };
+                }
+            }
+
+            // 10. Save & Persistence (Dual: Local Cache + Direct GitHub Deploy)
             async function saveChanges() {
                 collectFormValues();
+                const originalBtnHtml = quickSaveBtn.innerHTML;
+                
                 try {
+                    // Step 1: Save in Local IndexedDB & Cache
                     if (window.SiteDB) {
                         await window.SiteDB.save(currentConfig);
                     } else {
@@ -1281,15 +1464,109 @@
                         } catch (e) {}
                     }
                     window.siteConfig = Object.assign({}, window.siteConfig, currentConfig);
-                    showToast('تم حفظ التعديلات والصور بنجاح وتطبيقها على الموقع!', 'success');
+
+                    // Step 2: Check GitHub Auto-Deploy
+                    const gh = getGitHubConfig();
+                    if (gh.token) {
+                        quickSaveBtn.disabled = true;
+                        quickSaveBtn.innerHTML = `
+                            <svg class="animate-spin" style="width: 18px; height: 18px;" fill="none" viewBox="0 0 24 24">
+                                <circle class="opacity-25" cx="12" cy="12" r="10" stroke="currentColor" stroke-width="4"></circle>
+                                <path class="opacity-75" fill="currentColor" d="M4 12a8 8 0 018-8v8H4z"></path>
+                            </svg>
+                            <span>جاري النشر على GitHub...</span>
+                        `;
+
+                        const ghRes = await publishToGitHub(currentConfig);
+                        quickSaveBtn.disabled = false;
+                        quickSaveBtn.innerHTML = originalBtnHtml;
+
+                        if (ghRes.success) {
+                            showToast('🚀 تم حفظ التعديلات ونشرها بنجاح على GitHub! ستصبح ظاهرة لجميع الزوار على الفور.', 'success');
+                        } else {
+                            showToast('⚠️ تم الحفظ محلياً ولكن تعذر النشر على GitHub: ' + (ghRes.message || 'تحقق من صلاحيات التوكن'), 'error');
+                        }
+                    } else {
+                        showToast('تم حفظ التعديلات محلياً بنجاح! لربط النشر لجميع الزوار، أدخل GitHub Token في تبويب الأمان.', 'info');
+                    }
                 } catch (err) {
+                    quickSaveBtn.disabled = false;
+                    quickSaveBtn.innerHTML = originalBtnHtml;
                     showToast('حدث خطأ أثناء الحفظ: ' + err.message, 'error');
                 }
             }
 
             quickSaveBtn.addEventListener('click', saveChanges);
 
-            // 9. Reset to Factory Defaults Action
+            // GitHub UI Event Listeners
+            const saveGhTokenBtn = document.getElementById('save-github-token-btn');
+            if (saveGhTokenBtn) {
+                saveGhTokenBtn.addEventListener('click', async () => {
+                    const token = document.getElementById('gh-token-input').value.trim();
+                    const repo = document.getElementById('gh-repo-input').value.trim() || 'ahmedsamy32/el-tall-market-download';
+                    const branch = document.getElementById('gh-branch-input').value.trim() || 'main';
+
+                    if (!token) {
+                        showToast('يرجى إدخال GitHub Personal Access Token أولاً!', 'error');
+                        return;
+                    }
+
+                    saveGhTokenBtn.disabled = true;
+                    saveGhTokenBtn.innerHTML = 'جاري التحقق من الاتصال...';
+
+                    try {
+                        const res = await fetch(`https://api.github.com/repos/${repo}`, {
+                            headers: {
+                                'Authorization': `Bearer ${token}`,
+                                'Accept': 'application/vnd.github.v3+json'
+                            }
+                        });
+
+                        saveGhTokenBtn.disabled = false;
+                        saveGhTokenBtn.innerHTML = '⚡ حفظ وتفعيل النشر التلقائي';
+
+                        if (res.ok) {
+                            localStorage.setItem(GH_TOKEN_KEY, token);
+                            localStorage.setItem(GH_REPO_KEY, repo);
+                            localStorage.setItem(GH_BRANCH_KEY, branch);
+                            updateGitHubStatusUI();
+                            showToast('✅ تم التحقق والاتصال بمستودع GitHub بنجاح! تم تفعيل النشر التلقائي.', 'success');
+                        } else {
+                            const err = await res.json().catch(() => ({}));
+                            showToast('❌ فشل الاتصال بـ GitHub: ' + (err.message || 'التوكن غير صالح أو لا يملك صلاحية repo'), 'error');
+                        }
+                    } catch (e) {
+                        saveGhTokenBtn.disabled = false;
+                        saveGhTokenBtn.innerHTML = '⚡ حفظ وتفعيل النشر التلقائي';
+                        showToast('❌ تعذر الاتصال بخوادم GitHub: ' + e.message, 'error');
+                    }
+                });
+            }
+
+            const disconnectGhBtn = document.getElementById('disconnect-github-btn');
+            if (disconnectGhBtn) {
+                disconnectGhBtn.addEventListener('click', () => {
+                    localStorage.removeItem(GH_TOKEN_KEY);
+                    updateGitHubStatusUI();
+                    showToast('تم إلغاء ربط GitHub. الحفظ سيعمل في المتصفح فقط.', 'info');
+                });
+            }
+
+            const toggleTokenVis = document.getElementById('toggle-token-visibility');
+            if (toggleTokenVis) {
+                toggleTokenVis.addEventListener('click', () => {
+                    const tokenInput = document.getElementById('gh-token-input');
+                    if (tokenInput.type === 'password') {
+                        tokenInput.type = 'text';
+                        toggleTokenVis.textContent = '🙈 إخفاء';
+                    } else {
+                        tokenInput.type = 'password';
+                        toggleTokenVis.textContent = '👁️ إظهار';
+                    }
+                });
+            }
+
+            // 11. Reset to Factory Defaults Action
             const resetConfigBtn = document.getElementById('reset-config-btn');
             if (resetConfigBtn) {
                 resetConfigBtn.addEventListener('click', async () => {
@@ -1308,7 +1585,7 @@
                 });
             }
 
-            // 10. Secure Password Change (OWASP Cryptographic Storage with SHA-256)
+            // 12. Secure Password Change (OWASP Cryptographic Storage with SHA-256)
             document.getElementById('change-pass-btn').addEventListener('click', async () => {
                 const cur = document.getElementById('sec-current-pass').value.trim();
                 const n1 = document.getElementById('sec-new-pass').value.trim();
@@ -1351,6 +1628,7 @@
 
             // Initialize
             checkAuth();
+            updateGitHubStatusUI();
         });
     </script>
     <script src="assets/js/app.js"></script>

@@ -390,18 +390,62 @@
 
                 <!-- TAB 3: Banners & Ads -->
                 <section id="tab-banners" class="tab-content space-y-6">
-                    <div class="flex items-center justify-between border-b-2 border-slate-800 pb-4">
+                    <div class="flex flex-col sm:flex-row sm:items-center justify-between gap-4 border-b-2 border-slate-800 pb-4">
                         <div>
                             <h3 class="text-xl sm:text-2xl font-black text-white flex items-center gap-2">
                                 <span style="width: 32px; height: 32px;" class="rounded-xl bg-amber-500/20 text-amber-300 inline-flex items-center justify-center"><svg style="width: 18px; height: 18px;" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M4 16l4.586-4.586a2 2 0 012.828 0L16 16m-2-2l1.586-1.586a2 2 0 012.828 0L20 14m-6-6h.01M6 20h12a2 2 0 002-2V6a2 2 0 00-2-2H6a2 2 0 00-2 2v12a2 2 0 002 2z"></path></svg></span>
                                 <span>سلايدر الإعلانات والبانرات</span>
                             </h3>
-                            <p class="text-xs sm:text-sm text-slate-300 font-medium mt-1">إضافة وتعديل وحذف ورفع الصور الإعلانية في الصفحة الرئيسية وصفحة التحميل</p>
+                            <p class="text-xs sm:text-sm text-slate-300 font-medium mt-1">إضافة وتعديل وحذف ورفع الصور الإعلانية مع إمكانية تعديل تفاصيل كل بانر على حدة</p>
                         </div>
-                        <button id="add-banner-btn" class="px-4 py-2 rounded-xl text-xs sm:text-sm font-black bg-gradient-to-r from-amber-400 to-amber-500 hover:from-amber-300 hover:to-amber-400 text-slate-950 transition flex items-center gap-1.5 shadow-lg shadow-amber-500/30">
-                            <svg style="width: 16px; height: 16px;" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2.5" d="M12 4v16m8-8H4"></path></svg>
-                            <span>إضافة بانر جديد</span>
-                        </button>
+                        <div class="flex flex-wrap items-center gap-2">
+                            <button type="button" id="bulk-banners-btn" class="px-4 py-2.5 rounded-xl text-xs sm:text-sm font-black bg-gradient-to-r from-cyan-500 to-blue-500 hover:from-cyan-400 hover:to-blue-400 text-white transition flex items-center gap-2 shadow-lg shadow-cyan-500/20">
+                                <svg style="width: 18px; height: 18px;" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M4 16l4.586-4.586a2 2 0 012.828 0L16 16m-2-2l1.586-1.586a2 2 0 012.828 0L20 14m-6-6h.01M6 20h12a2 2 0 002-2V6a2 2 0 00-2-2H6a2 2 0 00-2 2v12a2 2 0 002 2z"></path></svg>
+                                <span>📁 اختيار عدة بانرات معاً (Bulk Upload)</span>
+                            </button>
+                            <input type="file" id="bulk-banners-file-input" multiple accept="image/*" class="hidden">
+
+                            <button type="button" id="add-banner-btn" class="px-3.5 py-2.5 rounded-xl text-xs sm:text-sm font-bold bg-slate-800 hover:bg-slate-700 text-slate-200 border-2 border-slate-700 transition flex items-center gap-1.5">
+                                <svg style="width: 16px; height: 16px;" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2.5" d="M12 4v16m8-8H4"></path></svg>
+                                <span>+ بانر مفرد</span>
+                            </button>
+                        </div>
+                    </div>
+
+                    <!-- Bulk Drag & Drop Zone Box -->
+                    <div id="bulk-banners-dropzone" class="border-2 border-dashed border-cyan-500/40 hover:border-cyan-400 bg-cyan-500/5 hover:bg-cyan-500/10 rounded-3xl p-6 text-center cursor-pointer transition flex flex-col items-center justify-center gap-2 group">
+                        <div style="width: 48px; height: 48px;" class="rounded-2xl bg-cyan-500/20 text-cyan-300 flex items-center justify-center group-hover:scale-110 transition">
+                            <svg style="width: 24px; height: 24px;" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M7 16a4 4 0 01-.88-7.903A5 5 0 1115.9 6L16 6a5 5 0 011 9.9M15 13l-3-3m0 0l-3 3m3-3v12"></path></svg>
+                        </div>
+                        <h4 class="text-sm sm:text-base font-black text-white">اسحب وأفلت كل صور البانرات هنا مرة واحدة (أو اضغط للاختيار من جهازك)</h4>
+                        <p class="text-xs text-slate-300">يمكنك اختيار 2، 5، 10 أو أي عدد من الصور معاً دفعة واحدة — وسيتم إضافتها وتجهيزها لتعديل تفاصيل كل واحدة أدناه فوراً.</p>
+                        <div class="flex items-center gap-2 mt-1">
+                            <span class="text-[11px] bg-slate-900 px-2.5 py-1 rounded-full border border-slate-700 text-slate-300 font-mono">يدعم PNG, JPG, WebP, SVG</span>
+                            <span class="text-[11px] bg-cyan-500/20 px-2.5 py-1 rounded-full border border-cyan-500/30 text-cyan-300 font-bold">⚡ ضغط وتحسين تلقائي فائق السرعة</span>
+                        </div>
+                    </div>
+
+                    <!-- Batch Actions Header Bar -->
+                    <div class="flex items-center justify-between gap-3 pt-2">
+                        <div class="flex items-center gap-2">
+                            <span class="text-xs sm:text-sm font-black text-white flex items-center gap-1.5">
+                                <span>📋</span>
+                                <span>قائمة البانرات وتفاصيل كل بانر:</span>
+                            </span>
+                            <span id="banners-count-badge" class="px-2.5 py-0.5 rounded-full bg-amber-500/20 text-amber-300 border border-amber-500/30 text-xs font-mono font-bold">0 بانر</span>
+                        </div>
+                        <div class="flex items-center gap-2">
+                            <button type="button" id="apply-all-links-btn" class="text-xs text-cyan-400 hover:text-cyan-300 bg-cyan-500/10 hover:bg-cyan-500/20 border border-cyan-500/30 px-3 py-1.5 rounded-xl font-bold transition flex items-center gap-1">
+                                <span>🔗</span>
+                                <span class="hidden sm:inline">تعيين رابط موحد للكل</span>
+                                <span class="sm:hidden">رابط للكل</span>
+                            </button>
+                            <button type="button" id="clear-all-banners-btn" class="text-xs text-rose-400 hover:text-rose-300 bg-rose-500/10 hover:bg-rose-500/20 border border-rose-500/30 px-3 py-1.5 rounded-xl font-bold transition flex items-center gap-1">
+                                <span>🗑️</span>
+                                <span class="hidden sm:inline">مسح جميع البانرات</span>
+                                <span class="sm:hidden">مسح الكل</span>
+                            </button>
+                        </div>
                     </div>
 
                     <!-- Banners List Container -->
@@ -1217,73 +1261,315 @@
                 });
             }
 
-            // 7. Banners Slider Management & Modal
+            // 7. Banners Slider Management (Bulk Upload & In-Place Individual Customizer)
+            const bulkBannersBtn = document.getElementById('bulk-banners-btn');
+            const bulkBannersFileInput = document.getElementById('bulk-banners-file-input');
+            const bulkBannersDropzone = document.getElementById('bulk-banners-dropzone');
+            const bannersCountBadge = document.getElementById('banners-count-badge');
+            const applyAllLinksBtn = document.getElementById('apply-all-links-btn');
+            const clearAllBannersBtn = document.getElementById('clear-all-banners-btn');
+
             function renderBannersList() {
                 if (!bannersList) return;
                 bannersList.innerHTML = '';
                 const list = currentConfig.banners || [];
 
+                if (bannersCountBadge) {
+                    bannersCountBadge.textContent = `${list.length} ${list.length === 1 ? 'بانر' : (list.length === 2 ? 'بانران' : (list.length <= 10 ? 'بانرات' : 'بانر'))}`;
+                }
+
                 if (list.length === 0) {
-                    bannersList.innerHTML = '<div class="p-6 text-center text-xs sm:text-sm font-bold text-slate-400 bg-slate-900/80 rounded-2xl border-2 border-slate-800">لا توجد بانرات حالياً. اضغط "إضافة بانر جديد" لرفع أو إضافة بانر.</div>';
+                    bannersList.innerHTML = `
+                        <div class="p-8 text-center bg-slate-900/60 rounded-3xl border-2 border-dashed border-slate-800 space-y-2">
+                            <span class="text-3xl block">🖼️</span>
+                            <div class="text-sm font-bold text-slate-300">لا توجد بانرات إعلانية حالياً.</div>
+                            <p class="text-xs text-slate-400">اضغط على زر <b>"اختيار عدة بانرات معاً"</b> بالأعلى أو اسحب الصور في المربع لرفعها دفعة واحدة.</p>
+                        </div>
+                    `;
                     return;
                 }
 
                 list.forEach((b, idx) => {
                     const card = document.createElement('div');
-                    card.className = 'admin-card p-5 rounded-2xl flex flex-col md:flex-row items-start md:items-center justify-between gap-4 border-2 border-slate-800 hover:border-slate-700 transition shadow-lg';
-                    
+                    card.className = 'admin-card p-5 sm:p-6 rounded-3xl border-2 border-slate-800 hover:border-amber-500/40 transition shadow-xl space-y-4';
+                    card.setAttribute('data-card-index', idx);
+
                     const isBase64 = b.image && b.image.startsWith('data:');
-                    const displayPath = isBase64 ? '(صورة مرفوعة مباشرة)' : escapeHtml(b.image);
-                    const safeAlt = escapeHtml(b.alt || 'بدون نص');
-                    const safeLink = escapeHtml(sanitizeUrl(b.link || '#'));
+                    const displaySource = isBase64 ? 'صورة مرفوعة (Base64)' : (b.image || 'assets/images/download_banner_default.png');
+                    const safeAlt = escapeHtml(b.alt || '');
+                    const safeLink = escapeHtml(b.link || 'download.html');
                     const safeImg = sanitizeUrl(b.image || 'assets/images/download_banner_default.png');
 
                     card.innerHTML = `
-                        <div class="flex items-center gap-4 flex-1 w-full">
-                            <div style="width: 100px; height: 60px;" class="rounded-xl bg-slate-950 border-2 border-slate-700 overflow-hidden flex-shrink-0 flex items-center justify-center p-1">
-                                <img src="${safeImg}" alt="${safeAlt}" style="width: 100%; height: 100%; object-fit: contain;" onerror="this.src='assets/images/download_banner_default.png'">
+                        <!-- Header of Card -->
+                        <div class="flex items-center justify-between border-b border-slate-800 pb-3 gap-2">
+                            <div class="flex items-center gap-2">
+                                <span class="bg-amber-500/20 text-amber-300 px-3 py-1 rounded-xl border border-amber-500/40 text-xs font-black flex items-center gap-1.5">
+                                    <span>🖼️</span>
+                                    <span>بانر #${idx + 1}</span>
+                                </span>
+                                <span class="text-[11px] text-slate-400 font-mono hidden sm:inline truncate max-w-[200px]">${displaySource}</span>
                             </div>
-                            <div class="flex-1 space-y-1 overflow-hidden">
-                                <div class="text-xs sm:text-sm font-black text-white flex items-center gap-2">
-                                    <span class="bg-amber-500/20 text-amber-300 px-2 py-0.5 rounded-lg border border-amber-500/30 text-xs">بانر #${idx + 1}</span>
-                                    <span>${safeAlt}</span>
-                                </div>
-                                <div class="text-xs text-slate-300 truncate font-mono"><b>المصدر:</b> ${displayPath}</div>
-                                <div class="text-xs text-cyan-300 truncate font-mono"><b>الرابط:</b> ${safeLink}</div>
+                            <div class="flex items-center gap-1.5">
+                                <button type="button" class="move-up-btn p-1.5 rounded-xl bg-slate-800 hover:bg-slate-700 text-slate-300 text-xs font-bold transition disabled:opacity-30 disabled:cursor-not-allowed" data-index="${idx}" ${idx === 0 ? 'disabled' : ''} title="تحريك لأعلى">
+                                    🔼
+                                </button>
+                                <button type="button" class="move-down-btn p-1.5 rounded-xl bg-slate-800 hover:bg-slate-700 text-slate-300 text-xs font-bold transition disabled:opacity-30 disabled:cursor-not-allowed" data-index="${idx}" ${idx === list.length - 1 ? 'disabled' : ''} title="تحريك لأسفل">
+                                    🔽
+                                </button>
+                                <button type="button" class="delete-banner-btn px-3 py-1.5 rounded-xl bg-rose-500/20 hover:bg-rose-500/30 text-rose-300 text-xs font-bold transition border border-rose-500/40 flex items-center gap-1" data-index="${idx}">
+                                    <svg style="width: 14px; height: 14px;" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M19 7l-.867 12.142A2 2 0 0116.138 21H7.862a2 2 0 01-1.995-1.858L5 7m5 4v6m4-6v6m1-10V4a1 1 0 00-1-1h-4a1 1 0 00-1 1v3M4 7h16"></path></svg>
+                                    <span>حذف</span>
+                                </button>
                             </div>
                         </div>
-                        <div class="flex items-center gap-2 self-end md:self-center">
-                            <button class="edit-banner-btn px-3 py-1.5 rounded-xl bg-slate-800 hover:bg-slate-700 text-white font-bold transition text-xs border border-slate-600 flex items-center gap-1" data-index="${idx}">
-                                <svg style="width: 14px; height: 14px;" class="text-cyan-400" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M15.232 5.232l3.536 3.536m-2.036-5.036a2.5 2.5 0 113.536 3.536L6.5 21.036H3v-3.572L16.732 3.732z"></path></svg>
-                                <span>تعديل</span>
-                            </button>
-                            <button class="delete-banner-btn px-3 py-1.5 rounded-xl bg-rose-500/20 hover:bg-rose-500/30 text-rose-300 font-bold transition text-xs border border-rose-500/40 flex items-center gap-1" data-index="${idx}">
-                                <svg style="width: 14px; height: 14px;" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M19 7l-.867 12.142A2 2 0 0116.138 21H7.862a2 2 0 01-1.995-1.858L5 7m5 4v6m4-6v6m1-10V4a1 1 0 00-1-1h-4a1 1 0 00-1 1v3M4 7h16"></path></svg>
-                                <span>حذف</span>
-                            </button>
+
+                        <!-- Body: Image Preview + Editable Details -->
+                        <div class="grid grid-cols-1 md:grid-cols-12 gap-5 items-center">
+                            <!-- Image Thumbnail (4 cols) -->
+                            <div class="md:col-span-4 flex flex-col items-center gap-2">
+                                <div style="width: 100%; height: 110px;" class="rounded-2xl bg-slate-950 border-2 border-slate-700 flex items-center justify-center p-2 shadow-inner overflow-hidden relative group">
+                                    <img src="${safeImg}" alt="${safeAlt}" style="width: 100%; height: 100%; object-fit: contain;" class="banner-img-element" data-index="${idx}" onerror="this.src='assets/images/download_banner_default.png'">
+                                    <div class="absolute inset-0 bg-slate-950/80 opacity-0 group-hover:opacity-100 transition flex items-center justify-center cursor-pointer trigger-replace-btn" data-index="${idx}">
+                                        <span class="text-xs text-cyan-300 font-bold bg-slate-900/90 px-3 py-1.5 rounded-xl border border-cyan-500/40">🔄 تغيير الصورة</span>
+                                    </div>
+                                </div>
+                                <input type="file" class="banner-replace-file-input hidden" accept="image/*" data-index="${idx}">
+                                <button type="button" class="trigger-replace-btn text-[11px] text-slate-300 hover:text-cyan-300 underline font-bold" data-index="${idx}">
+                                    📁 استبدال هذه الصورة من جهازك
+                                </button>
+                            </div>
+
+                            <!-- Editable Inputs (8 cols) -->
+                            <div class="md:col-span-8 space-y-3">
+                                <div>
+                                    <label class="block text-xs font-black text-slate-200 mb-1">🏷️ عنوان البانر / النص البديل (Alt / Title):</label>
+                                    <input type="text" class="banner-alt-input w-full px-3.5 py-2 rounded-xl admin-input text-xs sm:text-sm text-white" value="${safeAlt}" data-index="${idx}" placeholder="مثال: عروض حصرية على سوق التل">
+                                </div>
+
+                                <div>
+                                    <div class="flex items-center justify-between mb-1">
+                                        <label class="text-xs font-black text-slate-200">🔗 رابط التوجيه عند النقر (Target Link):</label>
+                                        <div class="flex items-center gap-1">
+                                            <button type="button" class="quick-chip text-[10px] sm:text-[11px] bg-slate-800 hover:bg-cyan-500/20 hover:text-cyan-300 px-2 py-0.5 rounded-lg border border-slate-700 text-slate-300 transition" data-index="${idx}" data-val="download.html">تحميل</button>
+                                            <button type="button" class="quick-chip text-[10px] sm:text-[11px] bg-slate-800 hover:bg-cyan-500/20 hover:text-cyan-300 px-2 py-0.5 rounded-lg border border-slate-700 text-slate-300 transition" data-index="${idx}" data-val="about.html">عن التطبيق</button>
+                                            <button type="button" class="quick-chip text-[10px] sm:text-[11px] bg-slate-800 hover:bg-cyan-500/20 hover:text-cyan-300 px-2 py-0.5 rounded-lg border border-slate-700 text-slate-300 transition" data-index="${idx}" data-val="#">بدون رابط (#)</button>
+                                        </div>
+                                    </div>
+                                    <input type="text" class="banner-link-input w-full px-3.5 py-2 rounded-xl admin-input text-xs sm:text-sm font-mono text-left text-cyan-300" value="${safeLink}" data-index="${idx}" placeholder="download.html أو https://...">
+                                </div>
+                            </div>
                         </div>
                     `;
                     bannersList.appendChild(card);
                 });
 
-                // Attach events
+                // Attach Live Listeners for Alt inputs
+                bannersList.querySelectorAll('.banner-alt-input').forEach(input => {
+                    input.addEventListener('input', (e) => {
+                        const idx = parseInt(e.target.getAttribute('data-index'), 10);
+                        if (currentConfig.banners && currentConfig.banners[idx]) {
+                            currentConfig.banners[idx].alt = e.target.value;
+                        }
+                    });
+                });
+
+                // Attach Live Listeners for Link inputs
+                bannersList.querySelectorAll('.banner-link-input').forEach(input => {
+                    input.addEventListener('input', (e) => {
+                        const idx = parseInt(e.target.getAttribute('data-index'), 10);
+                        if (currentConfig.banners && currentConfig.banners[idx]) {
+                            currentConfig.banners[idx].link = e.target.value;
+                        }
+                    });
+                });
+
+                // Attach Quick Chip autofill
+                bannersList.querySelectorAll('.quick-chip').forEach(chip => {
+                    chip.addEventListener('click', (e) => {
+                        const idx = parseInt(e.target.getAttribute('data-index'), 10);
+                        const val = e.target.getAttribute('data-val');
+                        if (currentConfig.banners && currentConfig.banners[idx]) {
+                            currentConfig.banners[idx].link = val;
+                            const input = bannersList.querySelector(`.banner-link-input[data-index="${idx}"]`);
+                            if (input) input.value = val;
+                            showToast(`تم تعيين الرابط إلى: ${val}`, 'info');
+                        }
+                    });
+                });
+
+                // Move Up
+                bannersList.querySelectorAll('.move-up-btn').forEach(btn => {
+                    btn.addEventListener('click', () => {
+                        const idx = parseInt(btn.getAttribute('data-index'), 10);
+                        if (idx > 0) {
+                            const temp = currentConfig.banners[idx];
+                            currentConfig.banners[idx] = currentConfig.banners[idx - 1];
+                            currentConfig.banners[idx - 1] = temp;
+                            renderBannersList();
+                        }
+                    });
+                });
+
+                // Move Down
+                bannersList.querySelectorAll('.move-down-btn').forEach(btn => {
+                    btn.addEventListener('click', () => {
+                        const idx = parseInt(btn.getAttribute('data-index'), 10);
+                        if (idx < currentConfig.banners.length - 1) {
+                            const temp = currentConfig.banners[idx];
+                            currentConfig.banners[idx] = currentConfig.banners[idx + 1];
+                            currentConfig.banners[idx + 1] = temp;
+                            renderBannersList();
+                        }
+                    });
+                });
+
+                // Delete
                 bannersList.querySelectorAll('.delete-banner-btn').forEach(btn => {
                     btn.addEventListener('click', () => {
                         const idx = parseInt(btn.getAttribute('data-index'), 10);
                         currentConfig.banners.splice(idx, 1);
                         renderBannersList();
-                        showToast('تم حذف البانر بنجاح. اضغط حفظ التغييرات لاعتمادها.', 'info');
+                        showToast('تم حذف البانر. اضغط "حفظ التغييرات" لاعتماد التعديل.', 'info');
                     });
                 });
 
-                bannersList.querySelectorAll('.edit-banner-btn').forEach(btn => {
+                // Replace Image for single banner
+                bannersList.querySelectorAll('.trigger-replace-btn').forEach(btn => {
                     btn.addEventListener('click', () => {
                         const idx = parseInt(btn.getAttribute('data-index'), 10);
-                        openBannerModal(idx);
+                        const fileInput = bannersList.querySelector(`.banner-replace-file-input[data-index="${idx}"]`);
+                        if (fileInput) fileInput.click();
+                    });
+                });
+
+                bannersList.querySelectorAll('.banner-replace-file-input').forEach(input => {
+                    input.addEventListener('change', async (e) => {
+                        const idx = parseInt(e.target.getAttribute('data-index'), 10);
+                        const file = e.target.files[0];
+                        if (!file) return;
+                        try {
+                            const dataUrl = await processImageFile(file, 960, 0.75);
+                            if (currentConfig.banners && currentConfig.banners[idx]) {
+                                currentConfig.banners[idx].image = dataUrl;
+                                renderBannersList();
+                                showToast(`تم استبدال صورة البانر #${idx + 1} بنجاح!`, 'success');
+                            }
+                        } catch (err) {
+                            showToast('فشل في معالجة الصورة: ' + err.message, 'error');
+                        }
                     });
                 });
             }
 
+            // Bulk Multi-File Image Processor
+            async function handleBulkFiles(files) {
+                if (!files || files.length === 0) return;
+                currentConfig.banners = currentConfig.banners || [];
+                
+                const validFiles = Array.from(files).filter(f => f.type.startsWith('image/'));
+                if (validFiles.length === 0) {
+                    showToast('يرجى اختيار ملفات صور صالحة (PNG, JPG, WebP, SVG)!', 'error');
+                    return;
+                }
+
+                showToast(`جاري معالجة وتحسين ${validFiles.length} صورة للبانرات...`, 'info');
+
+                let addedCount = 0;
+                for (let i = 0; i < validFiles.length; i++) {
+                    const file = validFiles[i];
+                    try {
+                        const dataUrl = await processImageFile(file, 960, 0.75);
+                        const cleanName = file.name.replace(/\.[^/.]+$/, "").replace(/[-_]/g, " ");
+                        const bannerNumber = currentConfig.banners.length + 1;
+                        const altText = cleanName && cleanName.length > 2 ? cleanName : `إعلان سوق التل #${bannerNumber}`;
+                        
+                        currentConfig.banners.push({
+                            id: Date.now() + i,
+                            image: dataUrl,
+                            link: 'download.html',
+                            alt: altText
+                        });
+                        addedCount++;
+                    } catch (err) {
+                        console.warn("Could not process file:", file.name, err);
+                    }
+                }
+
+                renderBannersList();
+                showToast(`🎉 تم استيراد وتجهيز ${addedCount} بانر بنجاح! يمكنك الآن تعديل تفاصيل وروابط كل بانر أدناه ثم الضغط على "حفظ التغييرات".`, 'success');
+            }
+
+            // Bulk Upload Button & Dropzone Event Listeners
+            if (bulkBannersBtn && bulkBannersFileInput) {
+                bulkBannersBtn.addEventListener('click', () => bulkBannersFileInput.click());
+                bulkBannersFileInput.addEventListener('change', (e) => {
+                    handleBulkFiles(e.target.files);
+                    bulkBannersFileInput.value = '';
+                });
+            }
+
+            if (bulkBannersDropzone && bulkBannersFileInput) {
+                bulkBannersDropzone.addEventListener('click', () => bulkBannersFileInput.click());
+
+                ['dragenter', 'dragover'].forEach(eventName => {
+                    bulkBannersDropzone.addEventListener(eventName, (e) => {
+                        e.preventDefault();
+                        e.stopPropagation();
+                        bulkBannersDropzone.classList.add('border-cyan-400', 'bg-cyan-500/20');
+                    }, false);
+                });
+
+                ['dragleave', 'drop'].forEach(eventName => {
+                    bulkBannersDropzone.addEventListener(eventName, (e) => {
+                        e.preventDefault();
+                        e.stopPropagation();
+                        bulkBannersDropzone.classList.remove('border-cyan-400', 'bg-cyan-500/20');
+                    }, false);
+                });
+
+                bulkBannersDropzone.addEventListener('drop', (e) => {
+                    e.preventDefault();
+                    e.stopPropagation();
+                    bulkBannersDropzone.classList.remove('border-cyan-400', 'bg-cyan-500/20');
+                    const dt = e.dataTransfer;
+                    const files = dt.files;
+                    handleBulkFiles(files);
+                });
+            }
+
+            // Batch Actions: Apply Link to All & Clear All
+            if (applyAllLinksBtn) {
+                applyAllLinksBtn.addEventListener('click', () => {
+                    if (!currentConfig.banners || currentConfig.banners.length === 0) {
+                        showToast('لا توجد بانرات لتعديل روابطها!', 'error');
+                        return;
+                    }
+                    const newLink = prompt('أدخل رابط التوجيه الذي ترغب بتطبيقه على جميع البانرات:', 'download.html');
+                    if (newLink !== null) {
+                        const trimmed = newLink.trim() || 'download.html';
+                        currentConfig.banners.forEach(b => b.link = trimmed);
+                        renderBannersList();
+                        showToast(`تم تطبيق الرابط (${trimmed}) على جميع البانرات بنجاح!`, 'success');
+                    }
+                });
+            }
+
+            if (clearAllBannersBtn) {
+                clearAllBannersBtn.addEventListener('click', () => {
+                    if (!currentConfig.banners || currentConfig.banners.length === 0) {
+                        showToast('قائمة البانرات فارغة بالفعل!', 'info');
+                        return;
+                    }
+                    if (confirm('هل أنت متأكد من رغبتك في مسح جميع البانرات الحالية؟')) {
+                        currentConfig.banners = [];
+                        renderBannersList();
+                        showToast('تم مسح جميع البانرات. اضغط "حفظ التغييرات" لتأكيد الحذف.', 'info');
+                    }
+                });
+            }
+
+            // Single Banner Modal Support (Backward compatible & manual addition)
             function openBannerModal(index = -1) {
                 currentEditingBannerIndex = index;
                 if (index >= 0 && currentConfig.banners && currentConfig.banners[index]) {
@@ -1351,13 +1637,11 @@
                     currentConfig.banners = currentConfig.banners || [];
 
                     if (currentEditingBannerIndex >= 0) {
-                        // Edit existing
                         currentConfig.banners[currentEditingBannerIndex].image = img;
                         currentConfig.banners[currentEditingBannerIndex].link = link;
                         currentConfig.banners[currentEditingBannerIndex].alt = alt;
                         showToast('تم تعديل بيانات البانر بنجاح!', 'success');
                     } else {
-                        // Add new
                         currentConfig.banners.push({
                             id: Date.now(),
                             image: img,

@@ -122,8 +122,8 @@
     <div id="toast-container" class="toast-wrap"></div>
 
     <!-- 1. شاشة تسجيل الدخول (Login Screen) -->
-    <div id="login-screen" class="fixed inset-0 z-50 flex items-center justify-center p-4 bg-slate-950/95 backdrop-blur-2xl">
-        <div class="login-card-modal text-center relative overflow-hidden fade-up shadow-2xl">
+    <div id="login-screen" class="fixed inset-0 z-50 flex items-center justify-center p-4 bg-slate-950/95 backdrop-blur-2xl overflow-y-auto">
+        <div class="login-card-modal my-auto text-center relative overflow-hidden fade-up shadow-2xl">
             <div class="absolute -top-16 -right-16 w-32 h-32 bg-cyan-500/20 rounded-full blur-3xl pointer-events-none"></div>
             <div class="absolute -bottom-16 -left-16 w-32 h-32 bg-teal-500/20 rounded-full blur-3xl pointer-events-none"></div>
 
@@ -137,9 +137,13 @@
             <form id="login-form" class="space-y-5 text-right">
                 <div>
                     <label for="admin-password" class="block text-sm font-extrabold text-white mb-2">كلمة المرور</label>
-                    <div class="relative">
+                    <div class="relative flex items-center">
                         <input type="password" id="admin-password" required placeholder="••••••••" 
-                               class="w-full px-4 py-3 rounded-2xl admin-input text-center tracking-widest text-xl font-mono text-white placeholder-slate-500 shadow-inner">
+                               autocapitalize="none" autocorrect="off" spellcheck="false" autocomplete="current-password"
+                               class="w-full px-4 py-3 pl-11 rounded-2xl admin-input text-center tracking-widest text-xl font-mono text-white placeholder-slate-500 shadow-inner">
+                        <button type="button" id="toggle-login-pass" class="absolute left-3 p-1.5 text-slate-400 hover:text-cyan-300 focus:outline-none transition cursor-pointer select-none" title="إظهار / إخفاء كلمة المرور" aria-label="إظهار كلمة المرور">
+                            <span id="toggle-login-pass-icon" class="text-base select-none">👁️</span>
+                        </button>
                     </div>
                 </div>
 
@@ -150,7 +154,7 @@
                     </label>
                 </div>
 
-                <button type="submit" class="w-full py-3.5 px-5 rounded-2xl font-black text-base text-slate-950 bg-gradient-to-r from-cyan-400 via-teal-300 to-emerald-400 hover:from-cyan-300 hover:to-emerald-300 shadow-xl shadow-cyan-500/30 hover:scale-[1.01] active:scale-[0.99] transition-all duration-200 flex items-center justify-center gap-2.5">
+                <button type="submit" id="login-submit-btn" class="w-full py-3.5 px-5 rounded-2xl font-black text-base text-slate-950 bg-gradient-to-r from-cyan-400 via-teal-300 to-emerald-400 hover:from-cyan-300 hover:to-emerald-300 shadow-xl shadow-cyan-500/30 hover:scale-[1.01] active:scale-[0.99] transition-all duration-200 flex items-center justify-center gap-2.5 cursor-pointer">
                     <svg class="login-btn-icon" style="width: 20px; height: 20px;" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2.5" d="M11 16l-4-4m0 0l4-4m-4 4h14m-5 4v1a3 3 0 01-3 3H6a3 3 0 01-3-3V7a3 3 0 013-3h7a3 3 0 013 3v1"></path></svg>
                     <span>دخول إلى لوحة التحكم</span>
                 </button>
@@ -764,12 +768,85 @@
             const LOCKOUT_DURATION_MS = 5 * 60 * 1000; // 5 minutes
             const INACTIVITY_TIMEOUT_MS = 30 * 60 * 1000; // 30 minutes
 
-            // SHA-256 Native Web Crypto Helper
+            // Pure JS SHA-256 implementation fallback (ensures 100% compatibility on mobile/HTTP/WebView)
+            function jsSha256(ascii) {
+                function rightRotate(v, a) { return (v >>> a) | (v << (32 - a)); }
+                const mathPow = Math.pow;
+                const maxWord = mathPow(2, 32);
+                const words = [];
+                const utf8Str = unescape(encodeURIComponent(ascii));
+                const asciiBitLength = utf8Str.length * 8;
+                const hash = [];
+                const k = [];
+                let primeCounter = 0;
+                const isComposite = {};
+                for (let candidate = 2; primeCounter < 64; candidate++) {
+                    if (!isComposite[candidate]) {
+                        for (let i = 0; i < 312; i += candidate) isComposite[i] = candidate;
+                        hash[primeCounter] = (mathPow(candidate, .5) * maxWord) | 0;
+                        k[primeCounter++] = (mathPow(candidate, 1/3) * maxWord) | 0;
+                    }
+                }
+                let workingStr = utf8Str + '\x80';
+                while (workingStr.length % 64 - 56) workingStr += '\x00';
+                for (let i = 0; i < workingStr.length; i++) {
+                    words[i >> 2] |= workingStr.charCodeAt(i) << ((3 - i) % 4) * 8;
+                }
+                words[words.length] = ((asciiBitLength / maxWord) | 0);
+                words[words.length] = (asciiBitLength) | 0;
+                for (let j = 0; j < words.length;) {
+                    const w = words.slice(j, j += 16);
+                    const oldHash = hash.slice(0);
+                    for (let i = 0; i < 64; i++) {
+                        const w15 = w[i - 15], w2 = w[i - 2];
+                        const a = hash[0], e = hash[4];
+                        const t1 = (hash[7]
+                            + (rightRotate(e, 6) ^ rightRotate(e, 11) ^ rightRotate(e, 25))
+                            + ((e & hash[5]) ^ ((~e) & hash[6]))
+                            + k[i]
+                            + (w[i] = (i < 16) ? (w[i] || 0) : (
+                                    (w[i - 16] || 0)
+                                    + (rightRotate(w15, 7) ^ rightRotate(w15, 18) ^ (w15 >>> 3))
+                                    + (w[i - 7] || 0)
+                                    + (rightRotate(w2, 17) ^ rightRotate(w2, 19) ^ (w2 >>> 10))
+                                ) | 0
+                            )) | 0;
+                        const t2 = ((rightRotate(a, 2) ^ rightRotate(a, 13) ^ rightRotate(a, 22))
+                            + ((a & hash[1]) ^ (a & hash[2]) ^ (hash[1] & hash[2]))) | 0;
+                        hash[7] = hash[6];
+                        hash[6] = hash[5];
+                        hash[5] = hash[4];
+                        hash[4] = (hash[3] + t1) | 0;
+                        hash[3] = hash[2];
+                        hash[2] = hash[1];
+                        hash[1] = hash[0];
+                        hash[0] = (t1 + t2) | 0;
+                    }
+                    for (let i = 0; i < 8; i++) hash[i] = (hash[i] + oldHash[i]) | 0;
+                }
+                let result = '';
+                for (let i = 0; i < 8; i++) {
+                    for (let j = 3; j >= 0; j--) {
+                        const b = (hash[i] >> (j * 8)) & 255;
+                        result += ((b < 16) ? '0' : '') + b.toString(16);
+                    }
+                }
+                return result;
+            }
+
+            // Universal SHA-256 (Native WebCrypto with Pure-JS fallback)
             async function sha256(message) {
-                const msgBuffer = new TextEncoder().encode(message);
-                const hashBuffer = await crypto.subtle.digest('SHA-256', msgBuffer);
-                const hashArray = Array.from(new Uint8Array(hashBuffer));
-                return hashArray.map(b => b.toString(16).padStart(2, '0')).join('');
+                try {
+                    if (window.crypto && window.crypto.subtle && typeof window.crypto.subtle.digest === 'function') {
+                        const msgBuffer = new TextEncoder().encode(message);
+                        const hashBuffer = await crypto.subtle.digest('SHA-256', msgBuffer);
+                        const hashArray = Array.from(new Uint8Array(hashBuffer));
+                        return hashArray.map(b => b.toString(16).padStart(2, '0')).join('');
+                    }
+                } catch (e) {
+                    console.warn("SubtleCrypto not supported or failed, using JS SHA-256 fallback:", e);
+                }
+                return jsSha256(message);
             }
 
             // OWASP A03: HTML Escaping & URL Sanitization
@@ -1032,6 +1109,22 @@
                 showToast('تم تسجيل الخروج وتأمين الجلسة بنجاح.', 'info');
                 checkAuth();
             });
+
+            // Toggle Password Visibility in Login Screen
+            const toggleLoginPassBtn = document.getElementById('toggle-login-pass');
+            const toggleLoginPassIcon = document.getElementById('toggle-login-pass-icon');
+            if (toggleLoginPassBtn && passwordInput) {
+                toggleLoginPassBtn.addEventListener('click', () => {
+                    if (passwordInput.type === 'password') {
+                        passwordInput.type = 'text';
+                        if (toggleLoginPassIcon) toggleLoginPassIcon.textContent = '🙈';
+                    } else {
+                        passwordInput.type = 'password';
+                        if (toggleLoginPassIcon) toggleLoginPassIcon.textContent = '👁️';
+                    }
+                    passwordInput.focus();
+                });
+            }
 
             // 3. Tab Switching
             navItems.forEach(item => {

@@ -11,9 +11,9 @@ let siteConfig = {
     "shopUrl": "market/",
     "release": {
         "version": "1.1.9",
-        "releaseDate": "2026-08-19",
+        "releaseDate": "2026-08-16",
         "fileSize": "107.7 MB",
-        "apkUrl": "https://github.com/ahmedsamy32/el-tall-market-download/releases/download/1.1.9/default.apk",
+        "apkUrl": "",
         "ipaUrl": "market/index.html",
         "isReady": true
     },

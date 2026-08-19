@@ -12,8 +12,8 @@ let siteConfig = {
     "release": {
         "version": "1.0.0",
         "releaseDate": "2026-08-16",
-        "fileSize": "24.5 MB",
-        "apkUrl": "market/index.html",
+        "fileSize": "107.7 MB",
+        "apkUrl": "assets/apk/app-release.apk",
         "ipaUrl": "market/index.html",
         "isReady": true
     },

@@ -10,10 +10,10 @@ let siteConfig = {
     "faviconUrl": "assets/images/logo.svg",
     "shopUrl": "market/",
     "release": {
-        "version": "1.0.0",
+        "version": "1.1.9",
         "releaseDate": "2026-08-16",
         "fileSize": "107.7 MB",
-        "apkUrl": "assets/apk/app-release.apk",
+        "apkUrl": "sha256:e18bf26f1e8aaa95f6a7cbde9f489e39b84c4669fd49fbea775a92b146a558fe",
         "ipaUrl": "market/index.html",
         "isReady": true
     },

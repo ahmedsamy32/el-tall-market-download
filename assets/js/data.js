@@ -13,7 +13,7 @@ let siteConfig = {
         "version": "1.1.9",
         "releaseDate": "2026-08-16",
         "fileSize": "107.7 MB",
-        "apkUrl": "https://github.com/ahmedsamy32/el-tall-market-download/releases/download/1.1.9/default.apk",
+        "apkUrl": "https://github.com/ahmedsamy32/el-tall-market-download/releases/download/1.1.9/Eltal-Market.apk",
         "ipaUrl": "market/index.html",
         "isReady": true
     },

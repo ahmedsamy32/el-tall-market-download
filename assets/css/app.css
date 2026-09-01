@@ -193,47 +193,84 @@ h6 {
 }
 
 #homepage-carousel .carousel-container {
-    display: grid;
-    grid-template-columns: 1fr;
-    width: 100%;
-    height: auto;
     position: relative;
+    width: 100%;
+    height: 200px;
     overflow: hidden;
 }
 
+@media (min-width: 640px) {
+    #homepage-carousel .carousel-container {
+        height: 320px;
+    }
+}
+
+@media (min-width: 1024px) {
+    #homepage-carousel .carousel-container {
+        height: 420px;
+    }
+}
+
 .carousel-slide {
-    grid-area: 1 / 1;
+    position: absolute;
+    inset: 0;
     width: 100%;
-    height: auto;
+    height: 100%;
     padding: 0;
     margin: 0;
     box-sizing: border-box;
+    display: flex;
+    align-items: center;
+    justify-content: center;
     opacity: 0;
-    pointer-events: none;
     z-index: 0;
+    overflow: hidden;
     transition: opacity 0.5s ease-in-out;
 }
 
 .carousel-slide.active {
     opacity: 1;
-    pointer-events: auto;
     z-index: 10;
 }
 
 .carousel-slide a {
-    display: block;
+    position: relative;
+    display: flex;
+    align-items: center;
+    justify-content: center;
     width: 100%;
-    height: auto;
+    height: 100%;
+    overflow: hidden;
     text-decoration: none;
 }
 
-/* الصورة تملأ عرض الحاوية بالكامل 100% والارتفاع يتحدد تلقائياً بنسبة أبعاد الصورة */
-.carousel-main-img {
+/* خلفية ذكية ناعمة من ألوان الصورة لملء الفراغات الجانبية لأي مقاس */
+.carousel-ambient-bg {
+    position: absolute;
+    inset: 0;
     width: 100%;
-    height: auto;
+    height: 100%;
+    background-size: cover;
+    background-position: center;
+    filter: blur(40px) brightness(0.45) saturate(1.4);
+    transform: scale(1.2);
+    z-index: 1;
+    opacity: 0.85;
+    pointer-events: none;
+}
+
+/* الصورة تظهر بالكامل دون أي اقتصاص وبحجم متناسق ومريح */
+.carousel-main-img {
+    position: relative;
+    z-index: 2;
     max-width: 100%;
+    max-height: 100%;
+    width: 100%;
+    height: 100%;
+    object-fit: contain;
+    object-position: center;
     display: block;
-    margin: 0;
+    margin: 0 auto;
     border-radius: 0;
     box-shadow: none;
 }

@@ -25,7 +25,7 @@
         }
         try {
             localStorage.setItem(storageKey, theme);
-        } catch (e) {}
+        } catch (e) { }
         updateThemeIcons(theme);
     };
 
@@ -38,7 +38,7 @@
     let storedTheme = null;
     try {
         storedTheme = localStorage.getItem(storageKey);
-    } catch (e) {}
+    } catch (e) { }
 
     const preferredTheme = storedTheme || (window.matchMedia('(prefers-color-scheme: dark)').matches ? 'dark' : 'light');
     applyTheme(preferredTheme);
@@ -65,7 +65,7 @@
         document.querySelectorAll('[data-bind-version]').forEach(el => el.textContent = cfg.release.version || '1.0.0');
         document.querySelectorAll('[data-bind-filesize]').forEach(el => el.textContent = cfg.release.fileSize || '');
         document.querySelectorAll('[data-bind-releasedate]').forEach(el => el.textContent = cfg.release.releaseDate || '');
-        
+
         document.querySelectorAll('[data-apk-url]').forEach(el => {
             if (cfg.release && cfg.release.apkUrl && cfg.release.apkUrl !== '#') {
                 el.setAttribute('href', sanitizeSafeUrl(cfg.release.apkUrl));
@@ -130,7 +130,7 @@
                     const safeAlt = String(b.alt || 'إعلان تطبيق سوق التل').replace(/[&<>"']/g, '');
                     return `
                     <div class="carousel-slide ${idx === 0 ? 'active' : ''}" data-index="${idx}">
-                        <a href="${safeLink}" class="flex items-center justify-center w-full h-full">
+                        <a href="${safeLink}" class="block w-full h-full">
                             <img src="${safeImg}" alt="${safeAlt}" class="carousel-main-img">
                         </a>
                     </div>

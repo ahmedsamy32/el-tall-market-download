@@ -130,8 +130,7 @@
                     const safeAlt = String(b.alt || 'إعلان تطبيق سوق التل').replace(/[&<>"']/g, '');
                     return `
                     <div class="carousel-slide ${idx === 0 ? 'active' : ''}" data-index="${idx}">
-                        <a href="${safeLink}" class="relative block w-full h-full overflow-hidden" style="display: flex; align-items: center; justify-content: center;">
-                            <div class="carousel-blur-bg" style="background-image: url('${safeImg}');"></div>
+                        <a href="${safeLink}" class="block w-full h-full">
                             <img src="${safeImg}" alt="${safeAlt}" class="carousel-main-img">
                         </a>
                     </div>

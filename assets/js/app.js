@@ -178,6 +178,12 @@
         const carousel = document.getElementById('homepage-carousel');
         if (!carousel) return;
 
+        // إيقاف أي مؤقت سابق أولاً
+        if (carouselInterval) {
+            clearInterval(carouselInterval);
+            carouselInterval = null;
+        }
+
         const slides = carousel.querySelectorAll('.carousel-slide');
         const dots = carousel.querySelectorAll('.carousel-dot');
         const prevBtn = carousel.querySelector('#carousel-prev');
@@ -192,7 +198,7 @@
         }
 
         let currentIndex = 0;
-        const duration = 5000;
+        const duration = 4000;
 
         const showSlide = (index) => {
             slides.forEach((slide, idx) => {
@@ -208,12 +214,18 @@
         const prevSlide = () => showSlide((currentIndex - 1 + slides.length) % slides.length);
 
         const startAutoplay = () => {
-            stopAutoplay();
+            if (carouselInterval) {
+                clearInterval(carouselInterval);
+                carouselInterval = null;
+            }
             carouselInterval = setInterval(nextSlide, duration);
         };
 
         const stopAutoplay = () => {
-            if (carouselInterval) clearInterval(carouselInterval);
+            if (carouselInterval) {
+                clearInterval(carouselInterval);
+                carouselInterval = null;
+            }
         };
 
         if (prevBtn) {
@@ -221,7 +233,7 @@
                 e.preventDefault();
                 e.stopPropagation();
                 prevSlide();
-                startAutoplay();
+                startAutoplay(); // إعادة تشغيل التمرير التلقائي فوراً
             };
         }
 
@@ -230,7 +242,7 @@
                 e.preventDefault();
                 e.stopPropagation();
                 nextSlide();
-                startAutoplay();
+                startAutoplay(); // إعادة تشغيل التمرير التلقائي فوراً
             };
         }
 
@@ -240,38 +252,46 @@
                 e.stopPropagation();
                 const index = parseInt(dot.getAttribute('data-index'), 10);
                 showSlide(index);
-                startAutoplay();
+                startAutoplay(); // إعادة تشغيل التمرير التلقائي فوراً
             };
         });
 
-        // Hover pause
-        carousel.onmouseenter = stopAutoplay;
-        carousel.onmouseleave = startAutoplay;
+        // دعم إيقاف واستئناف التمرير عند تحريك الماوس على أجهزة الكمبيوتر فقط
+        carousel.onmouseenter = () => {
+            stopAutoplay();
+        };
 
-        // دعم اللمس والسحب (Swipe on mobile)
+        carousel.onmouseleave = () => {
+            startAutoplay();
+        };
+
+        // دعم اللمس والسحب للهواتف (Swipe on mobile)
         let touchStartX = 0;
         let touchEndX = 0;
 
         carousel.ontouchstart = (e) => {
-            touchStartX = e.changedTouches[0].screenX;
-            stopAutoplay();
+            if (e.changedTouches && e.changedTouches[0]) {
+                touchStartX = e.changedTouches[0].screenX;
+            }
         };
 
         carousel.ontouchend = (e) => {
-            touchEndX = e.changedTouches[0].screenX;
-            if (touchStartX - touchEndX > 50) {
-                nextSlide();
-            } else if (touchEndX - touchStartX > 50) {
-                prevSlide();
+            if (e.changedTouches && e.changedTouches[0]) {
+                touchEndX = e.changedTouches[0].screenX;
+                if (touchStartX - touchEndX > 40) {
+                    nextSlide();
+                } else if (touchEndX - touchStartX > 40) {
+                    prevSlide();
+                }
             }
             startAutoplay();
         };
 
+        // بدء التمرير التلقائي
         startAutoplay();
     };
 
     document.addEventListener('DOMContentLoaded', () => {
         hydrateData();
-        initCarousel();
     });
 })();

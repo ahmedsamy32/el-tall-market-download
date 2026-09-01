@@ -136,8 +136,36 @@
                         </a>
                     </div>
                 `}).join('');
-                initCarousel();
             }
+
+            // حقن نقاط التنقل بعدد البانرات
+            const dotsWrapper = carousel.querySelector('.carousel-dots-wrapper');
+            if (dotsWrapper) {
+                if (cfg.banners.length > 1) {
+                    dotsWrapper.innerHTML = cfg.banners.map((_, idx) => `
+                        <button type="button" class="carousel-dot ${idx === 0 ? 'active' : ''}" data-index="${idx}" aria-label="شريحة ${idx + 1}"></button>
+                    `).join('');
+                    dotsWrapper.style.display = 'flex';
+                } else {
+                    dotsWrapper.innerHTML = '';
+                    dotsWrapper.style.display = 'none';
+                }
+            }
+
+            // إظهار أو إخفاء أسهم التنقل حسب عدد البانرات
+            const prevBtn = carousel.querySelector('#carousel-prev');
+            const nextBtn = carousel.querySelector('#carousel-next');
+            if (prevBtn && nextBtn) {
+                if (cfg.banners.length > 1) {
+                    prevBtn.style.display = 'flex';
+                    nextBtn.style.display = 'flex';
+                } else {
+                    prevBtn.style.display = 'none';
+                    nextBtn.style.display = 'none';
+                }
+            }
+
+            initCarousel();
         }
     };
 
@@ -155,7 +183,13 @@
         const prevBtn = carousel.querySelector('#carousel-prev');
         const nextBtn = carousel.querySelector('#carousel-next');
 
-        if (slides.length <= 1) return;
+        if (slides.length <= 1) {
+            if (prevBtn) prevBtn.style.display = 'none';
+            if (nextBtn) nextBtn.style.display = 'none';
+            const dotsWrapper = carousel.querySelector('.carousel-dots-wrapper');
+            if (dotsWrapper) dotsWrapper.style.display = 'none';
+            return;
+        }
 
         let currentIndex = 0;
         const duration = 5000;
@@ -183,26 +217,36 @@
         };
 
         if (prevBtn) {
-            prevBtn.onclick = () => {
+            prevBtn.onclick = (e) => {
+                e.preventDefault();
+                e.stopPropagation();
                 prevSlide();
                 startAutoplay();
             };
         }
 
         if (nextBtn) {
-            nextBtn.onclick = () => {
+            nextBtn.onclick = (e) => {
+                e.preventDefault();
+                e.stopPropagation();
                 nextSlide();
                 startAutoplay();
             };
         }
 
         dots.forEach(dot => {
-            dot.onclick = () => {
+            dot.onclick = (e) => {
+                e.preventDefault();
+                e.stopPropagation();
                 const index = parseInt(dot.getAttribute('data-index'), 10);
                 showSlide(index);
                 startAutoplay();
             };
         });
+
+        // Hover pause
+        carousel.onmouseenter = stopAutoplay;
+        carousel.onmouseleave = startAutoplay;
 
         // دعم اللمس والسحب (Swipe on mobile)
         let touchStartX = 0;
